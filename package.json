@@ -1,0 +1,19 @@
+{
+  "name": "jobstats",
+  "version": "1.0.0",
+  "description": "programming market statistics",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/przemekBielak/jobstats.git"
+  },
+  "author": "Przemyslaw Bielak",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/przemekBielak/jobstats/issues"
+  },
+  "homepage": "https://github.com/przemekBielak/jobstats#readme"
+}
