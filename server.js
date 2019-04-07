@@ -1,4 +1,3 @@
-const request = require('request');
 const cheerio = require('cheerio');
 const puppeteer = require('puppeteer');
 const url = 'https://nofluffjobs.com/';
@@ -12,7 +11,12 @@ const fs = require('fs');
     let content = await page.content();
     var $ = cheerio.load(content);
 
-    fs.writeFile('content.txt', content, function(err) {
+    let links = $('.col-sm-12 .list-item');
+    for(var i = 0; i < links.length; i++) {
+        console.log(links[i].attribs.href);
+    }
+
+    fs.writeFile('content.txt', links, function(err) {
         if(err) {
             return console.log(err);
         }
