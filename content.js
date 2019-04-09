@@ -19,7 +19,8 @@ jobInfo = {
     companySize: 0,
     companyLocationCity: '',
     companyLocationCountry: '',
-    requirements: [],
+    requirementsTechnical: [],
+    requirementsOther: [],
 };
 
 (async () => {
@@ -30,7 +31,7 @@ jobInfo = {
     let content = await page.content();
     var $ = cheerio.load(content, {"waitUntil" : "networkidle0"});
 
-    // get all links
+    // check job position
     jobInfo.position = $('.posting-header-description h1').text();
 
     let info = []
@@ -39,6 +40,7 @@ jobInfo = {
         info[i] = $(this).text();
     });
 
+    // check basic info
     jobInfo.companyName = info[0];
     jobInfo.companySize = info[1];
     const companyLocation = (info[2]).split(', ');
@@ -48,6 +50,7 @@ jobInfo = {
     jobInfo.typeOfContract = (info[4]).trim();
     jobInfo.seniorityLevel = (info[5]).split(', ');
 
+    // check salary info
     const salary = $('.posting-main-info h4').text().split(' ');
     // remove - sign from array
     for(var i = 0; i < salary.length; i++) {
@@ -59,8 +62,8 @@ jobInfo = {
     jobInfo.salaryMax = salary[1];
     jobInfo.salaryCurrency = salary[2];
 
-    const salaryInfoText = $('.posting-main-info p').text();
     // check contract type
+    const salaryInfoText = $('.posting-main-info p').text();
     if(salaryInfoText.toUpperCase().includes('B2B')) {
         jobInfo.contractType = 'B2B';
     } 
@@ -76,14 +79,15 @@ jobInfo = {
         jobInfo.salaryRate = 'day';
     }
 
-    $('.requirement').each(function(i, elem) {
-        jobInfo.requirements[i] = ($(this).text());
+    // Technical requirements
+    $('.requirement.ng-binding.ng-scope').each(function(i, elem) {
+        jobInfo.requirementsTechnical[i] = $(this).text();
     });
 
-
-    // const requirementsGray = $('.requirement requirement-gray').each(function(i, elem) {
-    //     console.log($(this).text());
-    // });
+    // Other requirements
+    const requirementsGray = $('.requirement.ng-binding.ng-scope.requirement-gray').each(function(i, elem) {
+        jobInfo.requirementsOther[i] = $(this).text();
+    });
 
 
     console.log(jobInfo);
