@@ -22,6 +22,7 @@ jobInfo = {
     requirementsTechnical: [],
     requirementsOther: [],
     requirementsNices: [],
+    workMethodology: [],
 };
 
 (async () => {
@@ -80,7 +81,7 @@ jobInfo = {
         jobInfo.salaryRate = 'day';
     }
 
-    // All Technical requirements
+    // All requirements
     $('.requirement.ng-binding.ng-scope').each(function(i, elem) {
         jobInfo.requirementsTechnical[i] = $(this).text();
     });
@@ -96,7 +97,7 @@ jobInfo = {
         jobInfo.requirementsNices[i] = $(this).text();
     })
 
-    // Check if other requirements are also in technical requirements. If yes, then delete
+    // Check if other requirements are also in technical or nices requirements. If yes, then delete.
     for(let i = 0; i < jobInfo.requirementsOther.length; i++) {
         if(jobInfo.requirementsTechnical.includes(jobInfo.requirementsOther[i])) {
             index = jobInfo.requirementsTechnical.indexOf(jobInfo.requirementsOther[i]);
@@ -107,6 +108,25 @@ jobInfo = {
             jobInfo.requirementsTechnical.splice(index, 1);
         }
     }
+
+    // get all methodolody keys
+    var workMethodologyKey = [];
+    $("[ng-repeat='tool in tools'] .col-sm-6.p-label-row.ng-binding").each(function(i, elem) {
+        let key = $(this).text().replace(/\n/g, '');
+        workMethodologyKey[i] = key;
+    })
+
+    // get all methodology vals
+    var workMethodologyVal = [];
+    $("[ng-repeat='tool in tools'] .col-sm-6.p-value-row dd").each(function(i, elem) {
+        workMethodologyVal[i] = $(this).text();
+    })
+
+    // combinet keys and vals as an object
+    workMethodologyKey.forEach((key, i) => jobInfo.workMethodology[key] = workMethodologyVal[i]);
+
+
+    
 
 
     console.log(jobInfo);
