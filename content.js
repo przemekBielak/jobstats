@@ -21,6 +21,7 @@ jobInfo = {
     companyLocationCountry: '',
     requirementsTechnical: [],
     requirementsOther: [],
+    requirementsNices: [],
 };
 
 (async () => {
@@ -53,7 +54,7 @@ jobInfo = {
     // check salary info
     const salary = $('.posting-main-info h4').text().split(' ');
     // remove - sign from array
-    for(var i = 0; i < salary.length; i++) {
+    for(let i = 0; i < salary.length; i++) {
         if(salary[i] === '-') {
             salary.splice(i, 1);
         }
@@ -79,15 +80,33 @@ jobInfo = {
         jobInfo.salaryRate = 'day';
     }
 
-    // Technical requirements
+    // All Technical requirements
     $('.requirement.ng-binding.ng-scope').each(function(i, elem) {
         jobInfo.requirementsTechnical[i] = $(this).text();
     });
 
     // Other requirements
-    const requirementsGray = $('.requirement.ng-binding.ng-scope.requirement-gray').each(function(i, elem) {
+    $('.requirement.ng-binding.ng-scope.requirement-gray').each(function(i, elem) {
         jobInfo.requirementsOther[i] = $(this).text();
     });
+
+    // Nices requirements
+    $("[ng-repeat='tech in formData.requirements.nices']").each(function(i, elem) {
+        // console.log(item);
+        jobInfo.requirementsNices[i] = $(this).text();
+    })
+
+    // Check if other requirements are also in technical requirements. If yes, then delete
+    for(let i = 0; i < jobInfo.requirementsOther.length; i++) {
+        if(jobInfo.requirementsTechnical.includes(jobInfo.requirementsOther[i])) {
+            index = jobInfo.requirementsTechnical.indexOf(jobInfo.requirementsOther[i]);
+            jobInfo.requirementsTechnical.splice(index, 1);
+        }
+        if(jobInfo.requirementsTechnical.includes(jobInfo.requirementsNices[i])) {
+            index = jobInfo.requirementsTechnical.indexOf(jobInfo.requirementsNices[i]);
+            jobInfo.requirementsTechnical.splice(index, 1);
+        }
+    }
 
 
     console.log(jobInfo);
