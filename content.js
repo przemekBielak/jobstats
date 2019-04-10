@@ -1,8 +1,9 @@
 // TODO: double salary info is not working
+// todo: requirements grey and normal are sometimes mixed together
 
 const cheerio = require('cheerio');
 const puppeteer = require('puppeteer');
-const url = 'https://nofluffjobs.com/job/java-developer-4-years-of-experience-prodata-consult-ybkpfh9u?criteria=category%253Dbackend';
+const url = 'https://nofluffjobs.com/job/angular-developer-smart-hr-y1q0eb3y?criteria=category%253Dbackend';
 const fs = require('fs');
 
 jobInfo = {
@@ -23,6 +24,8 @@ jobInfo = {
     requirementsOther: [],
     requirementsNices: [],
     workMethodology: [],
+    os: [],
+    equipment: [],
 };
 
 (async () => {
@@ -125,7 +128,26 @@ jobInfo = {
     // combinet keys and vals as an object
     workMethodologyKey.forEach((key, i) => jobInfo.workMethodology[key] = workMethodologyVal[i]);
 
+    // OS - mac
+    if ($("[ng-if='vm.isActiveSection('benefits.equipment')'] icon#apple.icon-blue.active").length) {
+        jobInfo.os['mac'] = true;
+    }else {
+        jobInfo.os['mac'] = false;
+    }
 
+    // OS - windows
+    if ($("[ng-if='vm.isActiveSection('benefits.equipment')'] icon#windows.icon-blue.active").length) {
+        jobInfo.os['windows'] = true;
+    }else {
+        jobInfo.os['windows'] = false;
+    }
+
+    // OS - linux
+    if ($("[ng-if='vm.isActiveSection('benefits.equipment')'] icon#linux.icon-blue.active").length) {
+        jobInfo.os['linux'] = true;
+    }else {
+        jobInfo.os['linux'] = false;
+    }
     
 
 
