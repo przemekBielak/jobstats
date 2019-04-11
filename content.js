@@ -28,6 +28,8 @@ jobInfo = {
     computer: '',
     monitors: '',
     specs: [],
+    perks: [],
+    benefits: [],
 };
 
 (async () => {
@@ -171,6 +173,18 @@ jobInfo = {
 
     // Combine specs keys and vals
     SpecsKeys.forEach((key, i) => jobInfo.specs[key] = SpecsVals[i]);
+
+    // Perks
+    $(".panel.border-top.this-and-that.ng-isolate-scope.border-top4 dd.ng-binding").each(function(i, item) {
+        jobInfo.perks[i] = $(this).text();
+    })
+
+    // Benefits
+    $("[ng-if='vm.isActiveSection('benefits.benefits')'] dd.ng-binding").each(function(i, item) {
+        jobInfo.benefits[i] = $(this).text();
+    })
+
+    
 
 
 
