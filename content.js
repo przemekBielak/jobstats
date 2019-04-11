@@ -3,16 +3,16 @@
 
 const cheerio = require('cheerio');
 const puppeteer = require('puppeteer');
-const url = 'https://nofluffjobs.com/job/c-engineer-it-kontrakt-5mhww7ol?criteria=category%253Dbackend';
+const url = 'https://nofluffjobs.com/job/senior-software-engineer-flyr-inswg7f5?criteria=category%253Dbackend';
 const fs = require('fs');
 
 jobInfo = {
     position: '',
-    salaryMin: 0,
-    salaryMax: 0,
-    salaryCurrency: ' ',
-    salaryRate: '',
-    contractType: '',
+    salaryMin: [],
+    salaryMax: [],
+    salaryCurrency: [],
+    salaryRate: [],
+    contractType: [],
     typeOfContract: '',
     seniorityLevel: [],
     whenToStart: '',
@@ -39,6 +39,8 @@ jobInfo = {
     let content = await page.content();
     var $ = cheerio.load(content, {"waitUntil" : "networkidle0"});
 
+    // console.log(content);
+
     // check job position
     jobInfo.position = $('.posting-header-description h1').text();
 
@@ -59,36 +61,42 @@ jobInfo = {
     jobInfo.seniorityLevel = (info[5]).split(', ');
 
     // check salary info
-    const salary = $('.posting-main-info h4').text().split(' ');
-    // remove - sign from array
-    for(let i = 0; i < salary.length; i++) {
-        if(salary[i] === '-') {
-            salary.splice(i, 1);
+    $('.posting-main-info h4').each(function(i, item) {
+        salary = $(this).text().split(' ');
+        // remove - sign from array
+        for(let i = 0; i < salary.length; i++) {
+            if(salary[i] === '-') {
+                salary.splice(i, 1);
+            }
         }
-    }
-    jobInfo.salaryMin = salary[0];
-    jobInfo.salaryMax = salary[1];
-    jobInfo.salaryCurrency = salary[2];
+        jobInfo.salaryMin[i] = salary[0];
+        jobInfo.salaryMax[i] = salary[1];
+        jobInfo.salaryCurrency[i] = salary[2];
+    })
+    
 
     // check contract type
-    const salaryInfoText = $('.posting-main-info p').text();
-    if(salaryInfoText.toUpperCase().includes('B2B')) {
-        jobInfo.contractType = 'B2B';
-    } 
-    else if(salaryInfoText.toUpperCase().includes('UOP')) {
-        jobInfo.contractType = 'UoP';
-    }
+    $('.posting-main-info p').each(function(i, item) {
+        salaryInfoText = $(this).text();
+        if(salaryInfoText.toUpperCase().includes('B2B')) {
+            jobInfo.contractType[i] = 'B2B';
+        } 
+        else if(salaryInfoText.toUpperCase().includes('UOP')) {
+            jobInfo.contractType[i] = 'UoP';
+        }
 
-    // check payment rate
-    if(salaryInfoText.toUpperCase().includes('MONTH')) {
-        jobInfo.salaryRate = 'month';
-    }
-    else if(salaryInfoText.toUpperCase().includes('DAY')) {
-        jobInfo.salaryRate = 'day';
-    }
-    else if(salaryInfoText.toUpperCase().includes('HOUR')) {
-        jobInfo.salaryRate = 'hour';
-    }
+        // check payment rate
+        if(salaryInfoText.toUpperCase().includes('MONTH')) {
+            jobInfo.salaryRate[i] = 'month';
+        }
+        else if(salaryInfoText.toUpperCase().includes('DAY')) {
+            jobInfo.salaryRate[i] = 'day';
+        }
+        else if(salaryInfoText.toUpperCase().includes('HOUR')) {
+            jobInfo.salaryRate[i] = 'hour';
+        }
+    })
+
 
     // All requirements
     $('.requirement.ng-binding.ng-scope').each(function(i, elem) {
