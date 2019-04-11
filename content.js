@@ -3,7 +3,7 @@
 
 const cheerio = require('cheerio');
 const puppeteer = require('puppeteer');
-const url = 'https://nofluffjobs.com/job/angular-developer-smart-hr-y1q0eb3y?criteria=category%253Dbackend';
+const url = 'https://nofluffjobs.com/job/senior-software-automation-tools-developer-rockwell-automation-r4enceop?criteria=category%253Dbackend';
 const fs = require('fs');
 
 jobInfo = {
@@ -25,7 +25,9 @@ jobInfo = {
     requirementsNices: [],
     workMethodology: [],
     os: [],
-    equipment: [],
+    computer: '',
+    monitors: '',
+    specs: [],
 };
 
 (async () => {
@@ -125,7 +127,7 @@ jobInfo = {
         workMethodologyVal[i] = $(this).text();
     })
 
-    // combinet keys and vals as an object
+    // combine keys and vals as an object
     workMethodologyKey.forEach((key, i) => jobInfo.workMethodology[key] = workMethodologyVal[i]);
 
     // OS - mac
@@ -149,6 +151,27 @@ jobInfo = {
         jobInfo.os['linux'] = false;
     }
     
+    // Get Computer 
+    jobInfo.computer = $("[once-if='formData.benefits.equipment.computer !== '''] [tooltip-enable='formData.benefits.equipment.computer.length > 39']").text();
+
+    // Get Monitors 
+    jobInfo.monitors = $("[once-if='formData.benefits.equipment.monitors !== '''] [tooltip-enable='formData.benefits.equipment.monitors.length > 39']").text();
+
+    // Get specs keys
+    var SpecsKeys = [];
+    $("[id='specs-block'] .col-sm-6.p-label-row").each(function(i, item) {
+        SpecsKeys[i] = ($(this).text());
+    });
+
+    // Get specs vals
+    var SpecsVals = [];
+    $("[id='specs-block'] .col-sm-6.p-value-row").each(function(i, item) {
+        SpecsVals[i] = ($(this).text()).trim();
+    });
+
+    // Combine specs keys and vals
+    SpecsKeys.forEach((key, i) => jobInfo.specs[key] = SpecsVals[i]);
+
 
 
     console.log(jobInfo);
