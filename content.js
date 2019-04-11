@@ -1,9 +1,9 @@
 // TODO: double salary info is not working
-// todo: requirements grey and normal are sometimes mixed together
+// requirements grey and green distinction
 
 const cheerio = require('cheerio');
 const puppeteer = require('puppeteer');
-const url = 'https://nofluffjobs.com/job/senior-software-automation-tools-developer-rockwell-automation-r4enceop?criteria=category%253Dbackend';
+const url = 'https://nofluffjobs.com/job/c-engineer-it-kontrakt-5mhww7ol?criteria=category%253Dbackend';
 const fs = require('fs');
 
 jobInfo = {
@@ -11,7 +11,7 @@ jobInfo = {
     salaryMin: 0,
     salaryMax: 0,
     salaryCurrency: ' ',
-    salaryRate: 0,
+    salaryRate: '',
     contractType: '',
     typeOfContract: '',
     seniorityLevel: [],
@@ -20,8 +20,7 @@ jobInfo = {
     companySize: 0,
     companyLocationCity: '',
     companyLocationCountry: '',
-    requirementsTechnical: [],
-    requirementsOther: [],
+    requirementsMustHave: [],
     requirementsNices: [],
     workMethodology: [],
     os: [],
@@ -87,15 +86,13 @@ jobInfo = {
     else if(salaryInfoText.toUpperCase().includes('DAY')) {
         jobInfo.salaryRate = 'day';
     }
+    else if(salaryInfoText.toUpperCase().includes('HOUR')) {
+        jobInfo.salaryRate = 'hour';
+    }
 
     // All requirements
     $('.requirement.ng-binding.ng-scope').each(function(i, elem) {
-        jobInfo.requirementsTechnical[i] = $(this).text();
-    });
-
-    // Other requirements
-    $('.requirement.ng-binding.ng-scope.requirement-gray').each(function(i, elem) {
-        jobInfo.requirementsOther[i] = $(this).text();
+        jobInfo.requirementsMustHave[i] = $(this).text();
     });
 
     // Nices requirements
@@ -104,15 +101,11 @@ jobInfo = {
         jobInfo.requirementsNices[i] = $(this).text();
     })
 
-    // Check if other requirements are also in technical or nices requirements. If yes, then delete.
-    for(let i = 0; i < jobInfo.requirementsOther.length; i++) {
-        if(jobInfo.requirementsTechnical.includes(jobInfo.requirementsOther[i])) {
-            index = jobInfo.requirementsTechnical.indexOf(jobInfo.requirementsOther[i]);
-            jobInfo.requirementsTechnical.splice(index, 1);
-        }
-        if(jobInfo.requirementsTechnical.includes(jobInfo.requirementsNices[i])) {
-            index = jobInfo.requirementsTechnical.indexOf(jobInfo.requirementsNices[i]);
-            jobInfo.requirementsTechnical.splice(index, 1);
+    // Check if nices requirements are also in must have requirements. If yes, then delete.
+    for(let i = 0; i < jobInfo.requirementsNices.length; i++) {
+        if(jobInfo.requirementsMustHave.includes(jobInfo.requirementsNices[i])) {
+            index = jobInfo.requirementsMustHave.indexOf(jobInfo.requirementsNices[i]);
+            jobInfo.requirementsMustHave.splice(index, 1);
         }
     }
 
