@@ -1,23 +1,17 @@
-// TODO: double salary info is not working
-// requirements grey and green distinction
+// TODO: requirements grey and green distinction
 
 const cheerio = require('cheerio');
 const puppeteer = require('puppeteer');
-const url = 'https://nofluffjobs.com/job/senior-software-engineer-flyr-inswg7f5?criteria=category%253Dbackend';
-const fs = require('fs');
+const url = 'https://nofluffjobs.com/job/senior-java-developer-7n-prwlpgc7?criteria=category%253Dbackend';
 
 jobInfo = {
     position: '',
-    salaryMin: [],
-    salaryMax: [],
-    salaryCurrency: [],
-    salaryRate: [],
-    contractType: [],
+    salary: [],
     typeOfContract: '',
     seniorityLevel: [],
     whenToStart: '',
     companyName: '',
-    companySize: 0,
+    companySize: '',
     companyLocationCity: '',
     companyLocationCountry: '',
     requirementsMustHave: [],
@@ -61,6 +55,9 @@ jobInfo = {
     jobInfo.seniorityLevel = (info[5]).split(', ');
 
     // check salary info
+    let salaryMin = [];
+    let salaryMax = [];
+    let salaryCurrency = [];
     $('.posting-main-info h4').each(function(i, item) {
         salary = $(this).text().split(' ');
         // remove - sign from array
@@ -69,33 +66,45 @@ jobInfo = {
                 salary.splice(i, 1);
             }
         }
-        jobInfo.salaryMin[i] = salary[0];
-        jobInfo.salaryMax[i] = salary[1];
-        jobInfo.salaryCurrency[i] = salary[2];
+        salaryMin[i] = salary[0];
+        salaryMax[i] = salary[1];
+        salaryCurrency[i] = salary[2];
     })
     
-
-    // check contract type
+    let contractType = [];
+    let salaryRate = [];
     $('.posting-main-info p').each(function(i, item) {
+        
+        // check contract type
         salaryInfoText = $(this).text();
         if(salaryInfoText.toUpperCase().includes('B2B')) {
-            jobInfo.contractType[i] = 'B2B';
+            contractType[i] = 'B2B';
         } 
         else if(salaryInfoText.toUpperCase().includes('UOP')) {
-            jobInfo.contractType[i] = 'UoP';
+            contractType[i] = 'UoP';
         }
 
         // check payment rate
         if(salaryInfoText.toUpperCase().includes('MONTH')) {
-            jobInfo.salaryRate[i] = 'month';
+            salaryRate[i] = 'month';
         }
         else if(salaryInfoText.toUpperCase().includes('DAY')) {
-            jobInfo.salaryRate[i] = 'day';
+            salaryRate[i] = 'day';
         }
         else if(salaryInfoText.toUpperCase().includes('HOUR')) {
-            jobInfo.salaryRate[i] = 'hour';
+            salaryRate[i] = 'hour';
         }
     })
+
+    // save all salary related data in one array of objects
+    for(let i = 0; i < salaryMin.length; i++) {
+        jobInfo.salary[i] = []
+        jobInfo.salary[i]['salaryMin'] = salaryMin[i];
+        jobInfo.salary[i]['salaryMax'] = salaryMax[i];
+        jobInfo.salary[i]['salaryCurrency'] = salaryCurrency[i];
+        jobInfo.salary[i]['contractType'] = contractType[i];
+        jobInfo.salary[i]['salaryRate'] = salaryRate[i];
+    }
 
 
     // All requirements
