@@ -1,7 +1,9 @@
 const cheerio = require('cheerio');
 const puppeteer = require('puppeteer');
+import jobParser from './content';
+
 const url = 'https://nofluffjobs.com/jobs/backend';
-const fs = require('fs');
+var jobLinks = [];
 
 (async () => {
     const browser = await puppeteer.launch();
@@ -12,21 +14,16 @@ const fs = require('fs');
     var $ = cheerio.load(content);
 
     // get all links
-    let links = $('.col-sm-12 .list-item');
+    let links = $('.col-sm-12 .list-item ');
     for(var i = 0; i < links.length; i++) {
-        console.log(links[i].attribs.href);
+        jobLinks.push("https://nofluffjobs.com" + links[i].attribs.href);
     }
-
-    // save all of the links in txt file
-    for(let i = 0; i < links.length; i ++) {
-        fs.appendFile('links.txt', links[i].attribs.href + '\n', function(err) {
-            if(err) {
-                return console.log(err);
-            }
-        })
-    }
-    console.log('Done');
-
 
     await browser.close();
+    console.log(jobLinks);
+
+    (async() => {
+        console.log(await jobParser(jobLinks[2]));
+    })();
+
 })();
