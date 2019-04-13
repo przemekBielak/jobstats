@@ -26,6 +26,7 @@ var jobInfo = {
 
 // Returns parsed job offer website data as json object
 export default async (url) => {
+    console.log('started')
     const browser = await puppeteer.launch();
     const page = await browser.newPage();
     await page.goto(url);
