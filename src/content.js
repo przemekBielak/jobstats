@@ -3,6 +3,19 @@
 const cheerio = require('cheerio');
 const puppeteer = require('puppeteer');
 
+function convertSalaryToNumber(salary) {
+    let val = 0;
+    
+    // get last character
+    if(salary.toLowerCase().slice(-1) == 'k') {
+        val = parseFloat(salary.slice(0, -1), 10) * 1000;
+    }else {
+        val = parseFloat(salary, 10);
+    }
+
+    return val;
+};
+
 var jobInfo = {
     _id: '',
     position: '',
@@ -104,8 +117,8 @@ export default async (url) => {
     // save all salary related data in one array of objects
     for(let i = 0; i < salaryMin.length; i++) {
         jobInfo.salary[i] = []
-        jobInfo.salary[i]['salaryMin'] = salaryMin[i];
-        jobInfo.salary[i]['salaryMax'] = salaryMax[i];
+        jobInfo.salary[i]['salaryMin'] = convertSalaryToNumber(salaryMin[i]);
+        jobInfo.salary[i]['salaryMax'] = convertSalaryToNumber(salaryMax[i]);
         jobInfo.salary[i]['salaryCurrency'] = salaryCurrency[i];
         jobInfo.salary[i]['contractType'] = contractType[i];
         jobInfo.salary[i]['salaryRate'] = salaryRate[i];

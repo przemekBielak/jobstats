@@ -1,16 +1,14 @@
-var MongoClient = require('mongodb').MongoClient;
-var url = "mongodb://localhost:27017/mycustomers";
+function convertSalaryToNumber(salary) {
+    let val = 0;
+    
+    // get last character
+    if(salary.toLowerCase().slice(-1) == 'k') {
+        val = parseFloat(salary.slice(0, -1), 10) * 1000;
+    }else {
+        val = parseFloat(salary, 10);
+    }
 
-MongoClient.connect(url, { useNewUrlParser: true }, function(err, db) {
-  if (err) throw err;
-  
-  var dbo = db.db("mycustomers");
+    return val;
+};
 
-  var myobj = { name: "Company Inc", address: "Highway 37" };
-
-  dbo.collection("customers").insertOne(myobj, function(err, res) {
-    if (err) throw err;
-    console.log("Collection created!");
-    db.close();
-  });
-});
+console.log(convertSalaryToNumber('1234.56'));
