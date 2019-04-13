@@ -4,6 +4,7 @@ const cheerio = require('cheerio');
 const puppeteer = require('puppeteer');
 
 var jobInfo = {
+    _id: '',
     position: '',
     salary: [],
     typeOfContract: '',
@@ -26,6 +27,9 @@ var jobInfo = {
 
 // Returns parsed job offer website data as json object
 export default async (url) => {
+
+    jobInfo._id = url;
+
     console.log('started')
     const browser = await puppeteer.launch();
     const page = await browser.newPage();

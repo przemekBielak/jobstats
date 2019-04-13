@@ -4,21 +4,6 @@ const MongoClient = require('mongodb').MongoClient;
 import jobParser from './content';
 
 const mongoUrl = "mongodb://localhost:27017/mycustomers";
-
-MongoClient.connect(mongoUrl, { useNewUrlParser: true }, function(err, db) {
-  if (err) throw err;
-  
-  var dbo = db.db("jobs");
-
-  var myobj = { name: "test", address: "test" };
-
-  dbo.collection("jobs").insertOne(myobj, function(err, res) {
-    if (err) throw err;
-    console.log("Success!");
-    db.close();
-  });
-});
-
 const url = 'https://nofluffjobs.com/jobs/backend';
 var jobLinks = [];
 
@@ -28,6 +13,20 @@ function timeout(ms) {
 async function sleep(fn, time, ...args) {
     await timeout(time);
     return fn(...args);
+}
+
+function saveData(data) {
+    MongoClient.connect(mongoUrl, { useNewUrlParser: true }, function(err, db) {
+        if (err) throw err;
+        
+        var dbo = db.db("jobs");
+            
+        dbo.collection("jobs").insertOne(data, function(err, res) {
+            if (err) throw err;
+            console.log("Success!");
+            db.close();
+        });
+    });
 }
 
 
@@ -53,6 +52,7 @@ async function sleep(fn, time, ...args) {
     for(let i = 0; i < 2; i++) {
         const timeCounter = Math.floor((Math.random() * 20000) + 10000);
         console.log(await jobParser(jobLinks[i]));
+        // saveData(await jobParser(jobLinks[i]));
         await sleep(function() {
             console.log('...')
         }, timeCounter);
