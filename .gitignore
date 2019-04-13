@@ -82,3 +82,10 @@ typings/
 
 # DynamoDB Local files
 .dynamodb/
+
+# babel build
+/dist
+
+# text files
+*.txt
+/doc

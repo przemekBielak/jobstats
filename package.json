@@ -4,7 +4,9 @@
   "description": "programming market statistics",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "babel src --out-dir dist",
+    "start": "npm run build && node dist/test.js"
   },
   "repository": {
     "type": "git",
@@ -15,5 +17,10 @@
   "bugs": {
     "url": "https://github.com/przemekBielak/jobstats/issues"
   },
-  "homepage": "https://github.com/przemekBielak/jobstats#readme"
+  "homepage": "https://github.com/przemekBielak/jobstats#readme",
+  "devDependencies": {
+    "@babel/core": "^7.4.3",
+    "@babel/node": "^7.2.2",
+    "@babel/preset-env": "^7.4.3"
+  }
 }
