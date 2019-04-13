@@ -1,6 +1,23 @@
 const cheerio = require('cheerio');
 const puppeteer = require('puppeteer');
+const MongoClient = require('mongodb').MongoClient;
 import jobParser from './content';
+
+const mongoUrl = "mongodb://localhost:27017/mycustomers";
+
+MongoClient.connect(mongoUrl, { useNewUrlParser: true }, function(err, db) {
+  if (err) throw err;
+  
+  var dbo = db.db("jobs");
+
+  var myobj = { name: "test", address: "test" };
+
+  dbo.collection("jobs").insertOne(myobj, function(err, res) {
+    if (err) throw err;
+    console.log("Success!");
+    db.close();
+  });
+});
 
 const url = 'https://nofluffjobs.com/jobs/backend';
 var jobLinks = [];
@@ -31,7 +48,7 @@ async function sleep(fn, time, ...args) {
     await browser.close();
     console.log(jobLinks);
 
-    
+
 
     for(let i = 0; i < 2; i++) {
         const timeCounter = Math.floor((Math.random() * 20000) + 10000);

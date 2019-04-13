@@ -1,8 +1,16 @@
-import content from './content';
+var MongoClient = require('mongodb').MongoClient;
+var url = "mongodb://localhost:27017/mycustomers";
 
-const url = 'https://nofluffjobs.com/job/senior-java-developer-7n-prwlpgc7?criteria=category%253Dbackend';
+MongoClient.connect(url, { useNewUrlParser: true }, function(err, db) {
+  if (err) throw err;
+  
+  var dbo = db.db("mycustomers");
 
+  var myobj = { name: "Company Inc", address: "Highway 37" };
 
-(async () => {
-    console.log(await content(url));
-})();
+  dbo.collection("customers").insertOne(myobj, function(err, res) {
+    if (err) throw err;
+    console.log("Collection created!");
+    db.close();
+  });
+});
