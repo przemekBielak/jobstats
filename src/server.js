@@ -47,17 +47,17 @@ function saveData(data) {
     await browser.close();
     console.log(jobLinks);
 
+    saveData(await jobParser(jobLinks[11]));
 
+    // for(let i = 0; i < 2; i++) {
+    //     const timeCounter = Math.floor((Math.random() * 20000) + 10000);
+    //     // console.log(await jobParser(jobLinks[i]));
+    //     saveData(await jobParser(jobLinks[i]));
+    //     await sleep(function() {
+    //         console.log('...')
+    //     }, timeCounter);
 
-    for(let i = 0; i < 2; i++) {
-        const timeCounter = Math.floor((Math.random() * 20000) + 10000);
-        console.log(await jobParser(jobLinks[i]));
-        // saveData(await jobParser(jobLinks[i]));
-        await sleep(function() {
-            console.log('...')
-        }, timeCounter);
-
-    }
+    // }
     
     // const timeCounter = Math.floor((Math.random() * 20000) + 10000);
     // console.log(await jobParser(jobLinks[0]));

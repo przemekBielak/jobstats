@@ -16,6 +16,14 @@ function convertSalaryToNumber(salary) {
     return val;
 };
 
+function timeout(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+async function sleep(fn, time, ...args) {
+    await timeout(time);
+    return fn(...args);
+}
+
 var jobInfo = {
     _id: '',
     position: '',
@@ -29,11 +37,11 @@ var jobInfo = {
     companyLocationCountry: '',
     requirementsMustHave: [],
     requirementsNices: [],
-    workMethodology: [],
-    os: [],
+    workMethodology: {},
+    os: {},
     computer: '',
     monitors: '',
-    specs: [],
+    specs: {},
     perks: [],
     benefits: [],
 };
@@ -49,6 +57,11 @@ export default async (url) => {
     await page.goto(url);
     
     let content = await page.content();
+
+    await sleep(function() {
+        console.log('loading');
+    }, 2000);
+
     var $ = cheerio.load(content, {"waitUntil" : "networkidle0"});
 
     // console.log(content);
@@ -116,7 +129,7 @@ export default async (url) => {
 
     // save all salary related data in one array of objects
     for(let i = 0; i < salaryMin.length; i++) {
-        jobInfo.salary[i] = []
+        jobInfo.salary[i] = {}
         jobInfo.salary[i]['salaryMin'] = convertSalaryToNumber(salaryMin[i]);
         jobInfo.salary[i]['salaryMax'] = convertSalaryToNumber(salaryMax[i]);
         jobInfo.salary[i]['salaryCurrency'] = salaryCurrency[i];
@@ -154,7 +167,7 @@ export default async (url) => {
     // get all methodology vals
     var workMethodologyVal = [];
     $("[ng-repeat='tool in tools'] .col-sm-6.p-value-row dd").each(function(i, elem) {
-        workMethodologyVal[i] = $(this).text();
+        workMethodologyVal[i] = $(this).text().split(',');
     })
 
     // combine keys and vals as an object
