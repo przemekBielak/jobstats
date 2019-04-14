@@ -3,19 +3,13 @@ const puppeteer = require('puppeteer');
 const MongoClient = require('mongodb').MongoClient;
 const db = require('./db');
 import jobParser from './content';
+import { sleep } from './common'
 
 const url = 'https://nofluffjobs.com/jobs/backend';
 var jobLinks = [];
 
+// db related
 const collection = "jobs";
-
-function timeout(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-}
-async function sleep(fn, time, ...args) {
-    await timeout(time);
-    return fn(...args);
-}
 
 
 // connect to database
@@ -45,11 +39,11 @@ db.connect((err) => {
     await browser.close();
     console.log(jobLinks);
 
-    for(let i = 13; i < 14; i++) {
+    for(let i = 1; i < 2; i++) {
         const timeCounter = Math.floor((Math.random() * 20000) + 10000);
 
         // save parsed data to db
-        db.getDB().collection("jobs").insertOne(await jobParser(jobLinks[i]), function(err, res) {
+        db.getDB().collection(collection).insertOne(await jobParser(jobLinks[i]), function(err, res) {
             if (err) throw err;
             console.log("Saved " + jobLinks[i] + " to db.");
         });
@@ -59,7 +53,4 @@ db.connect((err) => {
             console.log('...')
         }, timeCounter);
     }
-
-    db.close();
-
 })();

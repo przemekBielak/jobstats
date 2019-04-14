@@ -2,6 +2,7 @@
 
 const cheerio = require('cheerio');
 const puppeteer = require('puppeteer');
+import { sleep } from './common'
 
 function convertSalaryToNumber(salary) {
     let val = 0;
@@ -16,13 +17,6 @@ function convertSalaryToNumber(salary) {
     return val;
 };
 
-function timeout(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-}
-async function sleep(fn, time, ...args) {
-    await timeout(time);
-    return fn(...args);
-}
 
 var jobInfo = {
     _id: '',

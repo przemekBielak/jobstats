@@ -6,7 +6,8 @@ const mongoOptions = { useNewUrlParser: true };
 
 const state = {
     db: null
-}
+};
+
 
 const connect = (cb) => {
     if (state.db) {
@@ -30,6 +31,5 @@ const getPrimaryKey = (_id) => {
 const getDB = () => {
     return state.db;
 }
-
 
 module.exports = {getDB, connect, getPrimaryKey};
