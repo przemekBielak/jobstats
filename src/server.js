@@ -1,11 +1,13 @@
 const cheerio = require('cheerio');
 const puppeteer = require('puppeteer');
 const MongoClient = require('mongodb').MongoClient;
+const db = require('./db');
 import jobParser from './content';
 
-const mongoUrl = "mongodb://localhost:27017/mycustomers";
 const url = 'https://nofluffjobs.com/jobs/backend';
 var jobLinks = [];
+
+const collection = "jobs";
 
 function timeout(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
@@ -15,20 +17,16 @@ async function sleep(fn, time, ...args) {
     return fn(...args);
 }
 
-function saveData(data) {
-    MongoClient.connect(mongoUrl, { useNewUrlParser: true }, function(err, db) {
-        if (err) throw err;
-        
-        var dbo = db.db("jobs");
-            
-        dbo.collection("jobs").insertOne(data, function(err, res) {
-            if (err) throw err;
-            console.log("Success!");
-            db.close();
-        });
-    });
-}
 
+// connect to database
+db.connect((err) => {
+    if(err) {
+        console.log('unable to connect to database');
+        process.exit(1);
+    } else {
+        console.log('connected to database');
+    }
+});
 
 (async () => {
     const browser = await puppeteer.launch();
@@ -47,23 +45,21 @@ function saveData(data) {
     await browser.close();
     console.log(jobLinks);
 
-    saveData(await jobParser(jobLinks[11]));
+    for(let i = 13; i < 14; i++) {
+        const timeCounter = Math.floor((Math.random() * 20000) + 10000);
 
-    // for(let i = 0; i < 2; i++) {
-    //     const timeCounter = Math.floor((Math.random() * 20000) + 10000);
-    //     // console.log(await jobParser(jobLinks[i]));
-    //     saveData(await jobParser(jobLinks[i]));
-    //     await sleep(function() {
-    //         console.log('...')
-    //     }, timeCounter);
+        // save parsed data to db
+        db.getDB().collection("jobs").insertOne(await jobParser(jobLinks[i]), function(err, res) {
+            if (err) throw err;
+            console.log("Saved " + jobLinks[i] + " to db.");
+        });
 
-    // }
-    
-    // const timeCounter = Math.floor((Math.random() * 20000) + 10000);
-    // console.log(await jobParser(jobLinks[0]));
-    // await sleep(function() {
-    //     console.log('...')
-    // }, timeCounter);
-    // console.log(await jobParser(jobLinks[1]));
+        // wait before next parsing
+        await sleep(function() {
+            console.log('...')
+        }, timeCounter);
+    }
+
+    db.close();
 
 })();

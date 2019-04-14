@@ -4,7 +4,7 @@
   "description": "programming market statistics",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "npm run build && node dist/dbTest.js",
     "build": "babel src --out-dir dist",
     "start": "npm run build && node dist/server.js"
   },
@@ -27,6 +27,7 @@
   },
   "dependencies": {
     "cheerio": "^1.0.0-rc.3",
+    "mongodb": "^3.2.3",
     "puppeteer": "^1.14.0"
   }
 }
