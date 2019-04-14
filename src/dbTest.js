@@ -7,16 +7,13 @@ db.connect((err) => {
         process.exit(1);
     } else {
         console.log('connected to database');
+        db.getDB().collection(collection).find({}).toArray((err, documents) => {
+            if(err) {
+                console.log(err);
+            } else {
+                console.log(documents);
+            }
+        });
+        db.getDbClient().close();
     }
 });
-
-
-db.getDB().collection(collection).find({}).toArray((err, documents) => {
-    if(err) {
-        console.log(err);
-    } else {
-        console.log(documents);
-    }
-});
-
-

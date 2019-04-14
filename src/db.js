@@ -1,12 +1,17 @@
+// TODO: add save to db function
+// TODO: close db function
+
 const MongoClient = require('mongodb').MongoClient;
 
-const mongoUrl = "mongodb://localhost:27017/mycustomers";
+const mongoUrl = "mongodb://localhost:27017/";
 const dbname =  "jobs";
 const mongoOptions = { useNewUrlParser: true };
 
 const state = {
     db: null
 };
+
+var dbclient = null;
 
 
 const connect = (cb) => {
@@ -18,6 +23,7 @@ const connect = (cb) => {
                 cb(err);
             } else {
                 state.db = client.db(dbname);
+                dbclient = client;
                 cb();
             }
         });
@@ -32,4 +38,8 @@ const getDB = () => {
     return state.db;
 }
 
-module.exports = {getDB, connect, getPrimaryKey};
+const getDbClient = () => {
+    return dbclient;
+}
+
+module.exports = {getDB, connect, getPrimaryKey, getDbClient};

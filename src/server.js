@@ -1,3 +1,5 @@
+// TODO: close db
+
 const cheerio = require('cheerio');
 const puppeteer = require('puppeteer');
 const MongoClient = require('mongodb').MongoClient;
@@ -11,8 +13,10 @@ var jobLinks = [];
 // db related
 const collection = "jobs";
 
+async function closeDB() {
+    return new Promise(resolve => db.getDbClient().close());
+}
 
-// connect to database
 db.connect((err) => {
     if(err) {
         console.log('unable to connect to database');
@@ -22,6 +26,7 @@ db.connect((err) => {
     }
 });
 
+// main program function
 (async () => {
     const browser = await puppeteer.launch();
     const page = await browser.newPage();
@@ -39,7 +44,7 @@ db.connect((err) => {
     await browser.close();
     console.log(jobLinks);
 
-    for(let i = 1; i < 2; i++) {
+    for(let i = 5; i < 6; i++) {
         const timeCounter = Math.floor((Math.random() * 20000) + 10000);
 
         // save parsed data to db
@@ -53,4 +58,8 @@ db.connect((err) => {
             console.log('...')
         }, timeCounter);
     }
+
+    await closeDB();
+
 })();
+
