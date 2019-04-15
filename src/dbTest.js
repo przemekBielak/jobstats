@@ -14,6 +14,7 @@ db.connect((err) => {
                 console.log(documents);
             }
         });
+        
         db.getDbClient().close();
     }
 });

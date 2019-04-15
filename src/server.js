@@ -1,4 +1,4 @@
-// TODO: close db
+// parse link only if link not in db
 
 const cheerio = require('cheerio');
 const puppeteer = require('puppeteer');
@@ -33,6 +33,11 @@ db.connect((err) => {
     await page.goto(url);
     
     let content = await page.content();
+
+    await sleep(function() {
+        console.log('loading');
+    }, 2000);
+
     var $ = cheerio.load(content);
 
     // get all links
@@ -44,19 +49,26 @@ db.connect((err) => {
     await browser.close();
     console.log(jobLinks);
 
-    for(let i = 5; i < 6; i++) {
+    for(let i = 0; i < 10; i++) {
         const timeCounter = Math.floor((Math.random() * 20000) + 10000);
 
-        // save parsed data to db
-        db.getDB().collection(collection).insertOne(await jobParser(jobLinks[i]), function(err, res) {
-            if (err) throw err;
-            console.log("Saved " + jobLinks[i] + " to db.");
-        });
+        var exists = await db.getDB().collection(collection).countDocuments({"_id":jobLinks[i]});
 
-        // wait before next parsing
-        await sleep(function() {
-            console.log('...')
-        }, timeCounter);
+        if(!exists) {
+            // save parsed data to db
+            db.getDB().collection(collection).insertOne(await jobParser(jobLinks[i]), function(err, res) {
+                if (err) throw err;
+                console.log("Saved " + jobLinks[i] + " to db.");
+            });
+    
+            // wait before next parsing
+            await sleep(function() {
+                console.log('...')
+            }, timeCounter);
+        } else {
+            console.log(jobLinks[i] + " already exists in db.")
+        }
+
     }
 
     await closeDB();
