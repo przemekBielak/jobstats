@@ -20,6 +20,7 @@ function convertSalaryToNumber(salary) {
 
 var jobInfo = {
     _id: '',
+    date: null,
     position: '',
     salary: [],
     typeOfContract: '',
@@ -44,6 +45,7 @@ var jobInfo = {
 export default async (url) => {
 
     jobInfo._id = url;
+    jobInfo.date = new Date();
 
     console.log('started')
     const browser = await puppeteer.launch();

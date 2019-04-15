@@ -47,28 +47,44 @@ db.connect((err) => {
     }
 
     await browser.close();
-    console.log(jobLinks);
 
-    for(let i = 0; i < 10; i++) {
-        const timeCounter = Math.floor((Math.random() * 20000) + 10000);
-
-        var exists = await db.getDB().collection(collection).countDocuments({"_id":jobLinks[i]});
-
-        if(!exists) {
-            // save parsed data to db
-            db.getDB().collection(collection).insertOne(await jobParser(jobLinks[i]), function(err, res) {
-                if (err) throw err;
-                console.log("Saved " + jobLinks[i] + " to db.");
-            });
+    // check if parsed any links
+    if(jobLinks.length != 0) {
+        for(let i = 30; i < 31; i++) {
+            const timeCounter = Math.floor((Math.random() * 20000) + 10000);
     
-            // wait before next parsing
-            await sleep(function() {
-                console.log('...')
-            }, timeCounter);
-        } else {
-            console.log(jobLinks[i] + " already exists in db.")
+            try {
+                var exists = await db.getDB().collection(collection).countDocuments({"_id":jobLinks[i]});
+            } catch(e) {
+                console.log(e);
+            }
+    
+            if(!exists) {
+                // save parsed data to db
+                try {
+                    db.getDB().collection(collection).insertOne(await jobParser(jobLinks[i]), function(err, res) {
+                        if (err) throw err;
+                        console.log("Saved " + jobLinks[i] + " to db.");
+                    });
+                } catch(e) {
+                    console.log(e);
+                }
+        
+                // wait before next parsing
+                try {
+                    await sleep(function() {
+                        console.log('...')
+                    }, timeCounter);
+                } catch(e) {
+                    console.log(e);
+                }
+            } else {
+                console.log(jobLinks[i] + " already exists in db.")
+            }
+    
         }
-
+    } else {
+        console.log("error while getting links");
     }
 
     await closeDB();
