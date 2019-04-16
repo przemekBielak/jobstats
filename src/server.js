@@ -17,26 +17,25 @@ async function closeDB() {
     return new Promise(resolve => db.getDbClient().close());
 }
 
+
+
+
+// Program start here
 db.connect((err) => {
     if(err) {
-        console.log('unable to connect to database');
+        console.log('Unable to connect to database');
         process.exit(1);
     } else {
-        console.log('connected to database');
+        console.log('Connected to database');
     }
 });
 
-// main program function
 (async () => {
     const browser = await puppeteer.launch();
     const page = await browser.newPage();
-    await page.goto(url);
-    
+    await page.goto(url)
     let content = await page.content();
-
-    await sleep(function() {
-        console.log('loading');
-    }, 2000);
+    await sleep(2000);
 
     var $ = cheerio.load(content);
 
@@ -46,45 +45,30 @@ db.connect((err) => {
         jobLinks.push("https://nofluffjobs.com" + links[i].attribs.href);
     }
 
+    console.log(`Got ${jobLinks.length} links`);
     await browser.close();
 
     // check if parsed any links
     if(jobLinks.length != 0) {
-        for(let i = 30; i < 31; i++) {
-            const timeCounter = Math.floor((Math.random() * 20000) + 10000);
+        for(let i = 3; i < 5; i++) {
+            const timeCounter = Math.floor((Math.random() * 30000) + 2000);
     
-            try {
-                var exists = await db.getDB().collection(collection).countDocuments({"_id":jobLinks[i]});
-            } catch(e) {
-                console.log(e);
-            }
-    
+            // check if link exists in db
+            var exists = await db.getDB().collection(collection).countDocuments({"_id":jobLinks[i]});
             if(!exists) {
                 // save parsed data to db
-                try {
-                    db.getDB().collection(collection).insertOne(await jobParser(jobLinks[i]), function(err, res) {
-                        if (err) throw err;
-                        console.log("Saved " + jobLinks[i] + " to db.");
-                    });
-                } catch(e) {
-                    console.log(e);
-                }
-        
+                db.getDB().collection(collection).insertOne(await jobParser(jobLinks[i]));
+                console.log("Saved " + jobLinks[i] + " to db");
+
                 // wait before next parsing
-                try {
-                    await sleep(function() {
-                        console.log('...')
-                    }, timeCounter);
-                } catch(e) {
-                    console.log(e);
-                }
+                await sleep(timeCounter);
+      
             } else {
-                console.log(jobLinks[i] + " already exists in db.")
+                console.log(jobLinks[i] + " already exists in db")
             }
-    
         }
     } else {
-        console.log("error while getting links");
+        console.log("Error while getting links");
     }
 
     await closeDB();

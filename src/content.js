@@ -53,10 +53,7 @@ export default async (url) => {
     await page.goto(url);
     
     let content = await page.content();
-
-    await sleep(function() {
-        console.log('loading');
-    }, 2000);
+    await sleep(2000);
 
     var $ = cheerio.load(content, {"waitUntil" : "networkidle0"});
 

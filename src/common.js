@@ -1,10 +1,14 @@
-function timeout(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
+function timeout(time) {
+    return new Promise((resolve, reject) => {
+        if(isNaN(time)) {
+            reject(new Error('timeout requires a valid number'));
+        }
+        setTimeout(resolve, time);
+    });
 }
 
-async function sleep(fn, time, ...args) {
-    await timeout(time);
-    return fn(...args);
+async function sleep(time) {
+    return await timeout(time);
 }
 
 module.exports = { sleep };
