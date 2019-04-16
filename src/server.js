@@ -7,7 +7,7 @@ const db = require('./db');
 import jobParser from './content';
 import { sleep } from './common'
 
-const url = 'https://nofluffjobs.com/jobs/backend';
+const url = 'https://nofluffjobs.com/jobs/backend/';
 var jobLinks = [];
 
 // db related
@@ -33,10 +33,11 @@ db.connect((err) => {
 (async () => {
     const browser = await puppeteer.launch();
     const page = await browser.newPage();
-    await page.goto(url)
+    await page.goto(url);
+    await page.waitFor(3000);
     let content = await page.content();
-    await sleep(2000);
-
+    
+    console.log('Getting list of all links');
     var $ = cheerio.load(content);
 
     // get all links
@@ -50,7 +51,7 @@ db.connect((err) => {
 
     // check if parsed any links
     if(jobLinks.length != 0) {
-        for(let i = 3; i < 5; i++) {
+        for(let i = 5; i < 15; i++) {
             const timeCounter = Math.floor((Math.random() * 30000) + 2000);
     
             // check if link exists in db
@@ -61,6 +62,7 @@ db.connect((err) => {
                 console.log("Saved " + jobLinks[i] + " to db");
 
                 // wait before next parsing
+                console.log(`Waiting for ${timeCounter/1000} seconds`)
                 await sleep(timeCounter);
       
             } else {

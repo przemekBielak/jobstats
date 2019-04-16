@@ -47,15 +47,14 @@ export default async (url) => {
     jobInfo._id = url;
     jobInfo.date = new Date();
 
-    console.log('started')
+    console.log(`Started parsing ${url}`)
     const browser = await puppeteer.launch();
     const page = await browser.newPage();
     await page.goto(url);
-    
+    await page.waitFor(4000);
     let content = await page.content();
-    await sleep(2000);
 
-    var $ = cheerio.load(content, {"waitUntil" : "networkidle0"});
+    var $ = cheerio.load(content);
 
     // console.log(content);
 
