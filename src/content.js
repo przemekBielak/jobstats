@@ -1,8 +1,9 @@
 // TODO: requirements grey and green distinction
+// TODO: Fully remote job option after salary view (country, city, when to start)
+// TODO: Add error checks for salary. Example: Unpaid
 
 const cheerio = require('cheerio');
 const puppeteer = require('puppeteer');
-import { sleep } from './common'
 
 function convertSalaryToNumber(salary) {
     let val = 0;
@@ -83,15 +84,18 @@ export default async (url) => {
     let salaryCurrency = [];
     $('.posting-main-info h4').each(function(i, item) {
         let salary = $(this).text().split(' ');
-        // remove - sign from array
-        for(let i = 0; i < salary.length; i++) {
-            if(salary[i] === '-') {
-                salary.splice(i, 1);
-            }
+        
+        // check if minus sign is in text. It signalizes salary range, not a fixed value.
+        if(salary.indexOf('-') >= 0) {
+            salaryMin[i] = salary[0];
+            salaryMax[i] = salary[2];
+            salaryCurrency[i] = salary[3];
         }
-        salaryMin[i] = salary[0];
-        salaryMax[i] = salary[1];
-        salaryCurrency[i] = salary[2];
+        else {
+            salaryMin[i] = salary[0];
+            salaryMax[i] = salary[0];
+            salaryCurrency[i] = salary[1];
+        }
     })
     
     let contractType = [];
@@ -119,6 +123,7 @@ export default async (url) => {
         }
     })
 
+    jobInfo.salary = []
     // save all salary related data in one array of objects
     for(let i = 0; i < salaryMin.length; i++) {
         jobInfo.salary[i] = {}
@@ -153,7 +158,7 @@ export default async (url) => {
     var workMethodologyKey = [];
     $("[ng-repeat='tool in tools'] .col-sm-6.p-label-row.ng-binding").each(function(i, elem) {
         let key = $(this).text().replace(/\n/g, '');
-        workMethodologyKey[i] = key;
+        workMethodologyKey[i] = key.replace(/\./g, '');
     })
 
     // get all methodology vals
