@@ -13,7 +13,7 @@ app.get('/', (req, res) => {
 });
 
 app.get('/api', (req, res) => {
-    db.getDB().collection(collection).findOne({"_id":"https://nofluffjobs.com/job/ambitious-recruiter-itds-polska-tv7yntlx?criteria=category%253Dhr"}, (err, documents) => {
+    db.getDB().collection(collection).find({"requirementsMustHave":"Java"}).toArray( (err, documents) => {
         if(err) {
             console.log(err);
         } else {

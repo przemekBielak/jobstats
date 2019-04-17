@@ -6,7 +6,7 @@
   "scripts": {
     "test": "npm run build && node dist/expressTest.js",
     "build": "babel src --out-dir dist",
-    "start": "npm run build && node dist/server.js",
+    "start": "npm run build && node dist/server.js"
   },
   "repository": {
     "type": "git",
