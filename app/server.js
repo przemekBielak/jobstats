@@ -3,13 +3,16 @@ const bodyParser = require('body-parser');
 const path = require('path');
 const db = require('./db');
 
+const APP_PORT = 8080;
+
 const collection = "jobs";
 
 const app = express();
 app.use(bodyParser.json());
+app.use(express.static(path.join(__dirname, 'build')));
 
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'index.html'));
+    res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
 
 app.get('/api', (req, res) => {
@@ -29,8 +32,8 @@ db.connect((err) => {
         console.log('Unable to connect to database');
         process.exit(1);
     } else {
-        app.listen(3000, () => {
-            console.log('Connected to database, listening on port 3000');
+        app.listen(process.env.PORT || 8080, () => {
+            console.log('Connected to database, listening on port ' + APP_PORT);
         })
     }
 });
