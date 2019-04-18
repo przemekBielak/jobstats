@@ -22,6 +22,7 @@ function convertSalaryToNumber(salary) {
 var jobInfo = {
     _id: '',
     date: null,
+    category: '',
     position: '',
     salary: [],
     typeOfContract: '',
@@ -43,10 +44,11 @@ var jobInfo = {
 };
 
 // Returns parsed job offer website data as json object
-export default async (url) => {
+export default async (url, category) => {
 
     jobInfo._id = url;
     jobInfo.date = new Date();
+    jobInfo.category = category;
 
     console.log(`Started parsing ${url}`)
     const browser = await puppeteer.launch();
@@ -120,6 +122,9 @@ export default async (url) => {
         }
         else if(salaryInfoText.toUpperCase().includes('HOUR')) {
             salaryRate[i] = 'hour';
+        }  
+        else if(salaryInfoText.toUpperCase().includes('YEAR')) {
+            salaryRate[i] = 'year';
         }
     })
 

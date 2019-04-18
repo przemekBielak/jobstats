@@ -7,20 +7,22 @@ const db = require('./db');
 import jobParser from './content';
 import { sleep } from './common'
 
-const url = [
-    'https://nofluffjobs.com/jobs/backend/',
-    'https://nofluffjobs.com/jobs/fullstack/',
-    'https://nofluffjobs.com/jobs/mobile/',
-    'https://nofluffjobs.com/jobs/frontend/',
-    'https://nofluffjobs.com/jobs/testing/',
-    'https://nofluffjobs.com/jobs/devops/',
-    'https://nofluffjobs.com/jobs/hr/',
-    'https://nofluffjobs.com/jobs/trainee/',
-    'https://nofluffjobs.com/jobs/ux/',
-    'https://nofluffjobs.com/jobs/support/',
-    'https://nofluffjobs.com/jobs/project-manager/',
-    'https://nofluffjobs.com/jobs/business-analyst/',
-    'https://nofluffjobs.com/jobs/other/'
+
+const url = "https://nofluffjobs.com/";
+const category = [
+    'backend',
+    'fullstack',
+    'mobile',
+    'frontend',
+    'testing',
+    'devops',
+    'hr',
+    'trainee',
+    'ux',
+    'support',
+    'project-manager',
+    'business-analyst',
+    'other'
 ];
 
 var jobLinks = [];
@@ -46,10 +48,10 @@ db.connect((err) => {
 });
 
 (async () => {
-    for(let iter = 0; iter < url.length; iter++) {
+    for(let iter = 0; iter < category.length; iter++) {
         const browser = await puppeteer.launch();
         const page = await browser.newPage();
-        await page.goto(url[iter]);
+        await page.goto(url + category[iter]);
         await page.waitFor(3000);
         let content = await page.content();
         
@@ -58,22 +60,27 @@ db.connect((err) => {
         // get all links
         let links = $('.col-sm-12 .list-item ');
         for(var i = 0; i < links.length; i++) {
-            jobLinks.push("https://nofluffjobs.com" + links[i].attribs.href);
+            jobLinks.push('https://nofluffjobs.com' + links[i].attribs.href);
         }
     
-        console.log(`--> Got ${jobLinks.length} links from ${url[iter]}`);
+        console.log(`--> Got ${jobLinks.length} links from ${category[iter]}`);
         await browser.close();
     
+        // parse 30 newest links, or less when not possible
+        let parseLimit = 30;
+        if(jobLinks.length < parseLimit) {
+            parseLimit = jobLinks.length;
+        }
         // check if parsed any links
         if(jobLinks.length != 0) {
-            for(let i = 0; i < 10; i++) {
+            for(let i = 0; i < parseLimit; i++) {
                 const timeCounter = Math.floor((Math.random() * 30000) + 2000);
         
                 // check if link exists in db
                 var exists = await db.getDB().collection(collection).countDocuments({"_id":jobLinks[i]});
                 if(!exists) {
                     // save parsed data to db
-                    db.getDB().collection(collection).insertOne(await jobParser(jobLinks[i]));
+                    db.getDB().collection(collection).insertOne(await jobParser(jobLinks[i], category[iter]));
                     console.log("Saved " + jobLinks[i] + " to db");
     
                     // wait before next parsing
