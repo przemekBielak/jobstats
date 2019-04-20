@@ -27,24 +27,24 @@ app.post('/lang-count/', (req, res) => {
                     {"requirementsMustHave":lang}, 
                     {"companyLocationCity":city}
                 ]
-            }, 
-            (err, count) => {
-            if(err) {
-                console.log(err);
-            } else {
-                res.json({count: count});
             }
+        )
+        .then((count) => {
+            res.json({count: count});
+        })
+        .catch((err) => {
+            console.log(err);
         });
     }
     else {
         db.getDB().collection(collection).countDocuments(
-            {"requirementsMustHave":lang},
-            (err, count) => {
-            if(err) {
-                console.log(err);
-            } else {
-                res.json({count: count});
-            }
+            {"requirementsMustHave":lang}
+        )
+        .then((count) => {
+            res.json({count: count});
+        })
+        .catch((err) => {
+            console.log(err);
         });
     }
 
