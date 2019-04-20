@@ -15,16 +15,17 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
 
-app.post('/api', (req, res) => {
-    var lang = req.param('lang');
+app.post('/lang-count/', (req, res) => {
+    var lang = req.body.lang
 
     console.log(lang);
 
-    db.getDB().collection(collection).find({"requirementsMustHave":lang}).toArray( (err, documents) => {
+    db.getDB().collection(collection).countDocuments({"requirementsMustHave":lang}, (err, count) => {
         if(err) {
             console.log(err);
         } else {
-            res.json(documents);
+            res.json({count: count});
+            console.log(count);
         }
     });
 });
