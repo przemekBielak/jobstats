@@ -16,9 +16,10 @@ app.get('/', (req, res) => {
 });
 
 app.post('/lang-count/', (req, res) => {
-    var lang = req.body.lang
+    var lang = req.body.lang;
+    var city = req.body.city;
 
-    db.getDB().collection(collection).countDocuments({"requirementsMustHave":lang}, (err, count) => {
+    db.getDB().collection(collection).countDocuments({$and:[{"requirementsMustHave":lang}, {"companyLocationCity":city}]}, (err, count) => {
         if(err) {
             console.log(err);
         } else {
