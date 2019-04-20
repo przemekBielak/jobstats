@@ -18,14 +18,11 @@ app.get('/', (req, res) => {
 app.post('/lang-count/', (req, res) => {
     var lang = req.body.lang
 
-    console.log(lang);
-
     db.getDB().collection(collection).countDocuments({"requirementsMustHave":lang}, (err, count) => {
         if(err) {
             console.log(err);
         } else {
             res.json({count: count});
-            console.log(count);
         }
     });
 });
