@@ -4,12 +4,7 @@ import './App.css';
 
 class App extends Component {
   state = {
-    text: 'text',
-    dataGraph : [
-      {quarter: 'Java', earnings: 10},
-      {quarter: 'JavaScript', earnings: 10},
-      {quarter: 'C#', earnings: 10},
-    ]
+    data: []
   };
 
   getLangCount = (lang) => {
@@ -24,7 +19,9 @@ class App extends Component {
     .then(response => response.json())
     .then(data => {
       console.log(data);
-      this.setState({text: data.count});
+      this.setState(prevState => ({
+        data: [...prevState.data, {language: lang, count: data.count}]
+      }));
     })
     .catch(err => {
       console.log(err);
@@ -40,24 +37,19 @@ class App extends Component {
           click here
         </button>
 
-        <h1>{this.state.text}</h1>
-
         <div className="graph">
         <VictoryChart
           domainPadding={20}
         >
           <VictoryAxis
-            // tickValues={[1, 2, 3, 4]}
-            // tickFormat={["Quarter 1", "Quarter 2", "Quarter 3", "Quarter 4"]}
           />
           <VictoryAxis
             dependentAxis
-            // tickFormat={(x) => (`$${x / 1000}k`)}
           />
           <VictoryBar
-            data={this.state.dataGraph}
-            x="quarter"
-            y="earnings"
+            data={this.state.data}
+            x="language"
+            y="count"
           />
         </VictoryChart>
         </div>
