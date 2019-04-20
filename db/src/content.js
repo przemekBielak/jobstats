@@ -75,7 +75,8 @@ export default async (url, category) => {
     jobInfo.companySize = info[1];
     const companyLocation = (info[2]).split(', ');
     jobInfo.companyLocationCity = companyLocation[0];
-    jobInfo.companyLocationCountry = (companyLocation[1]).trim();
+    let LocationCountrySplit = (companyLocation[1]).split(' ');
+    jobInfo.companyLocationCountry = LocationCountrySplit[0].trim();
     jobInfo.whenToStart = info[3];
     jobInfo.typeOfContract = (info[4]).trim();
     jobInfo.seniorityLevel = (info[5]).split(', ');
@@ -87,8 +88,14 @@ export default async (url, category) => {
     $('.posting-main-info h4').each(function(i, item) {
         let salary = $(this).text().split(' ');
         
+        // Unpaid category
+        if(salary == 'Unpaid') {
+            salaryMin[i] = '0';
+            salaryMax[i] = '0';
+            salaryCurrency[i] = '';
+        }
         // check if minus sign is in text. It signalizes salary range, not a fixed value.
-        if(salary.indexOf('-') >= 0) {
+        else if(salary.indexOf('-') >= 0) {
             salaryMin[i] = salary[0];
             salaryMax[i] = salary[2];
             salaryCurrency[i] = salary[3];
@@ -112,6 +119,15 @@ export default async (url, category) => {
         else if(salaryInfoText.toUpperCase().includes('UOP')) {
             contractType[i] = 'UoP';
         }
+        else if(salaryInfoText.toUpperCase().includes('UZ')) {
+            contractType[i] = 'UZ';
+        }
+        else if(salaryInfoText.toUpperCase().includes('UOD')) {
+            contractType[i] = 'UoD';
+        }
+        else {
+            contractType[i] = '';
+        }
 
         // check payment rate
         if(salaryInfoText.toUpperCase().includes('MONTH')) {
@@ -125,6 +141,9 @@ export default async (url, category) => {
         }  
         else if(salaryInfoText.toUpperCase().includes('YEAR')) {
             salaryRate[i] = 'year';
+        }       
+        else {
+            salaryRate[i] = '';
         }
     })
 
@@ -205,7 +224,7 @@ export default async (url, category) => {
     // Get specs keys
     var SpecsKeys = [];
     $("[id='specs-block'] .col-sm-6.p-label-row").each(function(i, item) {
-        SpecsKeys[i] = ($(this).text());
+        SpecsKeys[i] = $(this).text().replace(/\./g, '');
     });
 
     // Get specs vals

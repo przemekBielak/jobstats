@@ -7,11 +7,18 @@ class App extends Component {
   };
 
   get = () => {
-    fetch('http://localhost:8080/api')
+    fetch('http://localhost:8080/api', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({lang: 'React'})
+    })
     .then(response => response.json())
     .then(data => {
       console.log(data);
-      this.setState({text: data[0].companyName});
+      this.setState({text: data.length});
     })
     .catch(err => {
       console.log(err);

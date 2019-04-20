@@ -15,12 +15,15 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
 
-app.get('/api', (req, res) => {
-    db.getDB().collection(collection).find({"requirementsMustHave":"Java"}).toArray( (err, documents) => {
+app.post('/api', (req, res) => {
+    var lang = req.param('lang');
+
+    console.log(lang);
+
+    db.getDB().collection(collection).find({"requirementsMustHave":lang}).toArray( (err, documents) => {
         if(err) {
             console.log(err);
         } else {
-            console.log(documents);
             res.json(documents);
         }
     });
