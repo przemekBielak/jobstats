@@ -10,6 +10,7 @@ const mongoOptions = { useNewUrlParser: true };
 const dbname =  "jobs";
 const collection = "jobs";
 
+// Global db instance
 var db = null;
 
 const app = express();
@@ -25,27 +26,22 @@ app.post('/lang-count/', (req, res) => {
     var lang = req.body.lang;
     var city = req.body.city;
 
-    if(city != "Any") {
-        db.countDocuments(
-            {
-                $and:
-                [
-                    {"requirementsMustHave":lang}, 
-                    {"companyLocationCity":city}
-                ]
-            }
-        )
-        .then((count) => res.json({count: count}))
-        .catch((err) => console.log(err));
-    }
-    else {
-        db.countDocuments(
-            {"requirementsMustHave":lang}
-        )
-        .then((count) => res.json({count: count}))
-        .catch((err) => console.log(err));
+    // Not active query for city when Any city selected
+    if(city == "Any") {
+        city = {$exists: true};
     }
 
+    db.countDocuments(
+        {
+            $and:
+            [
+                {"requirementsMustHave":lang}, 
+                {"companyLocationCity":city}
+            ]
+        }
+    )
+    .then(count => res.json({count: count}))
+    .catch(err => console.log(err));
 });
 
 
