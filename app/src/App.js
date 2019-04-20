@@ -9,7 +9,7 @@ class App extends Component {
     this.state = {
       data: [],
       langInput: '',
-      cityInput: ''
+      cityInput: 'Warsaw'
     };
 
     this.handleCityInput = this.handleCityInput.bind(this);
@@ -49,7 +49,11 @@ class App extends Component {
     return (
       <div className="App">
 
-        <select value={this.state.cityInput} onChange={this.handleCityInput}>
+        <select 
+          value={this.state.cityInput} 
+          defaultValue="Warsaw"
+          onChange={this.handleCityInput}
+        >
           <option value="Warsaw">Warsaw</option>
           <option value="Wrocław">Wrocław</option>
           <option value="Kraków">Kraków</option>
