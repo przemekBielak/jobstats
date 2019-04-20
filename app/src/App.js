@@ -54,6 +54,7 @@ class App extends Component {
           defaultValue="Warsaw"
           onChange={this.handleCityInput}
         >
+          <option value="Any">Any</option>
           <option value="Warsaw">Warsaw</option>
           <option value="Wrocław">Wrocław</option>
           <option value="Kraków">Kraków</option>

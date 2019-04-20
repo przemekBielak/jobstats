@@ -19,13 +19,35 @@ app.post('/lang-count/', (req, res) => {
     var lang = req.body.lang;
     var city = req.body.city;
 
-    db.getDB().collection(collection).countDocuments({$and:[{"requirementsMustHave":lang}, {"companyLocationCity":city}]}, (err, count) => {
-        if(err) {
-            console.log(err);
-        } else {
-            res.json({count: count});
-        }
-    });
+    if(city != "Any") {
+        db.getDB().collection(collection).countDocuments(
+            {
+                $and:
+                [
+                    {"requirementsMustHave":lang}, 
+                    {"companyLocationCity":city}
+                ]
+            }, 
+            (err, count) => {
+            if(err) {
+                console.log(err);
+            } else {
+                res.json({count: count});
+            }
+        });
+    }
+    else {
+        db.getDB().collection(collection).countDocuments(
+            {"requirementsMustHave":lang},
+            (err, count) => {
+            if(err) {
+                console.log(err);
+            } else {
+                res.json({count: count});
+            }
+        });
+    }
+
 });
 
 // Program start here
