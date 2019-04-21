@@ -84,18 +84,23 @@ db.connect((err) => {
                     db.getDB().collection(collection).insertOne(newDoc);
                     console.log("Saved " + jobLinks[i] + " to db");
 
+                    // add new must have requirements to requirementsMustHaveAll list in db
                     var mustDoc = await db.getDB().collection(collection).findOne({"_id":"requirementsMustHaveAll"});
-                    console.log(mustDoc);
-                    for(var mustHave = 0; mustHave < newDoc.requirementsMustHave.length; mustHave++) {
-                        if(!mustDoc.requirementsMustHaveAll.includes(newDoc.requirementsMustHave[mustHave])) {
-                            mustDoc.requirementsMustHaveAll.push(newDoc.requirementsMustHave[mustHave]);
+                    newDoc.requirementsMustHave.forEach(x => {
+                        if(!mustDoc.requirementsMustHaveAll.includes(x)) {
+                            mustDoc.requirementsMustHaveAll.push(x);
                         }
-                    }
-
+                    });
                     await db.getDB().collection(collection).updateOne({"_id":"requirementsMustHaveAll"}, {$set: {requirementsMustHaveAll: mustDoc.requirementsMustHaveAll}});
 
+                    // add new cities to citiesAll list in db
+                    var citiesDoc = await db.getDB().collection(collection).findOne({"_id":"citiesAll"});
+                    if(!citiesDoc.citiesAll.includes(newDoc.companyLocationCity)) {
+                        citiesDoc.citiesAll.push(newDoc.companyLocationCity);
+                    }
+                    await db.getDB().collection(collection).updateOne({"_id":"citiesAll"}, {$set: {citiesAll: citiesDoc.citiesAll}});
 
-                    console.log(mustDoc)
+    
     
                     // wait before next parsing
                     console.log(`Waiting for ${timeCounter/1000} seconds`)
