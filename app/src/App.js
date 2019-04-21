@@ -79,7 +79,7 @@ class App extends Component {
       <div className="App">
 
         <LangSelect 
-          cities={this.state.cities}
+          cities={this.state.mustHaveList}
           cityInput={this.state.cityInput}
           handleCityInput={this.handleCityInput} 
         />
