@@ -9,21 +9,25 @@ class App extends Component {
     this.state = {
       data: [],
       langInput: '',
-      cityInput: 'Warsaw'
+      cityInput: 'Warsaw',
+      mustHaveList: [],
     };
 
     this.handleCityInput = this.handleCityInput.bind(this);
     this.handleLangInput = this.handleLangInput.bind(this);
   }
 
+
   handleLangInput = (event) => {
     this.setState({langInput: event.target.value});
   }
+
 
   handleCityInput = (event) => {
     this.setState({cityInput: event.target.value});
   }
 
+  
   getLangCount = (lang, city) => {
     fetch('http://localhost:8080/lang-count', {
       method: 'POST',
@@ -45,6 +49,24 @@ class App extends Component {
     });
   }
 
+
+  getMustHaveList = () => {
+    fetch('http://localhost:8080/must-have-list')
+    .then(response => response.json())
+    .then(data => {
+      this.setState(() => ({
+        mustHaveList: data.requirementsMustHaveAll
+      }));
+    })
+    .catch(err => console.log(err));
+  }
+
+
+  componentDidMount() {
+    this.getMustHaveList();
+  }
+
+  
   render() {
     return (
       <div className="App">

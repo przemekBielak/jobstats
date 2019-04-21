@@ -1,3 +1,5 @@
+// TODO: close db
+
 const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
@@ -31,16 +33,25 @@ app.post('/lang-count/', (req, res) => {
         city = {$exists: true};
     }
 
-    db.countDocuments(
-        {
-            $and:
-            [
-                {"requirementsMustHave":lang}, 
-                {"companyLocationCity":city}
-            ]
-        }
-    )
+    db.countDocuments({
+        $and:
+        [
+            {"requirementsMustHave":lang}, 
+            {"companyLocationCity":city}
+        ]
+    })
     .then(count => res.json({count: count}))
+    .catch(err => console.log(err));
+});
+
+app.get('/must-have-list/', (req, res) => {
+    db.findOne(
+        {"_id":"requirementsMustHaveAll"}
+    )
+    .then(doc => {
+        console.log(doc);
+        res.json(doc);
+    })
     .catch(err => console.log(err));
 });
 
@@ -52,7 +63,7 @@ MongoClient.connect(mongoUrl, mongoOptions)
     db = client.db(dbname).collection(collection);
 
     // start serving application
-    app.listen(process.env.PORT || 8080, () => {
+    app.listen(process.env.PORT || APP_PORT, () => {
         console.log('Connected to database, listening on port ' + APP_PORT);
     })
 })
