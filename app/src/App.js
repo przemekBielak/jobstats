@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import { VictoryBar, VictoryChart, VictoryAxis, VictoryTheme } from 'victory';
 import './App.css';
-import LangSelect from './LangSelect';
+import SelectComponent from './SelectComponent';
 
+const defaultCity = "Kraków";
+const defaultMustHave = "Java";
 
 class App extends Component {
   constructor(props) {
@@ -10,8 +12,8 @@ class App extends Component {
 
     this.state = {
       data: [],
-      langInput: '',
-      cityInput: 'Warsaw',
+      mustHaveInput: defaultMustHave,
+      cityInput: defaultCity,
       mustHaveList: [],
       cities: [
         "Any",
@@ -21,12 +23,12 @@ class App extends Component {
     };
 
     this.handleCityInput = this.handleCityInput.bind(this);
-    this.handleLangInput = this.handleLangInput.bind(this);
+    this.handleMustHaveInput = this.handleMustHaveInput.bind(this);
   }
 
 
-  handleLangInput = (event) => {
-    this.setState({langInput: event.target.value});
+  handleMustHaveInput = (event) => {
+    this.setState({mustHaveInput: event.target.value});
   }
 
 
@@ -78,21 +80,25 @@ class App extends Component {
     return (
       <div className="App">
 
-        <LangSelect 
-          cities={this.state.cities}
-          cityInput={this.state.cityInput}
-          handleCityInput={this.handleCityInput} 
+        <SelectComponent 
+          values={this.state.cities}
+          defaultValue={defaultCity}
+          input={this.state.cityInput}
+          handleInput={this.handleCityInput} 
         />
 
-        <LangSelect 
-          cities={this.state.mustHaveList}
-          cityInput={this.state.langInput}
-          handleCityInput={this.handleLangInput} 
+        <SelectComponent 
+          values={this.state.mustHaveList}
+          defaultValue={defaultMustHave}
+          input={this.state.mustHaveInput}
+          handleInput={this.handleMustHaveInput} 
         />
 
-        <button onClick={() => this.getLangCount(this.state.langInput, this.state.cityInput)}>
+        <button onClick={() => this.getLangCount(this.state.mustHaveInput, this.state.cityInput)}>
           click here
         </button>
+
+
 
         <VictoryChart
           theme={VictoryTheme.material}
