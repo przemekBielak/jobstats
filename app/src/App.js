@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { VictoryBar, VictoryChart, VictoryAxis, VictoryTheme } from 'victory';
 import './App.css';
+import LangSelect from './LangSelect';
+
 
 class App extends Component {
   constructor(props) {
@@ -11,6 +13,11 @@ class App extends Component {
       langInput: '',
       cityInput: 'Warsaw',
       mustHaveList: [],
+      cities: [
+        "Any",
+        "Warsaw",
+        "Kraków"
+      ]
     };
 
     this.handleCityInput = this.handleCityInput.bind(this);
@@ -66,22 +73,16 @@ class App extends Component {
     this.getMustHaveList();
   }
 
-  
+
   render() {
     return (
       <div className="App">
 
-        <select 
-          value={this.state.cityInput} 
-          defaultValue="Warsaw"
-          onChange={this.handleCityInput}
-        >
-          <option value="Any">Any</option>
-          <option value="Warsaw">Warsaw</option>
-          <option value="Wrocław">Wrocław</option>
-          <option value="Kraków">Kraków</option>
-          <option value="Gdańsk">Gdańsk</option>
-        </select>
+        <LangSelect 
+          cities={this.state.cities}
+          cityInput={this.state.cityInput}
+          handleCityInput={this.handleCityInput} 
+        />
 
         <input type="text" value={this.state.langInput} onChange={this.handleLangInput}/>
 

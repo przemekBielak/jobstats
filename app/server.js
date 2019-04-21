@@ -49,7 +49,6 @@ app.get('/must-have-list/', (req, res) => {
         {"_id":"requirementsMustHaveAll"}
     )
     .then(doc => {
-        console.log(doc);
         res.json(doc);
     })
     .catch(err => console.log(err));
