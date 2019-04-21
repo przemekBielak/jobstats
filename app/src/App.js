@@ -57,7 +57,7 @@ class App extends Component {
     .then(response => response.json())
     .then(data => {
       this.setState(() => ({
-        mustHaveList: data.requirementsMustHaveAll,
+        mustHaveList: data.requirementsMustHaveAll.sort(),
         // update default select value
         mustHaveInput: data.requirementsMustHaveAll[0]
       }));
@@ -71,7 +71,7 @@ class App extends Component {
     .then(response => response.json())
     .then(data => {
       this.setState(() => ({
-        citiesList: data.citiesAll,
+        citiesList: data.citiesAll.sort(),
         // update default select value
         cityInput: data.citiesAll[0]
       }));
