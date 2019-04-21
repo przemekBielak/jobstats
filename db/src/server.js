@@ -80,8 +80,22 @@ db.connect((err) => {
                 var exists = await db.getDB().collection(collection).countDocuments({"_id":jobLinks[i]});
                 if(!exists) {
                     // save parsed data to db
-                    db.getDB().collection(collection).insertOne(await jobParser(jobLinks[i], category[iter]));
+                    let newDoc = await jobParser(jobLinks[i], category[iter]);
+                    db.getDB().collection(collection).insertOne(newDoc);
                     console.log("Saved " + jobLinks[i] + " to db");
+
+                    var mustDoc = await db.getDB().collection(collection).findOne({"_id":"requirementsMustHaveAll"});
+                    console.log(mustDoc);
+                    for(var mustHave = 0; mustHave < newDoc.requirementsMustHave.length; mustHave++) {
+                        if(!mustDoc.requirementsMustHaveAll.includes(newDoc.requirementsMustHave[mustHave])) {
+                            mustDoc.requirementsMustHaveAll.push(newDoc.requirementsMustHave[mustHave]);
+                        }
+                    }
+
+                    await db.getDB().collection(collection).updateOne({"_id":"requirementsMustHaveAll"}, {$set: {requirementsMustHaveAll: mustDoc.requirementsMustHaveAll}});
+
+
+                    console.log(mustDoc)
     
                     // wait before next parsing
                     console.log(`Waiting for ${timeCounter/1000} seconds`)
