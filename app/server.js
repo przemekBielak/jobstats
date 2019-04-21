@@ -54,6 +54,15 @@ app.get('/must-have-list/', (req, res) => {
     .catch(err => console.log(err));
 });
 
+app.get('/cities-list/', (req, res) => {
+    db.findOne(
+        {"_id":"citiesAll"}
+    )
+    .then(doc => {
+        res.json(doc);
+    })
+    .catch(err => console.log(err));
+});
 
 // Program start here
 MongoClient.connect(mongoUrl, mongoOptions)

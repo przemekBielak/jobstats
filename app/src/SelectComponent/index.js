@@ -6,7 +6,6 @@ const SelectComponent = props => {
     return (
         <select 
           input={props.input} 
-          defaultValue={props.defaultValue}
           onChange={props.handleInput}
         >
           {items}

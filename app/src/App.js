@@ -1,10 +1,7 @@
 import React, { Component } from 'react';
 import { VictoryBar, VictoryChart, VictoryAxis, VictoryTheme } from 'victory';
-import './App.css';
 import SelectComponent from './SelectComponent';
-
-const defaultCity = "Kraków";
-const defaultMustHave = "Java";
+import './App.css';
 
 class App extends Component {
   constructor(props) {
@@ -12,14 +9,10 @@ class App extends Component {
 
     this.state = {
       data: [],
-      mustHaveInput: defaultMustHave,
-      cityInput: defaultCity,
+      mustHaveInput: '',
+      cityInput: '',
       mustHaveList: [],
-      cities: [
-        "Any",
-        "Warsaw",
-        "Kraków"
-      ]
+      citiesList: []
     };
 
     this.handleCityInput = this.handleCityInput.bind(this);
@@ -64,7 +57,23 @@ class App extends Component {
     .then(response => response.json())
     .then(data => {
       this.setState(() => ({
-        mustHaveList: data.requirementsMustHaveAll
+        mustHaveList: data.requirementsMustHaveAll,
+        // update default select value
+        mustHaveInput: data.requirementsMustHaveAll[0]
+      }));
+    })
+    .catch(err => console.log(err));
+  }
+
+
+  getCitiesList = () => {
+    fetch('http://localhost:8080/cities-list')
+    .then(response => response.json())
+    .then(data => {
+      this.setState(() => ({
+        citiesList: data.citiesAll,
+        // update default select value
+        cityInput: data.citiesAll[0]
       }));
     })
     .catch(err => console.log(err));
@@ -73,6 +82,7 @@ class App extends Component {
 
   componentDidMount() {
     this.getMustHaveList();
+    this.getCitiesList();
   }
 
 
@@ -81,21 +91,19 @@ class App extends Component {
       <div className="App">
 
         <SelectComponent 
-          values={this.state.cities}
-          defaultValue={defaultCity}
+          values={this.state.citiesList}
           input={this.state.cityInput}
           handleInput={this.handleCityInput} 
         />
 
         <SelectComponent 
           values={this.state.mustHaveList}
-          defaultValue={defaultMustHave}
           input={this.state.mustHaveInput}
           handleInput={this.handleMustHaveInput} 
         />
 
         <button onClick={() => this.getLangCount(this.state.mustHaveInput, this.state.cityInput)}>
-          click here
+          Update
         </button>
 
 
