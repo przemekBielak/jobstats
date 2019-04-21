@@ -79,12 +79,16 @@ class App extends Component {
       <div className="App">
 
         <LangSelect 
-          cities={this.state.mustHaveList}
+          cities={this.state.cities}
           cityInput={this.state.cityInput}
           handleCityInput={this.handleCityInput} 
         />
 
-        <input type="text" value={this.state.langInput} onChange={this.handleLangInput}/>
+        <LangSelect 
+          cities={this.state.mustHaveList}
+          cityInput={this.state.langInput}
+          handleCityInput={this.handleLangInput} 
+        />
 
         <button onClick={() => this.getLangCount(this.state.langInput, this.state.cityInput)}>
           click here
