@@ -5,6 +5,7 @@ import './App.css';
 
 
 const contractType = [
+  'Any',
   'B2B',
   'UoP',
   'UZ',
@@ -12,6 +13,7 @@ const contractType = [
 ];
 
 const seniorityLevel = [
+  'Any',
   'Trainee',
   'Junior',
   'Mid',
@@ -32,9 +34,6 @@ class App extends Component {
       mustHaveList: [],
       citiesList: [],
     };
-
-    this.handleCityInput = this.handleCityInput.bind(this);
-    this.handleMustHaveInput = this.handleMustHaveInput.bind(this);
   }
 
 
@@ -54,7 +53,7 @@ class App extends Component {
     this.setState({seniorityLevelInput: event.target.value});
   }
   
-  getLangCount = (lang, city) => {
+  getLangCount = (lang, city, seniority, contract) => {
     let valLang = `${lang} ${city}`;
     fetch('http://localhost:8080/lang-count', {
       method: 'POST',
@@ -62,7 +61,12 @@ class App extends Component {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({lang: lang, city: city})
+      body: JSON.stringify({
+        lang: lang, 
+        city: city,
+        seniority: seniority,
+        contract: contract
+      })
     })
     .then(response => response.json())
     .then(data => {
@@ -112,6 +116,12 @@ class App extends Component {
   componentDidMount() {
     this.getMustHaveList();
     this.getCitiesList();
+
+    // default select values
+    this.setState({
+      contractTypeInput: contractType[0],
+      seniorityLevelInput: seniorityLevel[0],
+    })
   }
 
 
@@ -145,7 +155,12 @@ class App extends Component {
           handleInput={this.handleContractTypeInput} 
         />
 
-        <button onClick={() => this.getLangCount(this.state.mustHaveInput, this.state.cityInput)}>
+        <button onClick={() => this.getLangCount(
+          this.state.mustHaveInput, 
+          this.state.cityInput,
+          this.state.seniorityLevelInput,
+          this.state.contractTypeInput
+          )}>
           Update
         </button>
 

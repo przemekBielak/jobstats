@@ -27,6 +27,10 @@ app.get('/', (req, res) => {
 app.post('/lang-count/', (req, res) => {
     var lang = req.body.lang;
     var city = req.body.city;
+    var seniority = req.body.seniority;
+    var contract = req.body.contract;
+
+    console.log(seniority, contract);
 
     var salaryMinAvg = 0;
     var salaryMaxAvg = 0;
