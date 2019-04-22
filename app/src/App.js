@@ -31,6 +31,7 @@ class App extends Component {
 
   
   getLangCount = (lang, city) => {
+    let valLang = `${lang} ${city}`;
     fetch('http://localhost:8080/lang-count', {
       method: 'POST',
       headers: {
@@ -41,9 +42,13 @@ class App extends Component {
     })
     .then(response => response.json())
     .then(data => {
-      let valLang = `${lang} ${city}`
       this.setState(prevState => ({
-        data: [...prevState.data, {language: valLang, count: data.count}]
+        data: [...prevState.data, {
+          language: valLang, 
+          count: data.count,
+          salaryMinAvg: data.salaryMinAvg,
+          salaryMaxAvg: data.salaryMaxAvg
+        }]
       }));
     })
     .catch(err => {

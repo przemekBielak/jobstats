@@ -28,10 +28,40 @@ app.post('/lang-count/', (req, res) => {
     var lang = req.body.lang;
     var city = req.body.city;
 
+    var salaryMinAvg = 0;
+    var salaryMaxAvg = 0;
+    var salaryMinSum = 0;
+    var salaryMaxSum = 0;
+    var salaryCounter = 0;
+
     // Not active query for city when Any city selected
     if(city == "Any") {
         city = {$exists: true};
     }
+
+    db.find({
+        $and:
+        [
+            {"requirementsMustHave":lang}, 
+            {"companyLocationCity":city}
+        ]
+    })
+    .toArray((err, docs) => {
+        docs.forEach(doc => {
+            doc.salary.forEach(salary => {
+                if(salary.salaryRate == 'month' && salary.contractType == 'UoP') {
+                    salaryCounter++;
+                    salaryMinSum += salary.salaryMin;
+                    salaryMaxSum += salary.salaryMax;
+                }
+            })
+        });
+        salaryMinAvg = salaryMinSum/salaryCounter;
+        salaryMaxAvg = salaryMaxSum/salaryCounter;
+        console.log(salaryMinAvg);
+        console.log(salaryMaxAvg);
+        console.log('------------------')
+    });
 
     db.countDocuments({
         $and:
@@ -40,8 +70,20 @@ app.post('/lang-count/', (req, res) => {
             {"companyLocationCity":city}
         ]
     })
-    .then(count => res.json({count: count}))
+    .then(count => res.json({
+        count: count,
+        salaryMinAvg: salaryMinAvg,
+        salaryMaxAvg: salaryMaxAvg
+    }))
     .catch(err => console.log(err));
+
+
+
+    // .then((data) => {
+    //     console.log(data.toArray);
+    //     res.json({count: langCount});
+    // })
+    // .catch(err => console.log(err));
 });
 
 app.get('/must-have-list/', (req, res) => {
