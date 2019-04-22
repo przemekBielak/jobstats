@@ -3,6 +3,22 @@ import { VictoryBar, VictoryChart, VictoryAxis, VictoryTheme } from 'victory';
 import SelectComponent from './SelectComponent';
 import './App.css';
 
+
+const contractType = [
+  'B2B',
+  'UoP',
+  'UZ',
+  'UoD'
+];
+
+const seniorityLevel = [
+  'Trainee',
+  'Junior',
+  'Mid',
+  'Senior',
+  'Expert'
+];
+
 class App extends Component {
   constructor(props) {
     super(props);
@@ -11,8 +27,10 @@ class App extends Component {
       data: [],
       mustHaveInput: '',
       cityInput: '',
+      contractTypeInput: '',
+      seniorityLevelInput: '',
       mustHaveList: [],
-      citiesList: []
+      citiesList: [],
     };
 
     this.handleCityInput = this.handleCityInput.bind(this);
@@ -24,11 +42,17 @@ class App extends Component {
     this.setState({mustHaveInput: event.target.value});
   }
 
-
   handleCityInput = (event) => {
     this.setState({cityInput: event.target.value});
   }
 
+  handleContractTypeInput = (event) => {
+    this.setState({contractTypeInput: event.target.value});
+  }
+
+  handleSeniorityLevelInput = (event) => {
+    this.setState({seniorityLevelInput: event.target.value});
+  }
   
   getLangCount = (lang, city) => {
     let valLang = `${lang} ${city}`;
@@ -95,6 +119,14 @@ class App extends Component {
     return (
       <div className="App">
 
+
+
+        <SelectComponent 
+          values={seniorityLevel}
+          input={this.state.seniorityLevelInput}
+          handleInput={this.handleSeniorityLevelInput} 
+        />
+
         <SelectComponent 
           values={this.state.citiesList}
           input={this.state.cityInput}
@@ -105,6 +137,12 @@ class App extends Component {
           values={this.state.mustHaveList}
           input={this.state.mustHaveInput}
           handleInput={this.handleMustHaveInput} 
+        />
+
+        <SelectComponent 
+          values={contractType}
+          input={this.state.contractTypeInput}
+          handleInput={this.handleContractTypeInput} 
         />
 
         <button onClick={() => this.getLangCount(this.state.mustHaveInput, this.state.cityInput)}>
