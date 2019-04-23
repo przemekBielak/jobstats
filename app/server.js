@@ -83,11 +83,12 @@ app.post('/lang-count/', (req, res) => {
         for (key in mustHaveRequirements) {
             mustHaveRequirementsSorted.push([key, mustHaveRequirements[key]]);
         }
+
         mustHaveRequirementsSorted.sort((a, b) => {
-            return a[1] - b[1];
+            return b[1] - a[1];
         })
 
-        console.log(mustHaveRequirementsSorted.slice(-15, -1));
+        console.log(mustHaveRequirementsSorted.slice(0, 15));
     });
 
     db.countDocuments({
