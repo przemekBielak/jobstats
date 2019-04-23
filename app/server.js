@@ -30,13 +30,14 @@ app.post('/lang-count/', (req, res) => {
     var seniority = req.body.seniority;
     var contract = req.body.contract;
 
-    console.log(seniority, contract);
-
     var salaryMinAvg = 0;
     var salaryMaxAvg = 0;
     var salaryMinSum = 0;
     var salaryMaxSum = 0;
     var salaryCounter = 0;
+
+    var mustHaveRequirements = {};
+    var mustHaveRequirementsSorted = [];
 
     // Not active query for city when Any city selected
     if(city == "Any") {
@@ -59,12 +60,34 @@ app.post('/lang-count/', (req, res) => {
                     salaryMaxSum += salary.salaryMax;
                 }
             })
+
+            // get must have requirements
+            doc.requirementsMustHave.forEach(req => {
+                if(req == lang) {
+                    // do nothing
+                }
+                else if(req in mustHaveRequirements) {
+                    mustHaveRequirements[req] += 1;
+                }
+                else {
+                    mustHaveRequirements[req] = 1;
+                }
+            });
         });
+
+        // calculate avarages
         salaryMinAvg = salaryMinSum/salaryCounter;
         salaryMaxAvg = salaryMaxSum/salaryCounter;
-        console.log(salaryMinAvg);
-        console.log(salaryMaxAvg);
-        console.log('------------------')
+
+        // sort and get max values
+        for (key in mustHaveRequirements) {
+            mustHaveRequirementsSorted.push([key, mustHaveRequirements[key]]);
+        }
+        mustHaveRequirementsSorted.sort((a, b) => {
+            return a[1] - b[1];
+        })
+
+        console.log(mustHaveRequirementsSorted.slice(-15, -1));
     });
 
     db.countDocuments({
@@ -80,14 +103,6 @@ app.post('/lang-count/', (req, res) => {
         salaryMaxAvg: salaryMaxAvg
     }))
     .catch(err => console.log(err));
-
-
-
-    // .then((data) => {
-    //     console.log(data.toArray);
-    //     res.json({count: langCount});
-    // })
-    // .catch(err => console.log(err));
 });
 
 app.get('/must-have-list/', (req, res) => {

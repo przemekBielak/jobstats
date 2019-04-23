@@ -180,7 +180,6 @@ class App extends Component {
               duration: 200,
               onLoad: { duration: 0 }
             }}
-            width={1200}
             data={this.state.data}
             x="language"
             y="count"
