@@ -27,10 +27,12 @@ class App extends Component {
 
     this.state = {
       data: [],
+
       mustHaveInput: '',
       cityInput: '',
       contractTypeInput: '',
       seniorityLevelInput: '',
+
       mustHaveList: [],
       citiesList: [],
     };
@@ -54,7 +56,6 @@ class App extends Component {
   }
   
   getLangCount = (lang, city, seniority, contract) => {
-    let valLang = `${lang} ${city}`;
     fetch('http://localhost:8080/lang-count', {
       method: 'POST',
       headers: {
@@ -72,12 +73,20 @@ class App extends Component {
     .then(data => {
       this.setState(prevState => ({
         data: [...prevState.data, {
-          language: valLang, 
+          // known parameters
+          id: prevState.data.length,
+          language: lang, 
+          city: city,
+          seniority: seniority,
+          contract: contract,
+          // received parameters
           count: data.count,
           salaryMinAvg: data.salaryMinAvg,
-          salaryMaxAvg: data.salaryMaxAvg
+          salaryMaxAvg: data.salaryMaxAvg,
+          mustHaveRequirements: data.mustHaveRequirements
         }]
       }));
+      console.log(data);
     })
     .catch(err => {
       console.log(err);
@@ -181,7 +190,7 @@ class App extends Component {
               onLoad: { duration: 0 }
             }}
             data={this.state.data}
-            x="language"
+            x="id"
             y="count"
           />
         </VictoryChart>

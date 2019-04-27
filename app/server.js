@@ -39,16 +39,20 @@ app.post('/lang-count/', (req, res) => {
     var mustHaveRequirements = {};
     var mustHaveRequirementsSorted = [];
 
-    // Not active query for city when Any city selected
+    // Not active query when Any city selected
     if(city == "Any") {
         city = {$exists: true};
+    }
+    if(seniority == "Any") {
+        seniority = {$exists: true};
     }
 
     db.find({
         $and:
         [
             {"requirementsMustHave":lang}, 
-            {"companyLocationCity":city}
+            {"companyLocationCity":city},
+            {"seniorityLevel": seniority},
         ]
     })
     .toArray((err, docs) => {
@@ -88,22 +92,24 @@ app.post('/lang-count/', (req, res) => {
             return b[1] - a[1];
         })
 
-        console.log(mustHaveRequirementsSorted.slice(0, 15));
+        db.countDocuments({
+            $and:
+            [
+                {"requirementsMustHave":lang}, 
+                {"companyLocationCity":city},
+                {"seniorityLevel": seniority}
+            ]
+        })
+        .then(count => res.json({
+            count: count,
+            salaryMinAvg: salaryMinAvg,
+            salaryMaxAvg: salaryMaxAvg,
+            mustHaveRequirements: mustHaveRequirementsSorted.slice(0, 15)
+        }))
+        .catch(err => console.log(err));
     });
 
-    db.countDocuments({
-        $and:
-        [
-            {"requirementsMustHave":lang}, 
-            {"companyLocationCity":city}
-        ]
-    })
-    .then(count => res.json({
-        count: count,
-        salaryMinAvg: salaryMinAvg,
-        salaryMaxAvg: salaryMaxAvg
-    }))
-    .catch(err => console.log(err));
+    
 });
 
 app.get('/must-have-list/', (req, res) => {
