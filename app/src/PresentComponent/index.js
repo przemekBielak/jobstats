@@ -1,17 +1,28 @@
 import React, { Component } from 'react';
 
 const PresentComponent = props => {
-    if(typeof props.data != "undefined") {
+    const data = props.data;
+    if(typeof data != "undefined" && data.length > 0) {
         return (
             <div>
-                <h1>id: {props.data.id} technology: {props.data.language} city: {props.data.city} seniority: {props.data.seniority} contract: {props.data.contract}</h1>
-                <h2>jobs number: {props.data.count} minimum avarage salary: {props.data.salaryMinAvg} maximum avarage salary: {props.data.salaryMaxAvg}</h2>
-            </div>
+                {data.map((item) => (
+                    <div>
+                        <h2>id: {item.id} language: {item.language} city: {item.city} seniority: {item.seniority}</h2>
+                        <h2>jobs number: {item.count} minimum avarage salary: {item.salaryMinAvg} maximum avarage salary: {item.salaryMaxAvg}</h2>
+
+                        <ul>
+                            {item.mustHaveRequirements.map((req) => (
+                                <li>{req[0]}: {req[1]}</li>
+                            ))}
+                        </ul>
+                    </div>
+                ))}
+           </div>
         );
     }
     else {
         return (
-            <h1>empty data[0]</h1>
+            <h1>empty</h1>
         );
     }
 }
