@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { VictoryBar, VictoryChart, VictoryAxis, VictoryTheme } from 'victory';
 import SelectComponent from './SelectComponent';
+import PresentComponent from './PresentComponent';
 import './App.css';
 
 
@@ -194,6 +195,10 @@ class App extends Component {
             y="count"
           />
         </VictoryChart>
+
+        <PresentComponent
+          data={this.state.data}
+        />
       </div>
     );
   }
