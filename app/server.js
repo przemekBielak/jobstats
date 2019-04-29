@@ -102,8 +102,8 @@ app.post('/lang-count/', (req, res) => {
         })
         .then(count => res.json({
             count: count,
-            salaryMinAvg: salaryMinAvg,
-            salaryMaxAvg: salaryMaxAvg,
+            salaryMinAvg: Math.round(salaryMinAvg),
+            salaryMaxAvg: Math.round(salaryMaxAvg),
             mustHaveRequirements: mustHaveRequirementsSorted.slice(0, 15)
         }))
         .catch(err => console.log(err));

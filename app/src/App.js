@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { VictoryBar, VictoryChart, VictoryAxis, VictoryTheme, VictoryLabel } from 'victory';
+import { VictoryBar, VictoryChart, VictoryAxis, VictoryTheme, VictoryGroup, VictoryLegend } from 'victory';
 import SelectComponent from './SelectComponent';
 import PresentComponent from './PresentComponent';
 import './App.css';
@@ -180,18 +180,18 @@ class App extends Component {
       </div>
 
 
+      <div className="chart">
         <VictoryChart
           theme={VictoryTheme.material}
-          domainPadding={20}
+          domainPadding={{ x: 50 }}
         >
           <VictoryAxis
+            tickFormat={(x) => (`${Math.round(x)}`)}
           />
           <VictoryAxis
             dependentAxis
           />
           <VictoryBar
-            style={{ data: { fill: "#c43a31" } }}
-            alignment="middle"
             animate={{
               duration: 200,
               onLoad: { duration: 0 }
@@ -201,6 +201,48 @@ class App extends Component {
             y="count"
           />
         </VictoryChart>
+      </div>
+
+      <div className="chart">
+        <VictoryChart
+          theme={VictoryTheme.material}
+          domainPadding={{ x: 50 }}
+        >
+          <VictoryAxis
+            tickFormat={(x) => (`${Math.round(x)}`)}
+          />
+          <VictoryAxis
+            dependentAxis
+          />
+          <VictoryLegend 
+            x={100} 
+            y={15}
+            orientation="horizontal"
+            gutter={10}
+            colorScale={"qualitative"}
+            style={{ border: { stroke: "black" }, title: {fontSize: 16 } }}
+            data={[
+              { name: "Salary Min"},
+              { name: "Salary Max"}
+            ]}
+          />
+          <VictoryGroup 
+            offset={20}
+            colorScale={"qualitative"}
+          >
+            <VictoryBar
+              data={this.state.data}
+              x="id"
+              y="salaryMinAvg"
+            />
+            <VictoryBar
+              data={this.state.data}
+              x="id"
+              y="salaryMaxAvg"
+            />
+          </VictoryGroup>
+        </VictoryChart>
+      </div>
 
         <PresentComponent
           data={this.state.data}
