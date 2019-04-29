@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { VictoryBar, VictoryChart, VictoryAxis, VictoryTheme, VictoryGroup, VictoryLegend } from 'victory';
 import SelectComponent from './SelectComponent';
 import PresentComponent from './PresentComponent';
+import LegendComponent from './LegendComponent';
 import './App.css';
 
 
@@ -36,6 +37,9 @@ class App extends Component {
 
       mustHaveList: [],
       citiesList: [],
+
+      // axis default values
+      axisTicks: [0, 1, 2]
     };
   }
 
@@ -85,7 +89,9 @@ class App extends Component {
           salaryMinAvg: data.salaryMinAvg,
           salaryMaxAvg: data.salaryMaxAvg,
           mustHaveRequirements: data.mustHaveRequirements
-        }]
+        }],
+        // update chart axis values
+        axisTicks: [...prevState.axisTicks, prevState.data.length]
       }));
       console.log(data);
     })
@@ -126,6 +132,10 @@ class App extends Component {
   componentDidMount() {
     this.getMustHaveList();
     this.getCitiesList();
+
+    this.getLangCount("Java", "Any", "Any", "Any");
+    this.getLangCount("JavaScript", "Any", "Any", "Any");
+    this.getLangCount(".NET", "Any", "Any", "Any");
 
     // default select values
     this.setState({
@@ -176,17 +186,19 @@ class App extends Component {
           )}>
           Update
         </button>
-
       </div>
+
+      <LegendComponent 
+        data={this.state.data}
+      />
 
 
       <div className="chart">
         <VictoryChart
           theme={VictoryTheme.material}
-          domainPadding={{ x: 50 }}
         >
           <VictoryAxis
-            tickFormat={(x) => (`${Math.round(x)}`)}
+            tickValues={this.state.axisTicks}
           />
           <VictoryAxis
             dependentAxis
@@ -196,6 +208,7 @@ class App extends Component {
               duration: 200,
               onLoad: { duration: 0 }
             }}
+            barWidth={10}
             data={this.state.data}
             x="id"
             y="count"
@@ -206,19 +219,20 @@ class App extends Component {
       <div className="chart">
         <VictoryChart
           theme={VictoryTheme.material}
-          domainPadding={{ x: 50 }}
         >
           <VictoryAxis
-            tickFormat={(x) => (`${Math.round(x)}`)}
+            tickValues={this.state.axisTicks}
+            label="id"
           />
           <VictoryAxis
             dependentAxis
+            label="salary"
           />
           <VictoryLegend 
             x={100} 
-            y={15}
+            y={25}
             orientation="horizontal"
-            gutter={10}
+            gutter={15}
             colorScale={"qualitative"}
             style={{ border: { stroke: "black" }, title: {fontSize: 16 } }}
             data={[
@@ -227,15 +241,17 @@ class App extends Component {
             ]}
           />
           <VictoryGroup 
-            offset={20}
+            offset={10}
             colorScale={"qualitative"}
           >
             <VictoryBar
+              barWidth={10}
               data={this.state.data}
               x="id"
               y="salaryMinAvg"
             />
             <VictoryBar
+              barWidth={10}
               data={this.state.data}
               x="id"
               y="salaryMaxAvg"
