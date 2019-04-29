@@ -197,12 +197,24 @@ class App extends Component {
         <div className="chart">
           <VictoryChart
             theme={VictoryTheme.material}
+            colorScale={"qualitative"}
           >
             <VictoryAxis
               tickValues={this.state.axisTicks}
             />
             <VictoryAxis
               dependentAxis
+            />
+            <VictoryLegend 
+              x={100} 
+              y={20}
+              orientation="horizontal"
+              gutter={15}
+              colorScale={"qualitative"}
+              style={{ border: { stroke: "black" }, title: {fontSize: 16 } }}
+              data={[
+                { name: "Number of jobs"},
+              ]}
             />
             <VictoryBar
               animate={{
@@ -223,15 +235,13 @@ class App extends Component {
           >
             <VictoryAxis
               tickValues={this.state.axisTicks}
-              label="id"
             />
             <VictoryAxis
               dependentAxis
-              label="salary"
             />
             <VictoryLegend 
               x={100} 
-              y={25}
+              y={20}
               orientation="horizontal"
               gutter={15}
               colorScale={"qualitative"}
@@ -244,6 +254,10 @@ class App extends Component {
             <VictoryGroup 
               offset={10}
               colorScale={"qualitative"}
+              animate={{
+                duration: 200,
+                onLoad: { duration: 0 }
+              }}
             >
               <VictoryBar
                 barWidth={10}
