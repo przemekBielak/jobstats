@@ -193,71 +193,73 @@ class App extends Component {
       />
 
 
-      <div className="chart">
-        <VictoryChart
-          theme={VictoryTheme.material}
-        >
-          <VictoryAxis
-            tickValues={this.state.axisTicks}
-          />
-          <VictoryAxis
-            dependentAxis
-          />
-          <VictoryBar
-            animate={{
-              duration: 200,
-              onLoad: { duration: 0 }
-            }}
-            barWidth={10}
-            data={this.state.data}
-            x="id"
-            y="count"
-          />
-        </VictoryChart>
-      </div>
-
-      <div className="chart">
-        <VictoryChart
-          theme={VictoryTheme.material}
-        >
-          <VictoryAxis
-            tickValues={this.state.axisTicks}
-            label="id"
-          />
-          <VictoryAxis
-            dependentAxis
-            label="salary"
-          />
-          <VictoryLegend 
-            x={100} 
-            y={25}
-            orientation="horizontal"
-            gutter={15}
-            colorScale={"qualitative"}
-            style={{ border: { stroke: "black" }, title: {fontSize: 16 } }}
-            data={[
-              { name: "Salary Min"},
-              { name: "Salary Max"}
-            ]}
-          />
-          <VictoryGroup 
-            offset={10}
-            colorScale={"qualitative"}
+      <div className="chart-flex">
+        <div className="chart">
+          <VictoryChart
+            theme={VictoryTheme.material}
           >
+            <VictoryAxis
+              tickValues={this.state.axisTicks}
+            />
+            <VictoryAxis
+              dependentAxis
+            />
             <VictoryBar
+              animate={{
+                duration: 200,
+                onLoad: { duration: 0 }
+              }}
               barWidth={10}
               data={this.state.data}
               x="id"
-              y="salaryMinAvg"
+              y="count"
             />
-            <VictoryBar
-              barWidth={10}
-              data={this.state.data}
-              x="id"
-              y="salaryMaxAvg"
+          </VictoryChart>
+        </div>
+
+        <div className="chart">
+          <VictoryChart
+            theme={VictoryTheme.material}
+          >
+            <VictoryAxis
+              tickValues={this.state.axisTicks}
+              label="id"
             />
-          </VictoryGroup>
-        </VictoryChart>
+            <VictoryAxis
+              dependentAxis
+              label="salary"
+            />
+            <VictoryLegend 
+              x={100} 
+              y={25}
+              orientation="horizontal"
+              gutter={15}
+              colorScale={"qualitative"}
+              style={{ border: { stroke: "black" }, title: {fontSize: 16 } }}
+              data={[
+                { name: "Salary Min"},
+                { name: "Salary Max"}
+              ]}
+            />
+            <VictoryGroup 
+              offset={10}
+              colorScale={"qualitative"}
+            >
+              <VictoryBar
+                barWidth={10}
+                data={this.state.data}
+                x="id"
+                y="salaryMinAvg"
+              />
+              <VictoryBar
+                barWidth={10}
+                data={this.state.data}
+                x="id"
+                y="salaryMaxAvg"
+              />
+            </VictoryGroup>
+          </VictoryChart>
+        </div>
       </div>
 
         <PresentComponent
