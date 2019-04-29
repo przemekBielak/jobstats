@@ -1,0 +1,12 @@
+.main-flex {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    border: 1px, solid, red;
+}
+
+.data-flex {
+    border: 1px, solid, green;
+    width: 200px;
+    height: 400x;
+}

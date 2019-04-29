@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { VictoryBar, VictoryChart, VictoryAxis, VictoryTheme } from 'victory';
+import { VictoryBar, VictoryChart, VictoryAxis, VictoryTheme, VictoryLabel } from 'victory';
 import SelectComponent from './SelectComponent';
 import PresentComponent from './PresentComponent';
 import './App.css';
@@ -139,27 +139,30 @@ class App extends Component {
     return (
       <div className="App">
 
-
-
+      <div className="header-options">
         <SelectComponent 
+          name={'Seniority'}
           values={seniorityLevel}
           input={this.state.seniorityLevelInput}
           handleInput={this.handleSeniorityLevelInput} 
         />
 
         <SelectComponent 
+          name={'City'}
           values={this.state.citiesList}
           input={this.state.cityInput}
           handleInput={this.handleCityInput} 
         />
 
         <SelectComponent 
+          name={'Technology'}
           values={this.state.mustHaveList}
           input={this.state.mustHaveInput}
           handleInput={this.handleMustHaveInput} 
         />
 
         <SelectComponent 
+          name={'Contract'}
           values={contractType}
           input={this.state.contractTypeInput}
           handleInput={this.handleContractTypeInput} 
@@ -174,6 +177,7 @@ class App extends Component {
           Update
         </button>
 
+      </div>
 
 
         <VictoryChart
@@ -186,6 +190,8 @@ class App extends Component {
             dependentAxis
           />
           <VictoryBar
+            style={{ data: { fill: "#c43a31" } }}
+            alignment="middle"
             animate={{
               duration: 200,
               onLoad: { duration: 0 }

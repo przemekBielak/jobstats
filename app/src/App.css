@@ -4,3 +4,9 @@
   width: 50%;
   padding: 10px;
 }
+
+.header-options {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
