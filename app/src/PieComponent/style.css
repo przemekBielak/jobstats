@@ -1,0 +1,27 @@
+.main-flex {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.data-flex {
+    width: 300px;
+    padding: 5px;
+    /* border: 1px, solid, black; */
+}
+
+.data-group {
+    margin: 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    border: 1px solid black;
+}
+
+.data-text {
+    text-align: left;
+}
+
+.data-value {
+    text-align: right;
+}

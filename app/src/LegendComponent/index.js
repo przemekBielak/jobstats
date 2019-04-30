@@ -5,7 +5,7 @@ const LegeComponent = props => {
     const data = props.data;
     if(typeof data != "undefined" && data.length > 0) {
         return (
-            <div>
+            <div className="legend-main">
                 <h2>Legend</h2>
                 {data.map((item) => (
                     <p>

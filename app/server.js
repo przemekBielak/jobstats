@@ -104,7 +104,7 @@ app.post('/lang-count/', (req, res) => {
             count: count,
             salaryMinAvg: Math.round(salaryMinAvg),
             salaryMaxAvg: Math.round(salaryMaxAvg),
-            mustHaveRequirements: mustHaveRequirementsSorted.slice(0, 15)
+            mustHaveRequirements: mustHaveRequirementsSorted.slice(0, 10)
         }))
         .catch(err => console.log(err));
     });

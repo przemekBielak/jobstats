@@ -3,6 +3,7 @@ import { VictoryBar, VictoryChart, VictoryAxis, VictoryTheme, VictoryGroup, Vict
 import SelectComponent from './SelectComponent';
 import PresentComponent from './PresentComponent';
 import LegendComponent from './LegendComponent';
+import PieComponent from './PieComponent';
 import './App.css';
 
 
@@ -188,9 +189,9 @@ class App extends Component {
         </button>
       </div>
 
-      <LegendComponent 
+      {/* <LegendComponent 
         data={this.state.data}
-      />
+      /> */}
 
 
       <div className="chart-flex">
@@ -274,6 +275,13 @@ class App extends Component {
             </VictoryGroup>
           </VictoryChart>
         </div>
+
+        <div className="chart">
+          <PieComponent 
+            data={this.state.data[0]}
+          />
+        </div>
+
       </div>
 
         <PresentComponent

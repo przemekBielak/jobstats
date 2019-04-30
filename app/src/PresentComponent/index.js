@@ -43,12 +43,12 @@ const PresentComponent = props => {
                             <p className="data-value">{item.salaryMaxAvg}</p>
                         </div>
 
-                        {item.mustHaveRequirements.map((req) => (
+                        {/* {item.mustHaveRequirements.map((req) => (
                             <div className="data-group">
                                 <p className="data-text">{req[0]}</p>
                                 <p className="data-value">{req[1]}</p>
                             </div>
-                        ))}
+                        ))} */}
                     </div>
                 ))}
             
