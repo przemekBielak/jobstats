@@ -8,7 +8,6 @@ import './App.css';
 
 
 const contractType = [
-  'Any',
   'B2B',
   'UoP',
   'UZ',
@@ -135,9 +134,9 @@ class App extends Component {
     this.getMustHaveList();
     this.getCitiesList();
 
-    this.getLangCount("Java", "Any", "Any", "Any");
-    this.getLangCount("JavaScript", "Any", "Any", "Any");
-    this.getLangCount(".NET", "Any", "Any", "Any");
+    this.getLangCount("Java", "Any", "Any", "B2B");
+    this.getLangCount("JavaScript", "Any", "Any", "B2B");
+    this.getLangCount(".NET", "Any", "Any", "UoP");
 
     // default select values
     this.setState({

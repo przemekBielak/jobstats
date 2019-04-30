@@ -58,29 +58,25 @@ app.post('/lang-count/', (req, res) => {
     .toArray((err, docs) => {
         docs.forEach(doc => {
             doc.salary.forEach(salary => {
-                if(salary.salaryRate == 'month' && salary.contractType == 'UoP') {
+                if(salary.salaryRate == 'month' && salary.contractType == contract) {
                     salaryCounter++;
                     salaryMinSum += salary.salaryMin;
                     salaryMaxSum += salary.salaryMax;
-                    // console.log('month: ' + salary.salaryMax);
                 }
-                else if(salary.salaryRate == 'day' && salary.contractType == 'UoP') {
+                else if(salary.salaryRate == 'day' && salary.contractType == contract) {
                     salaryCounter++;
                     salaryMinSum += salary.salaryMin * 20;
                     salaryMaxSum += salary.salaryMax * 20;
-                    console.log('day: ' + salary.salaryMax, salary.salaryMax * 20);
                 }
-                else if(salary.salaryRate == 'hour' && salary.contractType == 'UoP') {
+                else if(salary.salaryRate == 'hour' && salary.contractType == contract) {
                     salaryCounter++;
                     salaryMinSum += salary.salaryMin * 160;
                     salaryMaxSum += salary.salaryMax * 160;
-                    console.log('hour: ' + salary.salaryMax, salary.salaryMax * 160);
                 }
-                else if(salary.salaryRate == 'year' && salary.contractType == 'UoP') {
+                else if(salary.salaryRate == 'year' && salary.contractType == contract) {
                     salaryCounter++;
                     salaryMinSum += salary.salaryMin / 12;
                     salaryMaxSum += salary.salaryMax / 12;
-                    console.log('year: ' + salary.salaryMax, salary.salaryMax / 12);
                 }
             })
 
