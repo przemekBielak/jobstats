@@ -43,25 +43,29 @@ class PieComponent extends Component {
 
             return (
                 <div>
-                    <label htmlFor={"Id"}>Id</label>
-                    <select 
-                        id={"Id"}
-                        input={this.state.selectInput} 
-                        onChange={this.handleInput}
-                        >
-                        {items}
-                    </select>
-                    <VictoryPie
-                        theme={VictoryTheme.material}
-                        colorScale={"qualitative"}
-                        animate={{
-                            duration: 200,
-                            onLoad: { duration: 0 }
-                          }}
-                        radius={80}
-                        // labels={(d) => `${d.x}: ${d.y}`}
-                        data={graphData}
-                    />
+                    <div className="select-pie">
+                        <label htmlFor={"Id"}>Id</label>
+                        <select 
+                            id={"Id"}
+                            input={this.state.selectInput} 
+                            onChange={this.handleInput}
+                            >
+                            {items}
+                        </select>
+                    </div>
+                    <div className="pie">
+                        <VictoryPie
+                            theme={VictoryTheme.material}
+                            colorScale={"qualitative"}
+                            animate={{
+                                duration: 200,
+                                onLoad: { duration: 0 }
+                            }}
+                            radius={90}
+                            // labels={(d) => `${d.x}: ${d.y}`}
+                            data={graphData}
+                        />
+                    </div>
                 </div>
             );
         }
