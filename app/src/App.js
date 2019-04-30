@@ -40,7 +40,8 @@ class App extends Component {
       citiesList: [],
 
       // axis default values
-      axisTicks: [0, 1, 2]
+      axisTicks: [0, 1, 2],
+      selectedPie: 0
     };
   }
 
@@ -278,7 +279,7 @@ class App extends Component {
 
         <div className="chart">
           <PieComponent 
-            data={this.state.data[0]}
+            data={this.state.data}
           />
         </div>
 
