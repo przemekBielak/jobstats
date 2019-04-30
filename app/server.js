@@ -39,6 +39,12 @@ app.post('/lang-count/', (req, res) => {
     var mustHaveRequirements = {};
     var mustHaveRequirementsSorted = [];
 
+    var os = {
+        mac: 0,
+        windows: 0,
+        linux: 0
+    };
+
     // Not active query when Any city selected
     if(city == "Any") {
         city = {$exists: true};
@@ -56,29 +62,48 @@ app.post('/lang-count/', (req, res) => {
         ]
     })
     .toArray((err, docs) => {
+
         docs.forEach(doc => {
+
+            // get type of OS
+            if(doc.os.mac == true) {
+                os.mac++;
+            }
+            if(doc.os.windows == true) {
+                os.windows++;
+            }
+            if(doc.os.linux == true) {
+                os.linux++;
+            }
+
+            // get min and max salaries
             doc.salary.forEach(salary => {
-                if(salary.salaryRate == 'month' && salary.contractType == contract) {
-                    salaryCounter++;
-                    salaryMinSum += salary.salaryMin;
-                    salaryMaxSum += salary.salaryMax;
-                }
-                else if(salary.salaryRate == 'day' && salary.contractType == contract) {
-                    salaryCounter++;
-                    salaryMinSum += salary.salaryMin * 20;
-                    salaryMaxSum += salary.salaryMax * 20;
-                }
-                else if(salary.salaryRate == 'hour' && salary.contractType == contract) {
-                    salaryCounter++;
-                    salaryMinSum += salary.salaryMin * 160;
-                    salaryMaxSum += salary.salaryMax * 160;
-                }
-                else if(salary.salaryRate == 'year' && salary.contractType == contract) {
-                    salaryCounter++;
-                    salaryMinSum += salary.salaryMin / 12;
-                    salaryMaxSum += salary.salaryMax / 12;
+                if(salary.contractType == contract && salary.salaryCurrency == 'PLN') {
+                    if(salary.salaryRate == 'month') {
+                        salaryCounter++;
+                        salaryMinSum += salary.salaryMin;
+                        salaryMaxSum += salary.salaryMax;
+                    }
+                    else if(salary.salaryRate == 'day') {
+                        salaryCounter++;
+                        salaryMinSum += salary.salaryMin * 20;
+                        salaryMaxSum += salary.salaryMax * 20;
+                    }
+                    else if(salary.salaryRate == 'hour') {
+                        salaryCounter++;
+                        salaryMinSum += salary.salaryMin * 160;
+                        salaryMaxSum += salary.salaryMax * 160;
+                    }
+                    else if(salary.salaryRate == 'year') {
+                        salaryCounter++;
+                        salaryMinSum += salary.salaryMin / 12;
+                        salaryMaxSum += salary.salaryMax / 12;
+                    }
                 }
             })
+            // calculate avarage salary
+            salaryMinAvg = salaryMinSum/salaryCounter;
+            salaryMaxAvg = salaryMaxSum/salaryCounter;
 
             // get must have requirements
             doc.requirementsMustHave.forEach(req => {
@@ -94,19 +119,15 @@ app.post('/lang-count/', (req, res) => {
             });
         });
 
-        // calculate avarages
-        salaryMinAvg = salaryMinSum/salaryCounter;
-        salaryMaxAvg = salaryMaxSum/salaryCounter;
-
-        // sort and get max values
+        // sort requirements and get the most frequent requirements
         for (key in mustHaveRequirements) {
             mustHaveRequirementsSorted.push([key, mustHaveRequirements[key]]);
         }
-
         mustHaveRequirementsSorted.sort((a, b) => {
             return b[1] - a[1];
         })
 
+        // count all of the matching documents
         db.countDocuments({
             $and:
             [
@@ -119,7 +140,8 @@ app.post('/lang-count/', (req, res) => {
             count: count,
             salaryMinAvg: Math.round(salaryMinAvg),
             salaryMaxAvg: Math.round(salaryMaxAvg),
-            mustHaveRequirements: mustHaveRequirementsSorted.slice(0, 10)
+            mustHaveRequirements: mustHaveRequirementsSorted.slice(0, 10),
+            os: os
         }))
         .catch(err => console.log(err));
     });

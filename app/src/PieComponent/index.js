@@ -39,7 +39,7 @@ class PieComponent extends Component {
                 graphData.push({x: reqDataX[i], y: reqDataY[i]});
             }
             
-            var items = this.props.data.map(it => <option value={it.id}>{it.id}, {it.seniority}, {it.language}, {it.contract}</option>);
+            var items = this.props.data.map(it => <option value={it.id}>{it.id}, {it.seniority}, {it.language}</option>);
 
             return (
                 <div>

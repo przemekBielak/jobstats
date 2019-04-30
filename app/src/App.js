@@ -89,7 +89,8 @@ class App extends Component {
           count: data.count,
           salaryMinAvg: data.salaryMinAvg,
           salaryMaxAvg: data.salaryMaxAvg,
-          mustHaveRequirements: data.mustHaveRequirements
+          mustHaveRequirements: data.mustHaveRequirements,
+          os: data.os
         }],
         // update chart axis values
         axisTicks: [...prevState.axisTicks, prevState.data.length]
@@ -275,6 +276,61 @@ class App extends Component {
             </VictoryGroup>
           </VictoryChart>
         </div>
+
+
+        <div className="chart">
+          <VictoryChart
+            theme={VictoryTheme.material}
+          >
+            <VictoryAxis
+              tickValues={this.state.axisTicks}
+            />
+            <VictoryAxis
+              dependentAxis
+            />
+            <VictoryLegend 
+              x={100} 
+              y={20}
+              orientation="horizontal"
+              gutter={15}
+              colorScale={"qualitative"}
+              style={{ border: { stroke: "black" }, title: {fontSize: 16 } }}
+              data={[
+                { name: "Windows"},
+                { name: "Linux"},
+                { name: "MacOS"}
+              ]}
+            />
+            <VictoryGroup 
+              offset={10}
+              colorScale={"qualitative"}
+              animate={{
+                duration: 200,
+                onLoad: { duration: 0 }
+              }}
+            >
+              <VictoryBar
+                barWidth={10}
+                data={this.state.data}
+                x="id"
+                y="os.windows"
+              />
+              <VictoryBar
+                barWidth={10}
+                data={this.state.data}
+                x="id"
+                y="os.linux"
+              />
+              <VictoryBar
+                barWidth={10}
+                data={this.state.data}
+                x="id"
+                y="os.mac"
+              />
+            </VictoryGroup>
+          </VictoryChart>
+        </div>
+
 
         <div className="chart">
           <PieComponent 
