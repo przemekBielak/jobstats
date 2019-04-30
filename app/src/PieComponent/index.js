@@ -8,18 +8,25 @@ var reqDataY = [];
 var reqDataX = [];
 var graphData = [];
 
+const values = [
+    0, 1, 2, 3, 4, 5
+];
+
 class PieComponent extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            element: 0
+            selectInput: 0,
         };
     }
 
-    
+    handleInput = (event) => {
+        this.setState({selectInput: event.target.value});
+    }
+
     render() {
-        data = this.props.data[this.state.element];
+        data = this.props.data[this.state.selectInput];
         
         if(typeof data != "undefined") {
             reqDataY = [];
@@ -34,10 +41,19 @@ class PieComponent extends Component {
             for(var i = 0; i < reqDataX.length; i++) {
                 graphData.push({x: reqDataX[i], y: reqDataY[i]});
             }
-            console.log(graphData);
+            
+            var items = values.map(it => <option value={it}>{it}</option>);
+
             return (
                 <div>
-                    <button>test</button>
+                    <label htmlFor={"Id"}>Id</label>
+                    <select 
+                        id={"Id"}
+                        input={this.state.selectInput} 
+                        onChange={this.handleInput}
+                        >
+                        {items}
+                    </select>
                     <VictoryPie
                         theme={VictoryTheme.material}
                         colorScale={"qualitative"}
