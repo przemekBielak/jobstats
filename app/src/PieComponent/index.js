@@ -8,9 +8,6 @@ var reqDataY = [];
 var reqDataX = [];
 var graphData = [];
 
-const values = [
-    0, 1, 2, 3, 4, 5
-];
 
 class PieComponent extends Component {
     constructor(props) {
@@ -42,7 +39,7 @@ class PieComponent extends Component {
                 graphData.push({x: reqDataX[i], y: reqDataY[i]});
             }
             
-            var items = values.map(it => <option value={it}>{it}</option>);
+            var items = this.props.data.map(it => <option value={it.id}>{it.id}, {it.language}</option>);
 
             return (
                 <div>
