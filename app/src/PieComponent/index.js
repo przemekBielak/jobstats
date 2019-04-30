@@ -26,6 +26,12 @@ const PieComponent = props => {
                 <VictoryPie
                     theme={VictoryTheme.material}
                     colorScale={"qualitative"}
+                    animate={{
+                        duration: 200,
+                        onLoad: { duration: 0 }
+                      }}
+                    radius={80}
+                    labels={(d) => `${d.x}: ${d.y}`}
                     data={graphData}
                 />
             </div>
