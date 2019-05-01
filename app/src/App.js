@@ -38,8 +38,8 @@ class App extends Component {
       mustHaveList: [],
       citiesList: [],
 
-      // axis default values
-      axisTicks: [0, 1, 2],
+      // axis values
+      axisTicks: [],
       selectedPie: 0
     };
   }
@@ -77,6 +77,8 @@ class App extends Component {
     })
     .then(response => response.json())
     .then(data => {
+      // check if index is in axisTicks
+      
       this.setState(prevState => ({
         data: [...prevState.data, {
           // known parameters
@@ -92,7 +94,6 @@ class App extends Component {
           mustHaveRequirements: data.mustHaveRequirements,
           os: data.os
         }],
-        // update chart axis values
         axisTicks: [...prevState.axisTicks, prevState.data.length]
       }));
       console.log(data);

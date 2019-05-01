@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { VictoryChart, VictoryAxis, VictoryLegend, VictoryGroup, VictoryBar, VictoryTheme } from 'victory';
+import { VictoryChart, VictoryAxis, VictoryLegend, VictoryStack, VictoryBar, VictoryTheme } from 'victory';
 
 import './style.css';
 
@@ -16,24 +16,19 @@ class OsComponent extends Component {
 
     render() {
 
-        if(typeof this.props.data != "undefined") {
+        if(typeof this.props.data != "undefined" && this.props.data.length > 0) {
 
             
             for(var i = osData.length; i < this.props.data.length; i++) {
-                var item = this.props.data[i];
-                var total = item.os.windows + item.os.linux + item.os.mac;
-                var windowsAdjusted = item.os.windows * (100 / total);
-                var macAdjusted = item.os.mac * (100 / total);
-                var linuxAdjusted = item.os.linux * (100 / total);
-                var os = {
-                    windows: windowsAdjusted,
-                    mac: macAdjusted,
-                    linux: linuxAdjusted
-                }
+                const item = this.props.data[i];
+                const total = item.os.windows + item.os.linux + item.os.mac;
 
                 osData = [...osData, {                    
-                    sum: total,
-                    os: os,
+                    os: {
+                        windows: item.os.windows * (100 / total),
+                        mac: item.os.mac * (100 / total),
+                        linux: item.os.linux * (100 / total)
+                    },
                     id: item.id
                 }];
             };
@@ -62,33 +57,33 @@ class OsComponent extends Component {
                                 { name: "MacOS"}
                             ]}
                         />
-                        <VictoryGroup 
-                            offset={10}
-                            colorScale={"qualitative"}
+
+                        <VictoryStack
                             animate={{
-                                duration: 200,
-                                onLoad: { duration: 0 }
+                            duration: 200,
+                            onLoad: { duration: 0 }
                             }}
+                            colorScale={"qualitative"}
                         >
-                        <VictoryBar
-                            barWidth={10}
-                            data={osData}
-                            x="id"
-                            y="os.windows"
-                        />
-                        <VictoryBar
-                            barWidth={10}
-                            data={osData}
-                            x="id"
-                            y="os.linux"
-                        />
-                        <VictoryBar
-                            barWidth={10}
-                            data={osData}
-                            x="id"
-                            y="os.mac"
-                        />
-                        </VictoryGroup>
+                            <VictoryBar
+                                barWidth={10}
+                                data={osData}
+                                x="id"
+                                y="os.windows"
+                            />
+                            <VictoryBar
+                                barWidth={10}
+                                data={osData}
+                                x="id"
+                                y="os.linux"
+                            />
+                            <VictoryBar
+                                barWidth={10}
+                                data={osData}
+                                x="id"
+                                y="os.mac"
+                            />
+                        </VictoryStack>
                     </VictoryChart>
                 </div>
             );

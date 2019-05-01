@@ -67,13 +67,13 @@ db.connect((err) => {
         await browser.close();
     
         // parse 30 newest links, or less when not possible
-        let parseLimit = 30;
-        if(jobLinks.length < parseLimit) {
-            parseLimit = jobLinks.length;
-        }
+        // let parseLimit = 100;
+        // if(jobLinks.length < parseLimit) {
+        //     parseLimit = jobLinks.length;
+        // }
         // check if parsed any links
         if(jobLinks.length != 0) {
-            for(let i = 0; i < parseLimit; i++) {
+            for(let i = 0; i < jobLinks.length; i++) {
                 const timeCounter = Math.floor((Math.random() * 30000) + 2000);
         
                 // check if link exists in db
