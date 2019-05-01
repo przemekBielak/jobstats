@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { VictoryBar, VictoryChart, VictoryAxis, VictoryTheme, VictoryGroup, VictoryLegend } from 'victory';
 import SelectComponent from './SelectComponent';
 import PresentComponent from './PresentComponent';
 import LegendComponent from './LegendComponent';
@@ -183,7 +182,8 @@ class App extends Component {
           handleInput={this.handleContractTypeInput} 
         />
 
-        <button onClick={() => this.getLangCount(
+        <button 
+          onClick={() => this.getLangCount(
           this.state.mustHaveInput, 
           this.state.cityInput,
           this.state.seniorityLevelInput,
