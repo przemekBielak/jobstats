@@ -5,7 +5,7 @@ const bodyParser = require('body-parser');
 const path = require('path');
 const MongoClient = require('mongodb').MongoClient;
 
-const APP_PORT = 8082;
+const APP_PORT = 8080;
 
 const mongoUrl = "mongodb://localhost:27017/";
 const mongoOptions = { useNewUrlParser: true };
