@@ -16,9 +16,7 @@ const LegeComponent = props => {
         );
     }
     else {
-        return (
-            <h1></h1>
-        );
+        return (null);
     }
 }
 

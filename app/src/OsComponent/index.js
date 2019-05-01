@@ -89,9 +89,7 @@ class OsComponent extends Component {
             );
         }
         else {
-            return (
-                <h1></h1>
-            );
+            return (null);
         }
     }
 }

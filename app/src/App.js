@@ -5,6 +5,8 @@ import PresentComponent from './PresentComponent';
 import LegendComponent from './LegendComponent';
 import PieComponent from './PieComponent';
 import OsComponent from './OsComponent';
+import JobNumber from './JobNumber';
+import Salary from './Salary';
 import './App.css';
 
 const contractType = [
@@ -198,84 +200,17 @@ class App extends Component {
 
       <div className="chart-flex">
         <div className="chart">
-          <VictoryChart
-            theme={VictoryTheme.material}
-            colorScale={"qualitative"}
-          >
-            <VictoryAxis
-              tickValues={this.state.axisTicks}
-            />
-            <VictoryAxis
-              dependentAxis
-            />
-            <VictoryLegend 
-              x={100} 
-              y={20}
-              orientation="horizontal"
-              gutter={15}
-              colorScale={"qualitative"}
-              style={{ border: { stroke: "black" }, title: {fontSize: 16 } }}
-              data={[
-                { name: "Number of jobs"},
-              ]}
-            />
-            <VictoryBar
-              animate={{
-                duration: 200,
-                onLoad: { duration: 0 }
-              }}
-              barWidth={10}
-              data={this.state.data}
-              x="id"
-              y="count"
-            />
-          </VictoryChart>
+          <JobNumber
+            data={this.state.data}
+            ticks={this.state.axisTicks}
+          />
         </div>
 
         <div className="chart">
-          <VictoryChart
-            theme={VictoryTheme.material}
-          >
-            <VictoryAxis
-              tickValues={this.state.axisTicks}
-            />
-            <VictoryAxis
-              dependentAxis
-            />
-            <VictoryLegend 
-              x={100} 
-              y={20}
-              orientation="horizontal"
-              gutter={15}
-              colorScale={"qualitative"}
-              style={{ border: { stroke: "black" }, title: {fontSize: 16 } }}
-              data={[
-                { name: "Salary Min"},
-                { name: "Salary Max"}
-              ]}
-            />
-            <VictoryGroup 
-              offset={10}
-              colorScale={"qualitative"}
-              animate={{
-                duration: 200,
-                onLoad: { duration: 0 }
-              }}
-            >
-              <VictoryBar
-                barWidth={10}
-                data={this.state.data}
-                x="id"
-                y="salaryMinAvg"
-              />
-              <VictoryBar
-                barWidth={10}
-                data={this.state.data}
-                x="id"
-                y="salaryMaxAvg"
-              />
-            </VictoryGroup>
-          </VictoryChart>
+          <Salary
+            data={this.state.data}
+            ticks={this.state.axisTicks}
+          />
         </div>
 
 

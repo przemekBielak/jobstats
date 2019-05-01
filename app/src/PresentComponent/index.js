@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import './style.css';
 
 const PresentComponent = props => {
@@ -56,9 +56,7 @@ const PresentComponent = props => {
         );
     }
     else {
-        return (
-            <h1></h1>
-        );
+        return (null);
     }
 }
 
