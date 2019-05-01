@@ -4,8 +4,8 @@ import SelectComponent from './SelectComponent';
 import PresentComponent from './PresentComponent';
 import LegendComponent from './LegendComponent';
 import PieComponent from './PieComponent';
+import OsComponent from './OsComponent';
 import './App.css';
-
 
 const contractType = [
   'B2B',
@@ -279,56 +279,10 @@ class App extends Component {
 
 
         <div className="chart">
-          <VictoryChart
-            theme={VictoryTheme.material}
-          >
-            <VictoryAxis
-              tickValues={this.state.axisTicks}
-            />
-            <VictoryAxis
-              dependentAxis
-            />
-            <VictoryLegend 
-              x={100} 
-              y={20}
-              orientation="horizontal"
-              gutter={15}
-              colorScale={"qualitative"}
-              style={{ border: { stroke: "black" }, title: {fontSize: 16 } }}
-              data={[
-                { name: "Windows"},
-                { name: "Linux"},
-                { name: "MacOS"}
-              ]}
-            />
-            <VictoryGroup 
-              offset={10}
-              colorScale={"qualitative"}
-              animate={{
-                duration: 200,
-                onLoad: { duration: 0 }
-              }}
-            >
-              <VictoryBar
-                barWidth={10}
-                data={this.state.data}
-                x="id"
-                y="os.windows"
-              />
-              <VictoryBar
-                barWidth={10}
-                data={this.state.data}
-                x="id"
-                y="os.linux"
-              />
-              <VictoryBar
-                barWidth={10}
-                data={this.state.data}
-                x="id"
-                y="os.mac"
-              />
-            </VictoryGroup>
-          </VictoryChart>
+          <OsComponent
+            data={this.state.data}
+            ticks={this.state.axisTicks}
+          />
         </div>
 
 
