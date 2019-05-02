@@ -63,7 +63,7 @@ class App extends Component {
   }
   
   getLangCount = (lang, city, seniority, contract) => {
-    fetch('http://localhost:8080/lang-count', {
+    fetch('/lang-count', {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
@@ -106,7 +106,7 @@ class App extends Component {
 
 
   getMustHaveList = () => {
-    fetch('http://localhost:8080/must-have-list')
+    fetch('/must-have-list')
     .then(response => response.json())
     .then(data => {
       this.setState(() => ({
@@ -120,7 +120,7 @@ class App extends Component {
 
 
   getCitiesList = () => {
-    fetch('http://localhost:8080/cities-list')
+    fetch('/cities-list')
     .then(response => response.json())
     .then(data => {
       this.setState(() => ({
