@@ -31,7 +31,7 @@ class App extends Component {
       data: [],
 
       mustHaveInput: '',
-      cityInput: '',
+      cityInput: 'Any',
       contractTypeInput: '',
       seniorityLevelInput: '',
       specificInput: '0',
@@ -131,8 +131,6 @@ class App extends Component {
     .then(data => {
       this.setState(() => ({
         citiesList: data.citiesAll.sort(),
-        // update default select value
-        cityInput: data.citiesAll[0]
       }));
     })
     .catch(err => console.log(err));
@@ -172,6 +170,7 @@ class App extends Component {
           values={this.state.citiesList}
           input={this.state.cityInput}
           handleInput={this.handleCityInput} 
+          default={"Any"}
         />
 
         <SelectComponent 
@@ -247,7 +246,6 @@ class App extends Component {
         </div>
 
       </div>
-
         <PresentComponent
           data={this.state.data}
         />
