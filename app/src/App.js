@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import SelectComponent from './SelectComponent';
 import PresentComponent from './PresentComponent';
-import LegendComponent from './LegendComponent';
 import PieComponent from './PieComponent';
 import OsComponent from './OsComponent';
 import JobNumber from './JobNumber';
@@ -206,11 +205,6 @@ class App extends Component {
           handleInput={this.handleSpecificInput} 
         />
       </div>
-
-      {/* <LegendComponent 
-        data={this.state.data}
-      /> */}
-
 
       <div className="chart-flex">
         <div className="chart">
