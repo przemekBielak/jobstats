@@ -30,10 +30,10 @@ class App extends Component {
     this.state = {
       data: [],
 
-      mustHaveInput: '',
+      mustHaveInput: 'Any',
       cityInput: 'Any',
-      contractTypeInput: '',
-      seniorityLevelInput: '',
+      contractTypeInput: 'B2B',
+      seniorityLevelInput: 'Any',
       specificInput: '0',
 
       mustHaveList: [],
@@ -83,27 +83,30 @@ class App extends Component {
     })
     .then(response => response.json())
     .then(data => {
-      // check if index is in axisTicks
-      
-      this.setState(prevState => ({
-        data: [...prevState.data, {
-          // known parameters
-          id: prevState.data.length,
-          language: lang, 
-          city: city,
-          seniority: seniority,
-          contract: contract,
-          // received parameters
-          count: data.count,
-          salaryMinAvg: data.salaryMinAvg,
-          salaryMaxAvg: data.salaryMaxAvg,
-          mustHaveRequirements: data.mustHaveRequirements,
-          requirementsNices: data.requirementsNices,
-          os: data.os
-        }],
-        axisTicks: [...prevState.axisTicks, prevState.data.length]
-      }));
-      console.log(data);
+      if(data.count != 0) {
+        this.setState(prevState => ({
+          data: [...prevState.data, {
+            // known parameters
+            id: prevState.data.length,
+            language: lang, 
+            city: city,
+            seniority: seniority,
+            contract: contract,
+            // received parameters
+            count: data.count,
+            salaryMinAvg: data.salaryMinAvg,
+            salaryMaxAvg: data.salaryMaxAvg,
+            mustHaveRequirements: data.mustHaveRequirements,
+            requirementsNices: data.requirementsNices,
+            os: data.os
+          }],
+          axisTicks: [...prevState.axisTicks, prevState.data.length]
+        }));
+        console.log(data);
+      }    
+      else {
+        console.log("no matches found")
+      }  
     })
     .catch(err => {
       console.log(err);
@@ -117,8 +120,6 @@ class App extends Component {
     .then(data => {
       this.setState(() => ({
         mustHaveList: data.requirementsMustHaveAll.sort(),
-        // update default select value
-        mustHaveInput: data.requirementsMustHaveAll[0]
       }));
     })
     .catch(err => console.log(err));
@@ -144,12 +145,6 @@ class App extends Component {
     this.getLangCount("Java", "Any", "Any", "B2B");
     this.getLangCount("JavaScript", "Any", "Any", "B2B");
     this.getLangCount(".NET", "Any", "Any", "UoP");
-
-    // default select values
-    this.setState({
-      contractTypeInput: contractType[0],
-      seniorityLevelInput: seniorityLevel[0],
-    })
   }
 
 
@@ -163,6 +158,7 @@ class App extends Component {
           values={seniorityLevel}
           input={this.state.seniorityLevelInput}
           handleInput={this.handleSeniorityLevelInput} 
+          default={"Any"}
         />
 
         <SelectComponent 
@@ -178,6 +174,7 @@ class App extends Component {
           values={this.state.mustHaveList}
           input={this.state.mustHaveInput}
           handleInput={this.handleMustHaveInput} 
+          default={"Any"}
         />
 
         <SelectComponent 

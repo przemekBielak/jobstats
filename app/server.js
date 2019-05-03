@@ -55,6 +55,9 @@ app.post('/lang-count/', (req, res) => {
     if(seniority == "Any") {
         seniority = {$exists: true};
     }
+    if(lang == "Any") {
+        lang = {$exists: true};
+    }
 
     db.find({
         $and:
