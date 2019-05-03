@@ -30,7 +30,7 @@ class PieComponent extends Component {
             reqDataX = [];
             graphData = [];
 
-            data.mustHaveRequirements.forEach(req => {
+            data[this.props.info].forEach(req => {
                 reqDataY.push(req[1]);
                 reqDataX.push(req[0]);
             });
@@ -43,16 +43,14 @@ class PieComponent extends Component {
 
             return (
                 <div>
-                    <div className="select-pie">
-                        <label htmlFor={"Id"}>Id</label>
-                        <select 
-                            id={"Id"}
-                            input={this.state.selectInput} 
-                            onChange={this.handleInput}
-                            >
-                            {items}
-                        </select>
-                    </div>
+                    <label htmlFor={"id"}>id</label>
+                    <select 
+                        id={"id"}
+                        input={this.state.selectInput} 
+                        onChange={this.handleInput}
+                        >
+                        {items}
+                    </select>
                     <div className="pie">
                         <VictoryPie
                             theme={VictoryTheme.material}

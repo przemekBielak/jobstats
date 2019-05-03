@@ -93,6 +93,7 @@ class App extends Component {
           salaryMinAvg: data.salaryMinAvg,
           salaryMaxAvg: data.salaryMaxAvg,
           mustHaveRequirements: data.mustHaveRequirements,
+          requirementsNices: data.requirementsNices,
           os: data.os
         }],
         axisTicks: [...prevState.axisTicks, prevState.data.length]
@@ -225,6 +226,7 @@ class App extends Component {
         <div className="chart">
           <PieComponent 
             data={this.state.data}
+            info={"mustHaveRequirements"}
           />
         </div>
 

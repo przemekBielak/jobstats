@@ -39,6 +39,9 @@ app.post('/lang-count/', (req, res) => {
     var mustHaveRequirements = {};
     var mustHaveRequirementsSorted = [];
 
+    var requirementsNices = {};
+    var requirementsNicesSorted = [];
+
     var os = {
         mac: 0,
         windows: 0,
@@ -117,6 +120,19 @@ app.post('/lang-count/', (req, res) => {
                     mustHaveRequirements[req] = 1;
                 }
             });
+
+            // get nice to have requirements
+            doc.requirementsNices.forEach(req => {
+                if(req == lang) {
+                    // do nothing
+                }
+                else if(req in requirementsNices) {
+                    requirementsNices[req] += 1;
+                }
+                else {
+                    requirementsNices[req] = 1;
+                }
+            });
         });
 
         // sort requirements and get the most frequent requirements
@@ -124,6 +140,14 @@ app.post('/lang-count/', (req, res) => {
             mustHaveRequirementsSorted.push([key, mustHaveRequirements[key]]);
         }
         mustHaveRequirementsSorted.sort((a, b) => {
+            return b[1] - a[1];
+        })
+
+        // sort requirements and get the most frequent requirements
+        for (key in requirementsNices) {
+            requirementsNicesSorted.push([key, requirementsNices[key]]);
+        }
+        requirementsNicesSorted.sort((a, b) => {
             return b[1] - a[1];
         })
 
@@ -141,6 +165,7 @@ app.post('/lang-count/', (req, res) => {
             salaryMinAvg: Math.round(salaryMinAvg),
             salaryMaxAvg: Math.round(salaryMaxAvg),
             mustHaveRequirements: mustHaveRequirementsSorted.slice(0, 10),
+            requirementsNices: requirementsNicesSorted.slice(0, 10),
             os: os
         }))
         .catch(err => console.log(err));
