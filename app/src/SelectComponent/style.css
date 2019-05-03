@@ -1,5 +1,16 @@
 select, label {
     display: block;
     max-width: 150px;
-    margin: 5px;
+    min-width: 90px;
+    margin: 0px 5px;
+}
+
+select {
+    height: 25px;
+    align-self: flex-end;
+    text-align: left;
+}
+
+label {
+    text-align: left;
 }

@@ -23,3 +23,9 @@
   width: 450px;
   margin: 5px;
 }
+
+button {
+  height: 25px;
+  margin: 0px 5px;
+  align-self: flex-end;
+}
