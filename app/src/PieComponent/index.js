@@ -14,16 +14,11 @@ class PieComponent extends Component {
         super(props);
 
         this.state = {
-            selectInput: 0,
         };
     }
 
-    handleInput = (event) => {
-        this.setState({selectInput: event.target.value});
-    }
-
     render() {
-        data = this.props.data[this.state.selectInput];
+        data = this.props.data[this.props.input];
         
         if(typeof data != "undefined") {
             reqDataY = [];
@@ -39,18 +34,8 @@ class PieComponent extends Component {
                 graphData.push({x: reqDataX[i], y: reqDataY[i]});
             }
             
-            var items = this.props.data.map(it => <option value={it.id}>{it.id}, {it.seniority}, {it.language}</option>);
-
             return (
                 <div>
-                    <label htmlFor={"id"}>id</label>
-                    <select 
-                        id={"id"}
-                        input={this.state.selectInput} 
-                        onChange={this.handleInput}
-                        >
-                        {items}
-                    </select>
                     <div className="pie">
                         <VictoryPie
                             theme={VictoryTheme.material}

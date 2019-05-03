@@ -35,6 +35,7 @@ class App extends Component {
       cityInput: '',
       contractTypeInput: '',
       seniorityLevelInput: '',
+      specificInput: '0',
 
       mustHaveList: [],
       citiesList: [],
@@ -61,6 +62,11 @@ class App extends Component {
   handleSeniorityLevelInput = (event) => {
     this.setState({seniorityLevelInput: event.target.value});
   }
+
+  handleSpecificInput = (event) => {
+    this.setState({specificInput: event.target.value});
+  }
+
   
   getLangCount = (lang, city, seniority, contract) => {
     fetch('/lang-count', {
@@ -192,6 +198,13 @@ class App extends Component {
           )}>
           Update
         </button>
+
+        <SelectComponent 
+          name={'Specific'}
+          values={this.state.axisTicks}
+          input={this.state.specificInput}
+          handleInput={this.handleSpecificInput} 
+        />
       </div>
 
       {/* <LegendComponent 
@@ -227,6 +240,15 @@ class App extends Component {
           <PieComponent 
             data={this.state.data}
             info={"mustHaveRequirements"}
+            input={this.state.specificInput}
+          />
+        </div>
+
+        <div className="chart">
+          <PieComponent 
+            data={this.state.data}
+            info={"requirementsNices"}
+            input={this.state.specificInput}
           />
         </div>
 
