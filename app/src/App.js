@@ -87,7 +87,7 @@ class App extends Component {
         this.setState(prevState => ({
           data: [...prevState.data, {
             // known parameters
-            id: prevState.data.length,
+            id: prevState.data.length + 1,
             language: lang, 
             city: city,
             seniority: seniority,
@@ -100,7 +100,7 @@ class App extends Component {
             requirementsNices: data.requirementsNices,
             os: data.os
           }],
-          axisTicks: [...prevState.axisTicks, prevState.data.length]
+          axisTicks: [...prevState.axisTicks, prevState.data.length + 1]
         }));
         console.log(data);
       }    

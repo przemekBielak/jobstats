@@ -9,6 +9,7 @@ const JobNumber = props => {
                 <VictoryChart
                     theme={VictoryTheme.material}
                     colorScale={"qualitative"}
+                    domainPadding={20}
                 >
                     <VictoryAxis
                         tickValues={props.ticks}

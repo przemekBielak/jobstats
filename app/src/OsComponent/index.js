@@ -37,12 +37,14 @@ class OsComponent extends Component {
                 <div>
                     <VictoryChart
                         theme={VictoryTheme.material}
+                        domainPadding={20}
                     >
                         <VictoryAxis
                             tickValues={this.props.ticks}
                         />
                         <VictoryAxis
                             dependentAxis
+                            tickFormat={(t) => `${t}%`}
                         />
                         <VictoryLegend 
                             x={70} 

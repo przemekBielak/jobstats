@@ -8,12 +8,14 @@ const Salary = props => {
             <div>
                 <VictoryChart
                     theme={VictoryTheme.material}
+                    domainPadding={20}
                 >
                     <VictoryAxis
                         tickValues={props.axisTicks}
                     />
                     <VictoryAxis
                         dependentAxis
+                        tickFormat={(t) => `${t}PLN`}
                     />
                     <VictoryLegend 
                         x={90} 
