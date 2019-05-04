@@ -18,7 +18,8 @@ class PieComponent extends Component {
     }
 
     render() {
-        data = this.props.data[this.props.input];
+        // data starts at 0, select starts at 1
+        data = this.props.data[this.props.input - 1];
         
         if(typeof data != "undefined") {
             reqDataY = [];

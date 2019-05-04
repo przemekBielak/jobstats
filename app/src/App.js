@@ -34,7 +34,7 @@ class App extends Component {
       cityInput: 'Any',
       contractTypeInput: 'B2B',
       seniorityLevelInput: 'Any',
-      specificInput: '0',
+      specificInput: '1',
 
       mustHaveList: [],
       citiesList: [],
