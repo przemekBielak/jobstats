@@ -50,7 +50,7 @@ table thead {
 }
 
 table tr {
-    border-bottom: 3px solid #ddd;
+    /* border-bottom: 3px solid #ddd; */
     display: block;
     margin-bottom: .625em;
 }
