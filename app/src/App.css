@@ -1,15 +1,18 @@
 .App {
-  margin: 0 auto;
+  margin: 0 auto 50px;
   font-family: "Helvetica", "Arial", sans-serif;
   text-align: center;
   /* width: 70%; */
-  padding: 10px;
 }
 
 .header-options {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+  background-color: #f8f8f8;
+  border: 1px solid #ddd;
+  padding: 10px;
+  margin-bottom: 15px;
 }
 
 .chart-flex {
@@ -28,4 +31,9 @@ button {
   height: 25px;
   margin: 0px 5px;
   align-self: flex-end;
+}
+
+h2 {
+  font-weight: bold;
+  font-size: 22px;
 }

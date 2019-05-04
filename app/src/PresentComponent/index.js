@@ -7,22 +7,27 @@ const PresentComponent = props => {
         return (
             <div className="table-center">
                 <table>
-                    <tr>
-                        <th>id</th>
-                        <th>Seniority</th>
-                        <th>City</th>
-                        <th>Technology</th>
-                        <th>Contract</th>
-                    </tr>
-                    {data.map(item => (
+                <caption>Details</caption>
+                    <thead>
                         <tr>
-                            <th>{item.id}</th>
-                            <th>{item.seniority}</th>
-                            <th>{item.city}</th>
-                            <th>{item.language}</th>
-                            <th>{item.contract}</th>
+                            <th scope="col">id</th>
+                            <th scope="col">Seniority</th>
+                            <th scope="col">City</th>
+                            <th scope="col">Technology</th>
+                            <th scope="col">Contract</th>
                         </tr>
-                    ))}
+                    </thead>
+                    <tbody>
+                        {data.map(item => (
+                            <tr>
+                                <td data-label="id">{item.id}</td>
+                                <td data-label="Seniority">{item.seniority}</td>
+                                <td data-label="City">{item.city}</td>
+                                <td data-label="Technology">{item.language}</td>
+                                <td data-label="Contract">{item.contract}</td>
+                            </tr>
+                        ))}
+                    </tbody>
 
                 </table> 
             </div>
