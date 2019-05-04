@@ -5,7 +5,7 @@ const PresentComponent = props => {
     const data = props.data;
     if(typeof data != "undefined" && data.length > 0) {
         return (
-            <div>
+            <div className="table-center">
                 <table>
                     <tr>
                         <th>id</th>
