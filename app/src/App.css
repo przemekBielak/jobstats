@@ -1,5 +1,5 @@
 .App {
-  margin: 0 auto 50px;
+  margin: 0 auto;
   font-family: "Helvetica", "Arial", sans-serif;
   text-align: center;
   /* width: 70%; */
@@ -34,6 +34,6 @@ button {
 }
 
 h2 {
-  font-weight: bold;
-  font-size: 22px;
+  font-size: 1.3em;
+  font-weight: normal;
 }
