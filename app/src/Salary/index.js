@@ -1,5 +1,5 @@
 import React from 'react';
-import { VictoryGroup, VictoryBar, VictoryChart, VictoryAxis, VictoryTheme, VictoryLegend } from 'victory';
+import { VictoryGroup, VictoryBar, VictoryChart, VictoryAxis, VictoryTheme, VictoryLegend, VictoryLabel } from 'victory';
 import './style.css';
 
 const Salary = props => {
@@ -12,10 +12,17 @@ const Salary = props => {
                 >
                     <VictoryAxis
                         tickValues={props.axisTicks}
+                        style={{
+                            tickLabels: {fontSize: 12, padding: 2}
+                        }}
                     />
                     <VictoryAxis
                         dependentAxis
-                        tickFormat={(t) => `${t}PLN`}
+                        tickFormat={(t) => `${(t/1000).toFixed(1)}k`}
+                        style={{
+                            tickLabels: {fontSize: 12, padding: 2}
+                        }}
+                        tickLabelComponent={<VictoryLabel textAnchor="end" />}
                     />
                     <VictoryLegend 
                         x={90} 

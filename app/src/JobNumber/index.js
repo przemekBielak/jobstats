@@ -13,9 +13,15 @@ const JobNumber = props => {
                 >
                     <VictoryAxis
                         tickValues={props.ticks}
+                        style={{
+                            tickLabels: {fontSize: 12, padding: 2}
+                        }}
                     />
                     <VictoryAxis
                         dependentAxis
+                        style={{
+                            tickLabels: {fontSize: 12, padding: 2}
+                        }}
                     />
                     <VictoryLegend 
                         x={170} 

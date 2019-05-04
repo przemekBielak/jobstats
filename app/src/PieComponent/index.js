@@ -45,7 +45,8 @@ class PieComponent extends Component {
                                 onLoad: { duration: 0 }
                             }}
                             radius={90}
-                            // labels={(d) => `${d.x}: ${d.y}`}
+                            labelRadius={100}
+                            style={{ labels: {fontSize: 12} }}
                             data={graphData}
                         />
                     </div>

@@ -41,10 +41,16 @@ class OsComponent extends Component {
                     >
                         <VictoryAxis
                             tickValues={this.props.ticks}
+                            style={{
+                                tickLabels: {fontSize: 12, padding: 2}
+                            }}
                         />
                         <VictoryAxis
                             dependentAxis
                             tickFormat={(t) => `${t}%`}
+                            style={{
+                                tickLabels: {fontSize: 12, padding: 2}
+                            }}
                         />
                         <VictoryLegend 
                             x={70} 
