@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { VictoryChart, VictoryAxis, VictoryLegend, VictoryStack, VictoryBar, VictoryTheme } from 'victory';
+import { VictoryChart, VictoryAxis, VictoryLegend, VictoryStack, VictoryBar, VictoryTheme, Border } from 'victory';
 
 import './style.css';
 
@@ -45,11 +45,12 @@ class OsComponent extends Component {
                             dependentAxis
                         />
                         <VictoryLegend 
-                            x={100} 
-                            y={20}
+                            x={70} 
+                            y={10}
                             orientation="horizontal"
                             gutter={15}
                             colorScale={"qualitative"}
+                            borderComponent={<Border width={230}/>}
                             style={{ border: { stroke: "black" }, title: {fontSize: 16 } }}
                             data={[
                                 { name: "Windows"},

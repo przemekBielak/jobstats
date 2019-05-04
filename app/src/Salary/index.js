@@ -16,8 +16,8 @@ const Salary = props => {
                         dependentAxis
                     />
                     <VictoryLegend 
-                        x={100} 
-                        y={20}
+                        x={90} 
+                        y={10}
                         orientation="horizontal"
                         gutter={15}
                         colorScale={"qualitative"}
