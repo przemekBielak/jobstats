@@ -6,6 +6,7 @@ const JobNumber = props => {
     if(typeof props.data != "undefined" && props.data.length > 0) {
         return (
             <div>
+                <h2 className="title">Number of jobs</h2>
                 <VictoryChart
                     theme={VictoryTheme.material}
                     colorScale={"qualitative"}

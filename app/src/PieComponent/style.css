@@ -1,12 +1,6 @@
-/* .select-pie {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-} */
+.title {
+    margin: 0px;
+}
 
-select, label {
-    display: block;
-    max-width: 150px;
-    min-width: 90px;
-    margin: 0px 5px;
+.pie {
 }

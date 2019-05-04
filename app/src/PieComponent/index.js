@@ -36,6 +36,7 @@ class PieComponent extends Component {
             
             return (
                 <div>
+                    <h2 className="title">{this.props.title}</h2>
                     <div className="pie">
                         <VictoryPie
                             theme={VictoryTheme.material}
@@ -45,7 +46,7 @@ class PieComponent extends Component {
                                 onLoad: { duration: 0 }
                             }}
                             radius={90}
-                            labelRadius={100}
+                            labelRadius={105}
                             style={{ labels: {fontSize: 12} }}
                             data={graphData}
                         />

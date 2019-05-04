@@ -35,6 +35,7 @@ class OsComponent extends Component {
 
             return (
                 <div>
+                    <h2 className="title">OS marketshare</h2>
                     <VictoryChart
                         theme={VictoryTheme.material}
                         domainPadding={20}

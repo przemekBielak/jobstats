@@ -6,6 +6,7 @@ const Salary = props => {
     if(typeof props.data != "undefined" && props.data.length > 0) {
         return (
             <div>
+                <h2 className="title">Salary</h2>
                 <VictoryChart
                     theme={VictoryTheme.material}
                     domainPadding={20}

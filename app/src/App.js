@@ -231,6 +231,7 @@ class App extends Component {
             data={this.state.data}
             info={"mustHaveRequirements"}
             input={this.state.specificInput}
+            title={"Must have requirements"}
           />
         </div>
 
@@ -239,6 +240,7 @@ class App extends Component {
             data={this.state.data}
             info={"requirementsNices"}
             input={this.state.specificInput}
+            title={"Nice to have requirements"}
           />
         </div>
 
