@@ -9,7 +9,7 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  background-color: #f8f8f8;
+  background-color: white;
   border: 1px solid #ddd;
   padding: 10px;
   margin-bottom: 15px;
@@ -28,9 +28,26 @@
 }
 
 button {
-  height: 25px;
-  margin: 0px 5px;
   align-self: flex-end;
+
+  border: none;
+  font: inherit;
+  color: inherit;
+  background-color: transparent;
+  cursor: pointer;
+
+  display: inline-block;
+  text-align: center;
+  text-decoration: none;
+  margin: 2px 2px;
+
+  border: solid 1px #0013e9;
+  border-radius: 4px;
+
+  padding: 0.5em 1em;
+
+  color: #ffffff;
+  background-color: #0013e9;
 }
 
 h2 {

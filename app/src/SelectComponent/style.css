@@ -2,13 +2,34 @@ select, label {
     display: block;
     max-width: 150px;
     min-width: 90px;
-    margin: 0px 5px;
+    /* margin: 0px 5px; */
+}
+
+label {
+    margin-left: 3px;
 }
 
 select {
-    height: 25px;
     align-self: flex-end;
+
+    border: none;
+    font: inherit;
+    color: inherit;
+    background-color: transparent;
+    cursor: pointer;
+
+    display: inline-block;
     text-align: left;
+    text-decoration: none;
+    margin: 2px 2px;
+
+    border: solid 1px #303030;
+    border-radius: 4px;
+
+    padding: 0.5em 1em;
+
+    color: black;
+    background-color: white;
 }
 
 label {
