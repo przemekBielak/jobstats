@@ -195,7 +195,7 @@ class App extends Component {
         </button>
 
         <SelectComponent 
-          name={'Specific'}
+          name={'Active view'}
           values={this.state.axisTicks}
           input={this.state.specificInput}
           handleInput={this.handleSpecificInput} 

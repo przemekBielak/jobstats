@@ -2,11 +2,12 @@ select, label {
     display: block;
     max-width: 150px;
     min-width: 90px;
+    margin-top: 5px;
     /* margin: 0px 5px; */
 }
 
 label {
-    margin-left: 3px;
+    margin-left: 6px;
 }
 
 select {

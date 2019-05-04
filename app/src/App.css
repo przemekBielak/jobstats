@@ -39,15 +39,15 @@ button {
   display: inline-block;
   text-align: center;
   text-decoration: none;
-  margin: 2px 2px;
+  margin: 2px 60px 2px 2px;
 
-  border: solid 1px #0013e9;
+  border: solid 1px #9555af;
   border-radius: 4px;
 
   padding: 0.5em 1em;
 
   color: #ffffff;
-  background-color: #0013e9;
+  background-color: #9555af;
 }
 
 h2 {
