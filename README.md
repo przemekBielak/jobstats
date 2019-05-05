@@ -1,7 +1,7 @@
 ## Jobs statistics
 
 ## Description  
-Dashboard showing statistics of developer job market.  
+Website provides daily updated information about developer job market.  
 Website is made out of two applications:  
 - Backend webcrawler to get job information from job posting websites. Data is saved in MongoDB database. 
 - React front application to visualize the data.
@@ -10,9 +10,9 @@ Website is made out of two applications:
 [jobs.bielak.me](https://jobs.bielak.me/)  
  
 ## Screenshots
-![Alt Text](https://i.imgur.com/blH4jS4.png)
+![Website Screenshot](https://i.imgur.com/blH4jS4.png)
 
-## Tech/framework used
+## Tech/frameworks used
 
 <b>Frontend</b>
 - React
