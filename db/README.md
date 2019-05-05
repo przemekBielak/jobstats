@@ -1,7 +1,7 @@
-## Webcrawler 
+## Job postings webcrawler 
 
 ## Description  
-Puppeteer webcrawler downloads data from all job postings and saved them to MongoDB database.  
+Puppeteer webcrawler downloads data from all job postings and saves them to MongoDB database.  
 Webcrawler is scheduled to run daily, so all website information is up to date.
 
 

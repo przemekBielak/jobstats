@@ -4,7 +4,7 @@
 Website provides daily updated information about developer job market.  
 Website is made out of two applications:  
 - Backend webcrawler to get job information from job posting websites. Data is saved in MongoDB database. 
-- React front application to visualize the data.
+- React frontend application to visualize the data.
 
 ## Website link
 [jobs.bielak.me](https://jobs.bielak.me/)  
