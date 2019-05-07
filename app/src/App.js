@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import SelectComponent from './SelectComponent';
 import PresentComponent from './PresentComponent';
 import PieComponent from './PieComponent';
-import OsComponent from './OsComponent';
-import JobNumber from './JobNumber';
+import Os from './components/Os/Os';
+import JobNumber from './components/JobNumber/JobNumber';
 import Salary from './Salary';
 import './App.css';
 
@@ -219,7 +219,7 @@ class App extends Component {
 
 
         <div className="chart">
-          <OsComponent
+          <Os
             data={this.state.data}
             ticks={this.state.axisTicks}
           />

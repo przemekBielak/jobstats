@@ -1,8 +1,9 @@
 import React from 'react';
 import { VictoryBar, VictoryChart, VictoryAxis, VictoryTheme, VictoryLegend } from 'victory';
-import './style.css';
+import './JobNumber.css';
 
 const JobNumber = props => {
+    // check if array exists and has more than 0 elements
     if(typeof props.data != "undefined" && props.data.length > 0) {
         return (
             <div>
