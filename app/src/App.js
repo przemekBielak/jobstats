@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import SelectComponent from './SelectComponent';
-import PresentComponent from './PresentComponent';
-import PieComponent from './PieComponent';
+import Select from './components/Select/Select';
+import Footer from './components/Footer/Footer';
+import Pie from './components/Pie/Pie';
 import Os from './components/Os/Os';
 import JobNumber from './components/JobNumber/JobNumber';
-import Salary from './Salary';
+import Salary from './components/Salary/Salary';
 import './App.css';
 
 const contractType = [
@@ -153,7 +153,7 @@ class App extends Component {
       <div className="App">
 
       <div className="header-options">
-        <SelectComponent 
+        <Select 
           name={'Seniority'}
           values={seniorityLevel}
           input={this.state.seniorityLevelInput}
@@ -161,7 +161,7 @@ class App extends Component {
           default={"Any"}
         />
 
-        <SelectComponent 
+        <Select 
           name={'City'}
           values={this.state.citiesList}
           input={this.state.cityInput}
@@ -169,7 +169,7 @@ class App extends Component {
           default={"Any"}
         />
 
-        <SelectComponent 
+        <Select 
           name={'Technology'}
           values={this.state.mustHaveList}
           input={this.state.mustHaveInput}
@@ -177,7 +177,7 @@ class App extends Component {
           default={"Any"}
         />
 
-        <SelectComponent 
+        <Select 
           name={'Contract'}
           values={contractType}
           input={this.state.contractTypeInput}
@@ -194,7 +194,7 @@ class App extends Component {
           Update
         </button>
 
-        <SelectComponent 
+        <Select 
           name={'Active view'}
           values={this.state.axisTicks}
           input={this.state.specificInput}
@@ -227,7 +227,7 @@ class App extends Component {
 
 
         <div className="chart">
-          <PieComponent 
+          <Pie 
             data={this.state.data}
             info={"mustHaveRequirements"}
             input={this.state.specificInput}
@@ -236,7 +236,7 @@ class App extends Component {
         </div>
 
         <div className="chart">
-          <PieComponent 
+          <Pie 
             data={this.state.data}
             info={"requirementsNices"}
             input={this.state.specificInput}
@@ -245,7 +245,7 @@ class App extends Component {
         </div>
 
       </div>
-        <PresentComponent
+        <Footer
           data={this.state.data}
         />
       </div>

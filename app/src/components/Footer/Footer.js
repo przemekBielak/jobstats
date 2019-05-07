@@ -1,9 +1,8 @@
 import React from 'react';
-import './style.css';
+import './Footer.css';
 
-const PresentComponent = props => {
-    const data = props.data;
-    if(typeof data != "undefined" && data.length > 0) {
+const Footer = props => {
+    if(typeof props.data != "undefined" && props.data.length > 0) {
         return (
             <div className="table-center">
                 <table>
@@ -18,7 +17,7 @@ const PresentComponent = props => {
                         </tr>
                     </thead>
                     <tbody>
-                        {data.map(item => (
+                        {props.data.map(item => (
                             <tr>
                                 <td data-label="id">{item.id}</td>
                                 <td data-label="Seniority">{item.seniority}</td>
@@ -38,4 +37,4 @@ const PresentComponent = props => {
     }
 }
 
-export default PresentComponent;
+export default Footer;

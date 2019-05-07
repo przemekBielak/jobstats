@@ -1,7 +1,7 @@
 import React from 'react';
-import './style.css';
+import './Select.css';
 
-const SelectComponent = props => {
+const Select = props => {
 
   var items = props.values.map(it => {
     if(it == props.default) {
@@ -30,4 +30,4 @@ const SelectComponent = props => {
     );
 }
 
-export default SelectComponent;
+export default Select;

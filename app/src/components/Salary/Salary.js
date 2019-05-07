@@ -1,6 +1,6 @@
 import React from 'react';
 import { VictoryGroup, VictoryBar, VictoryChart, VictoryAxis, VictoryTheme, VictoryLegend, VictoryLabel } from 'victory';
-import './style.css';
+import './Salary.css';
 
 const Salary = props => {
     if(typeof props.data != "undefined" && props.data.length > 0) {
