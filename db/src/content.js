@@ -5,7 +5,7 @@
 const cheerio = require("cheerio");
 const puppeteer = require("puppeteer");
 
-function convertSalaryToNumber(salary) {
+const convertSalaryToNumber = salary => {
   let val = 0;
 
   // get last character
@@ -16,7 +16,7 @@ function convertSalaryToNumber(salary) {
   }
 
   return val;
-}
+};
 
 let jobInfo = {
   _id: "",
@@ -64,7 +64,6 @@ export default async (url, category) => {
 
   let info = [];
   $(".posting-header-description dd").each(function(i, elem) {
-    // console.log($(this).text());
     info[i] = $(this).text();
   });
 

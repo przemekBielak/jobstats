@@ -29,9 +29,7 @@ let jobLinks = [];
 // db related
 const collection = "jobs";
 
-async function closeDB() {
-  return new Promise(resolve => db.getDbClient().close());
-}
+const closeDB = async () => new Promise(resolve => db.getDbClient().close());
 
 // Program start here
 db.connect(err => {
@@ -62,12 +60,6 @@ db.connect(err => {
     console.log(`--> Got ${jobLinks.length} links from ${category[iter]}`);
     await browser.close();
 
-    // parse 30 newest links, or less when not possible
-    // let parseLimit = 100;
-    // if(jobLinks.length < parseLimit) {
-    //     parseLimit = jobLinks.length;
-    // }
-    // check if parsed any links
     if (jobLinks.length != 0) {
       for (let i = 0; i < jobLinks.length; i++) {
         const timeCounter = Math.floor(Math.random() * 30000 + 2000);
