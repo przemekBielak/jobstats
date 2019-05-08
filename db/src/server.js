@@ -1,5 +1,3 @@
-// TODO: check other categories like frontend, devops, etc.
-
 const cheerio = require("cheerio");
 const puppeteer = require("puppeteer");
 const MongoClient = require("mongodb").MongoClient;
@@ -7,11 +5,9 @@ import jobParser from "./content";
 import { sleep } from "./common";
 
 const mongoUrl = "mongodb://localhost:27017/";
+const mongoOptions = { useNewUrlParser: true };
 const dbname = "jobs";
 const dbcollection = "jobs";
-const mongoOptions = { useNewUrlParser: true };
-let db = null;
-let dbclient = null;
 
 const url = "https://nofluffjobs.com/";
 const category = [
@@ -32,21 +28,11 @@ const category = [
 
 let jobLinks = [];
 
-const closeDB = async () => new Promise(resolve => dbclient.close());
-
-// Program start here
-MongoClient.connect(mongoUrl, mongoOptions, (err, client) => {
-  if (err) {
-    console.log("Unable to connect to database");
-    process.exit(1);
-  } else {
-    db = client.db(dbname);
-    dbclient = client;
-    console.log("Connected to database");
-  }
-});
-
 (async () => {
+  const dbclient = await MongoClient.connect(mongoUrl, mongoOptions);
+  const db = dbclient.db(dbname);
+  console.log("Connected to database");
+
   for (let iter = 0; iter < category.length; iter++) {
     const browser = await puppeteer.launch();
     const page = await browser.newPage();
@@ -126,5 +112,5 @@ MongoClient.connect(mongoUrl, mongoOptions, (err, client) => {
     jobLinks = [];
   }
 
-  await closeDB();
+  await dbclient.close();
 })();
