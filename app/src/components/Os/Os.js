@@ -10,13 +10,13 @@ import {
 } from "victory";
 import "./Os.css";
 
-var osData = [];
+let osData = [];
 
 const Os = props => {
   // check if array exists and has more than 0 elements
   if (typeof props.data != "undefined" && props.data.length > 0) {
     // create data structure for Os chart
-    for (var i = osData.length; i < props.data.length; i++) {
+    for (let i = osData.length; i < props.data.length; i++) {
       const item = props.data[i];
       const total = item.os.windows + item.os.linux + item.os.mac;
 

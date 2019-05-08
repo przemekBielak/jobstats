@@ -13,7 +13,7 @@ const dbname =  "jobs";
 const collection = "jobs";
 
 // Global db instance
-var db = null;
+let db = null;
 
 const app = express();
 app.use(bodyParser.json());
@@ -25,24 +25,24 @@ app.get('/', (req, res) => {
 
 
 app.post('/lang-count/', (req, res) => {
-    var lang = req.body.lang;
-    var city = req.body.city;
-    var seniority = req.body.seniority;
-    var contract = req.body.contract;
+    let lang = req.body.lang;
+    let city = req.body.city;
+    let seniority = req.body.seniority;
+    let contract = req.body.contract;
 
-    var salaryMinAvg = 0;
-    var salaryMaxAvg = 0;
-    var salaryMinSum = 0;
-    var salaryMaxSum = 0;
-    var salaryCounter = 0;
+    let salaryMinAvg = 0;
+    let salaryMaxAvg = 0;
+    let salaryMinSum = 0;
+    let salaryMaxSum = 0;
+    let salaryCounter = 0;
 
-    var mustHaveRequirements = {};
-    var mustHaveRequirementsSorted = [];
+    let mustHaveRequirements = {};
+    let mustHaveRequirementsSorted = [];
 
-    var requirementsNices = {};
-    var requirementsNicesSorted = [];
+    let requirementsNices = {};
+    let requirementsNicesSorted = [];
 
-    var os = {
+    let os = {
         mac: 0,
         windows: 0,
         linux: 0

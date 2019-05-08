@@ -2,7 +2,7 @@ import React from "react";
 import "./Select.css";
 
 const Select = props => {
-  var items = props.values.map(it => {
+  let items = props.values.map(it => {
     if (it == props.default) {
       return (
         <option value={it} selected>

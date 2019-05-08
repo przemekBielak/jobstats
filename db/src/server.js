@@ -24,7 +24,7 @@ const category = [
   "other"
 ];
 
-var jobLinks = [];
+let jobLinks = [];
 
 // db related
 const collection = "jobs";
@@ -51,11 +51,11 @@ db.connect(err => {
     await page.waitFor(3000);
     let content = await page.content();
 
-    var $ = cheerio.load(content);
+    const $ = cheerio.load(content);
 
     // get all links
     let links = $(".col-sm-12 .list-item ");
-    for (var i = 0; i < links.length; i++) {
+    for (let i = 0; i < links.length; i++) {
       jobLinks.push("https://nofluffjobs.com" + links[i].attribs.href);
     }
 
@@ -73,7 +73,7 @@ db.connect(err => {
         const timeCounter = Math.floor(Math.random() * 30000 + 2000);
 
         // check if link exists in db
-        var exists = await db
+        const exists = await db
           .getDB()
           .collection(collection)
           .countDocuments({ _id: jobLinks[i] });
@@ -86,7 +86,7 @@ db.connect(err => {
           console.log("Saved " + jobLinks[i] + " to db");
 
           // add new must have requirements to requirementsMustHaveAll list in db
-          var mustDoc = await db
+          const mustDoc = await db
             .getDB()
             .collection(collection)
             .findOne({ _id: "requirementsMustHaveAll" });
@@ -108,7 +108,7 @@ db.connect(err => {
             );
 
           // add new cities to citiesAll list in db
-          var citiesDoc = await db
+          const citiesDoc = await db
             .getDB()
             .collection(collection)
             .findOne({ _id: "citiesAll" });

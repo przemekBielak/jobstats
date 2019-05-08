@@ -7,16 +7,16 @@ const Pie = props => {
   const data = props.data[props.input - 1];
 
   if (typeof data != "undefined") {
-    var reqDataY = [];
-    var reqDataX = [];
-    var graphData = [];
+    let reqDataY = [];
+    let reqDataX = [];
+    let graphData = [];
 
     data[props.info].forEach(req => {
       reqDataY.push(req[1]);
       reqDataX.push(req[0]);
     });
 
-    for (var i = 0; i < reqDataX.length; i++) {
+    for (let i = 0; i < reqDataX.length; i++) {
       graphData.push({ x: reqDataX[i], y: reqDataY[i] });
     }
 

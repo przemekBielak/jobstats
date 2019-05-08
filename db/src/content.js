@@ -18,7 +18,7 @@ function convertSalaryToNumber(salary) {
   return val;
 }
 
-var jobInfo = {
+let jobInfo = {
   _id: "",
   date: null,
   category: "",
@@ -55,7 +55,7 @@ export default async (url, category) => {
   await page.waitFor(4000);
   let content = await page.content();
 
-  var $ = cheerio.load(content);
+  const $ = cheerio.load(content);
 
   // console.log(content);
 
@@ -173,7 +173,7 @@ export default async (url, category) => {
   }
 
   // get all methodolody keys
-  var workMethodologyKey = [];
+  let workMethodologyKey = [];
   $("[ng-repeat='tool in tools'] .col-sm-6.p-label-row.ng-binding").each(
     function(i, elem) {
       let key = $(this)
@@ -184,7 +184,7 @@ export default async (url, category) => {
   );
 
   // get all methodology vals
-  var workMethodologyVal = [];
+  let workMethodologyVal = [];
   $("[ng-repeat='tool in tools'] .col-sm-6.p-value-row dd").each(function(
     i,
     elem
@@ -243,7 +243,7 @@ export default async (url, category) => {
   ).text();
 
   // Get specs keys
-  var SpecsKeys = [];
+  let SpecsKeys = [];
   $("[id='specs-block'] .col-sm-6.p-label-row").each(function(i, item) {
     SpecsKeys[i] = $(this)
       .text()
@@ -251,7 +251,7 @@ export default async (url, category) => {
   });
 
   // Get specs vals
-  var SpecsVals = [];
+  let SpecsVals = [];
   $("[id='specs-block'] .col-sm-6.p-value-row").each(function(i, item) {
     SpecsVals[i] = $(this)
       .text()
