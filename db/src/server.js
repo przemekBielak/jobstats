@@ -2,7 +2,6 @@ const cheerio = require("cheerio");
 const puppeteer = require("puppeteer");
 const MongoClient = require("mongodb").MongoClient;
 import jobParser from "./content";
-import { sleep } from "./common";
 
 const mongoUrl = "mongodb://localhost:27017/";
 const mongoOptions = { useNewUrlParser: true };
@@ -28,6 +27,16 @@ const category = [
 
 let jobLinks = [];
 
+
+async function sleep(time) {
+  return await new Promise((resolve, reject) => {
+    if (isNaN(time)) {
+      reject(new Error("timeout requires a valid number"));
+    }
+    setTimeout(resolve, time);
+  });
+}
+
 (async () => {
   const dbclient = await MongoClient.connect(mongoUrl, mongoOptions);
   const db = dbclient.db(dbname);
@@ -38,9 +47,7 @@ let jobLinks = [];
     const page = await browser.newPage();
     await page.goto(url + category[iter]);
     await page.waitFor(3000);
-    let content = await page.content();
-
-    const $ = cheerio.load(content);
+    const $ = cheerio.load(await page.content());
 
     // get all links
     let links = $(".col-sm-12 .list-item ");
@@ -61,7 +68,7 @@ let jobLinks = [];
           .countDocuments({ _id: jobLinks[i] });
         if (!exists) {
           // save parsed data to db
-          let newDoc = await jobParser(jobLinks[i], category[iter]);
+          const newDoc = await jobParser(jobLinks[i], category[iter]);
           db.collection(dbcollection).insertOne(newDoc);
           console.log("Saved " + jobLinks[i] + " to db");
 
