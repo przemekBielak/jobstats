@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
 import Select from "./components/Select/Select";
 import Footer from "./components/Footer/Footer";
 import Pie from "./components/Pie/Pie";
@@ -11,49 +11,39 @@ const contractType = ["B2B", "UoP", "UZ", "UoD"];
 
 const seniorityLevel = ["Any", "Trainee", "Junior", "Mid", "Senior", "Expert"];
 
-class App extends Component {
-  constructor(props) {
-    super(props);
+const App = () => {
+  const [data, setData] = useState([]);
+  const [mustHaveInput, setMustHaveInput] = useState("Any");
+  const [cityInput, setCityInput] = useState("Any");
+  const [contractTypeInput, setContractTypeInput] = useState("B2B");
+  const [seniorityLevelInput, setSeniorityLevelInput] = useState("Any");
+  const [specificInput, setSpecificInput] = useState("1");
+  const [mustHaveList, setMustHaveList] = useState([]);
+  const [citiesList, setCitiesList] = useState([]);
+  const [axisTicks, setAxisTicks] = useState([]);  
 
-    this.state = {
-      data: [],
 
-      mustHaveInput: "Any",
-      cityInput: "Any",
-      contractTypeInput: "B2B",
-      seniorityLevelInput: "Any",
-      specificInput: "1",
-
-      mustHaveList: [],
-      citiesList: [],
-
-      // axis values
-      axisTicks: [],
-      selectedPie: 0
-    };
-  }
-
-  handleMustHaveInput = event => {
-    this.setState({ mustHaveInput: event.target.value });
+  const handleMustHaveInput = event => {
+    setMustHaveInput(event.target.value);
   };
 
-  handleCityInput = event => {
-    this.setState({ cityInput: event.target.value });
+  const handleCityInput = event => {
+    setCityInput(event.target.value);
   };
 
-  handleContractTypeInput = event => {
-    this.setState({ contractTypeInput: event.target.value });
+  const handleContractTypeInput = event => {
+    setContractTypeInput(event.target.value);
   };
 
-  handleSeniorityLevelInput = event => {
-    this.setState({ seniorityLevelInput: event.target.value });
+  const handleSeniorityLevelInput = event => {
+    setSeniorityLevelInput(event.target.value);
   };
 
-  handleSpecificInput = event => {
-    this.setState({ specificInput: event.target.value });
+  const handleSpecificInput = event => {
+    setSpecificInput(event.target.value);
   };
 
-  getLangCount = (lang, city, seniority, contract) => {
+  const getLangCount = (lang, city, seniority, contract) => {
     fetch("/lang-count", {
       method: "POST",
       headers: {
@@ -68,30 +58,31 @@ class App extends Component {
       })
     })
       .then(response => response.json())
-      .then(data => {
-        if (data.count != 0) {
-          this.setState(prevState => ({
-            data: [
-              ...prevState.data,
-              {
-                // known parameters
-                id: prevState.data.length + 1,
-                language: lang,
-                city: city,
-                seniority: seniority,
-                contract: contract,
-                // received parameters
-                count: data.count,
-                salaryMinAvg: data.salaryMinAvg,
-                salaryMaxAvg: data.salaryMaxAvg,
-                mustHaveRequirements: data.mustHaveRequirements,
-                requirementsNices: data.requirementsNices,
-                os: data.os
-              }
-            ],
-            axisTicks: [...prevState.axisTicks, prevState.data.length + 1]
-          }));
-          console.log(data);
+      .then(dataIn => {
+        if (dataIn.count !== 0) {
+          console.log(axisTicks);
+          setAxisTicks(
+            [...axisTicks, data.length + 1]
+          );
+          setData([
+            ...data,
+            {
+              // known parameters
+              id: data.length + 1,
+              language: lang,
+              city: city,
+              seniority: seniority,
+              contract: contract,
+              // received parameters
+              count: dataIn.count,
+              salaryMinAvg: dataIn.salaryMinAvg,
+              salaryMaxAvg: dataIn.salaryMaxAvg,
+              mustHaveRequirements: dataIn.mustHaveRequirements,
+              requirementsNices: dataIn.requirementsNices,
+              os: dataIn.os
+            }
+          ]);
+          console.log(dataIn);
         } else {
           console.log("no matches found");
         }
@@ -101,128 +92,123 @@ class App extends Component {
       });
   };
 
-  getMustHaveList = () => {
+  const getMustHaveList = () => {
     fetch("/must-have-list")
       .then(response => response.json())
       .then(data => {
-        this.setState(() => ({
-          mustHaveList: data.requirementsMustHaveAll.sort()
-        }));
+        setMustHaveList(data.requirementsMustHaveAll.sort());
       })
       .catch(err => console.log(err));
   };
 
-  getCitiesList = () => {
+  const getCitiesList = () => {
     fetch("/cities-list")
       .then(response => response.json())
       .then(data => {
-        this.setState(() => ({
-          citiesList: data.citiesAll.sort()
-        }));
+        console.log(data);
+        setCitiesList(data.citiesAll.sort());
       })
       .catch(err => console.log(err));
   };
 
-  componentDidMount() {
-    this.getMustHaveList();
-    this.getCitiesList();
+  useEffect(() => {
+    getMustHaveList();
+    getCitiesList();
 
-    this.getLangCount("Java", "Any", "Any", "B2B");
-    this.getLangCount("JavaScript", "Any", "Any", "B2B");
-    this.getLangCount(".NET", "Any", "Any", "UoP");
-  }
+    getLangCount("Java", "Any", "Any", "B2B");
+    getLangCount("JavaScript", "Any", "Any", "B2B");
+    getLangCount(".NET", "Any", "Any", "UoP");
+  }, []);
 
-  render() {
-    return (
-      <div className="App">
-        <div className="header-options">
-          <Select
-            name={"Seniority"}
-            values={seniorityLevel}
-            input={this.state.seniorityLevelInput}
-            handleInput={this.handleSeniorityLevelInput}
-            default={"Any"}
-          />
+  return (
+    <div className="App">
+      <div className="header-options">
+        <Select
+          name={"Seniority"}
+          values={seniorityLevel}
+          input={seniorityLevelInput}
+          handleInput={handleSeniorityLevelInput}
+          default={"Any"}
+        />
 
-          <Select
-            name={"City"}
-            values={this.state.citiesList}
-            input={this.state.cityInput}
-            handleInput={this.handleCityInput}
-            default={"Any"}
-          />
+        <Select
+          name={"City"}
+          values={citiesList}
+          input={cityInput}
+          handleInput={handleCityInput}
+          default={"Any"}
+        />
 
-          <Select
-            name={"Technology"}
-            values={this.state.mustHaveList}
-            input={this.state.mustHaveInput}
-            handleInput={this.handleMustHaveInput}
-            default={"Any"}
-          />
+        <Select
+          name={"Technology"}
+          values={mustHaveList}
+          input={mustHaveInput}
+          handleInput={handleMustHaveInput}
+          default={"Any"}
+        />
 
-          <Select
-            name={"Contract"}
-            values={contractType}
-            input={this.state.contractTypeInput}
-            handleInput={this.handleContractTypeInput}
-          />
+        <Select
+          name={"Contract"}
+          values={contractType}
+          input={contractTypeInput}
+          handleInput={handleContractTypeInput}
+        />
 
-          <button
-            onClick={() =>
-              this.getLangCount(
-                this.state.mustHaveInput,
-                this.state.cityInput,
-                this.state.seniorityLevelInput,
-                this.state.contractTypeInput
-              )
-            }
-          >
-            Update
-          </button>
+        <button
+          onClick={() =>
+            getLangCount(
+              mustHaveInput,
+              cityInput,
+              seniorityLevelInput,
+              contractTypeInput
+            )
+          }
+        >
+          Update
+        </button>
 
-          <Select
-            name={"Active view"}
-            values={this.state.axisTicks}
-            input={this.state.specificInput}
-            handleInput={this.handleSpecificInput}
-          />
-        </div>
-
-        <div className="chart-flex">
-          <div className="chart">
-            <JobNumber data={this.state.data} ticks={this.state.axisTicks} />
-          </div>
-
-          <div className="chart">
-            <Salary data={this.state.data} ticks={this.state.axisTicks} />
-          </div>
-
-          <div className="chart">
-            <Os data={this.state.data} ticks={this.state.axisTicks} />
-          </div>
-
-          <div className="chart">
-            <Pie
-              data={this.state.data}
-              info={"mustHaveRequirements"}
-              input={this.state.specificInput}
-              title={"Must have requirements"}
-            />
-          </div>
-
-          <div className="chart">
-            <Pie
-              data={this.state.data}
-              info={"requirementsNices"}
-              input={this.state.specificInput}
-              title={"Nice to have requirements"}
-            />
-          </div>
-        </div>
-        <Footer data={this.state.data} />
+        <Select
+          name={"Active view"}
+          values={axisTicks}
+          input={specificInput}
+          handleInput={handleSpecificInput}
+        />
       </div>
-    );
-  }
-}
+
+      <div className="chart-flex">
+        <div className="chart">
+          <JobNumber data={data} ticks={axisTicks} />
+        </div>
+
+        <div className="chart">
+          <Salary data={data} ticks={axisTicks} />
+        </div>
+
+        <div className="chart">
+          <Os data={data} ticks={axisTicks} />
+        </div>
+
+        <div className="chart">
+          <Pie
+            data={data}
+            info={"mustHaveRequirements"}
+            input={specificInput}
+            title={"Must have requirements"}
+          />
+        </div>
+
+        <div className="chart">
+          <Pie
+            data={data}
+            info={"requirementsNices"}
+            input={specificInput}
+            title={"Nice to have requirements"}
+          />
+        </div>
+      </div>
+      <Footer data={data} />
+    </div>
+  );
+};
 
 export default App;
