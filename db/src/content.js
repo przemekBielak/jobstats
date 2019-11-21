@@ -30,6 +30,7 @@ export default async (url, category) => {
     position: "",
     salary: [],
     seniorityLevel: [],
+    city: [],
     requirements: []
   };
 
@@ -96,6 +97,8 @@ export default async (url, category) => {
       contractType[i] = "uop";
     } else if (salaryInfoText.toUpperCase().includes("UZ")) {
       contractType[i] = "uz";
+    } else if (salaryInfoText.toUpperCase().includes("MANDATE")) {
+      contractType[i] = "uz";
     } else if (salaryInfoText.toUpperCase().includes("UOD")) {
       contractType[i] = "uod";
     } else {
@@ -133,6 +136,11 @@ export default async (url, category) => {
     jobInfo.requirements.push($(this).text().toLowerCase().replace('\n', ''));
   });
   
+  $(".d-flex.align-items-center.w-100 .text-truncate").each(function(i, elem) {
+    const companyLocation = $(this).text().toLowerCase().trim().split(", ")[0];
+    jobInfo.city.push(companyLocation);
+  });
+
   console.log(jobInfo);
 
   fs.appendFile('requirements.txt', jobInfo.requirements.join('\n'), function (err) {
@@ -141,144 +149,10 @@ export default async (url, category) => {
   });
 
 
+  
 
-  // check basic info
-  // jobInfo.companyName = info[0];
-  // jobInfo.companySize = info[1];
-  // const companyLocation = info[2].split(", ");
-  // jobInfo.companyLocationCity = companyLocation[0];
-  // let LocationCountrySplit = companyLocation[1].split(" ");
-  // jobInfo.companyLocationCountry = LocationCountrySplit[0].trim();
-  // jobInfo.whenToStart = info[3];
-  // jobInfo.typeOfContract = info[4].trim();
-  // jobInfo.seniorityLevel = info[5].split(", ");
 
-  // // All requirements
-  // $(".requirement.ng-binding.ng-scope").each(function(i, elem) {
-  //   jobInfo.requirementsMustHave[i] = $(this).text();
-  // });
 
-  // // Nices requirements
-  // $("[ng-repeat='tech in formData.requirements.nices']").each(function(
-  //   i,
-  //   elem
-  // ) {
-  //   // console.log(item);
-  //   jobInfo.requirementsNices[i] = $(this).text();
-  // });
-
-  // // Check if nices requirements are also in must have requirements. If yes, then delete.
-  // for (let i = 0; i < jobInfo.requirementsNices.length; i++) {
-  //   if (jobInfo.requirementsMustHave.includes(jobInfo.requirementsNices[i])) {
-  //     let index = jobInfo.requirementsMustHave.indexOf(
-  //       jobInfo.requirementsNices[i]
-  //     );
-  //     jobInfo.requirementsMustHave.splice(index, 1);
-  //   }
-  // }
-
-  // // get all methodolody keys
-  // let workMethodologyKey = [];
-  // $("[ng-repeat='tool in tools'] .col-sm-6.p-label-row.ng-binding").each(
-  //   function(i, elem) {
-  //     let key = $(this)
-  //       .text()
-  //       .replace(/\n/g, "");
-  //     workMethodologyKey[i] = key.replace(/\./g, "");
-  //   }
-  // );
-
-  // // get all methodology vals
-  // let workMethodologyVal = [];
-  // $("[ng-repeat='tool in tools'] .col-sm-6.p-value-row dd").each(function(
-  //   i,
-  //   elem
-  // ) {
-  //   workMethodologyVal[i] = $(this)
-  //     .text()
-  //     .split(",");
-  // });
-
-  // // combine keys and vals as an object
-  // workMethodologyKey.forEach(
-  //   (key, i) => (jobInfo.workMethodology[key] = workMethodologyVal[i])
-  // );
-
-  // // OS - mac
-  // if (
-  //   $(
-  //     "[ng-if='vm.isActiveSection('benefits.equipment')'] icon#apple.icon-blue.active"
-  //   ).length
-  // ) {
-  //   jobInfo.os["mac"] = true;
-  // } else {
-  //   jobInfo.os["mac"] = false;
-  // }
-
-  // // OS - windows
-  // if (
-  //   $(
-  //     "[ng-if='vm.isActiveSection('benefits.equipment')'] icon#windows.icon-blue.active"
-  //   ).length
-  // ) {
-  //   jobInfo.os["windows"] = true;
-  // } else {
-  //   jobInfo.os["windows"] = false;
-  // }
-
-  // // OS - linux
-  // if (
-  //   $(
-  //     "[ng-if='vm.isActiveSection('benefits.equipment')'] icon#linux.icon-blue.active"
-  //   ).length
-  // ) {
-  //   jobInfo.os["linux"] = true;
-  // } else {
-  //   jobInfo.os["linux"] = false;
-  // }
-
-  // // Get Computer
-  // jobInfo.computer = $(
-  //   "[once-if='formData.benefits.equipment.computer !== '''] [tooltip-enable='formData.benefits.equipment.computer.length > 39']"
-  // ).text();
-
-  // // Get Monitors
-  // jobInfo.monitors = $(
-  //   "[once-if='formData.benefits.equipment.monitors !== '''] [tooltip-enable='formData.benefits.equipment.monitors.length > 39']"
-  // ).text();
-
-  // // Get specs keys
-  // let SpecsKeys = [];
-  // $("[id='specs-block'] .col-sm-6.p-label-row").each(function(i, item) {
-  //   SpecsKeys[i] = $(this)
-  //     .text()
-  //     .replace(/\./g, "");
-  // });
-
-  // // Get specs vals
-  // let SpecsVals = [];
-  // $("[id='specs-block'] .col-sm-6.p-value-row").each(function(i, item) {
-  //   SpecsVals[i] = $(this)
-  //     .text()
-  //     .trim();
-  // });
-
-  // // Combine specs keys and vals
-  // SpecsKeys.forEach((key, i) => (jobInfo.specs[key] = SpecsVals[i]));
-
-  // // Perks
-  // $(
-  //   ".panel.border-top.this-and-that.ng-isolate-scope.border-top4 dd.ng-binding"
-  // ).each(function(i, item) {
-  //   jobInfo.perks[i] = $(this).text();
-  // });
-
-  // // Benefits
-  // $("[ng-if='vm.isActiveSection('benefits.benefits')'] dd.ng-binding").each(
-  //   function(i, item) {
-  //     jobInfo.benefits[i] = $(this).text();
-  //   }
-  // );
 
   await browser.close();
 
