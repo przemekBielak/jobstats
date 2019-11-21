@@ -4,6 +4,7 @@
 
 const cheerio = require("cheerio");
 const puppeteer = require("puppeteer");
+const fs = require("fs");
 
 const convertSalaryToNumber = salary => {
   let val = 0;
@@ -51,41 +52,35 @@ export default async (url, category) => {
   console.log(`Started parsing ${url}`);
   const browser = await puppeteer.launch();
   const page = await browser.newPage();
-  await page.goto(url);
-  await page.waitFor(4000);
+  await page.goto(url, { waitUntil: "networkidle0" });
+  // await page.waitFor(4000);
+  await page.setViewport({ width: 1680, height: 960 });
   let content = await page.content();
+  let bodyHTML = await page.evaluate(() => document.body.innerHTML);
 
-  const $ = cheerio.load(content);
+  const $ = cheerio.load(bodyHTML);
 
-  // console.log(content);
+  // job title
+  jobInfo.position = $(".posting-details-description h1").text();
+  console.log(jobInfo.position);
 
-  // check job position
-  jobInfo.position = $(".posting-header-description h1").text();
-
-  let info = [];
-  $(".posting-header-description dd").each(function(i, elem) {
-    info[i] = $(this).text();
+  // seniority
+  $(".col.star-section.text-center.active p").each(function(i, elem) {
+    console.log($(this).text());
   });
-
-  // check basic info
-  jobInfo.companyName = info[0];
-  jobInfo.companySize = info[1];
-  const companyLocation = info[2].split(", ");
-  jobInfo.companyLocationCity = companyLocation[0];
-  let LocationCountrySplit = companyLocation[1].split(" ");
-  jobInfo.companyLocationCountry = LocationCountrySplit[0].trim();
-  jobInfo.whenToStart = info[3];
-  jobInfo.typeOfContract = info[4].trim();
-  jobInfo.seniorityLevel = info[5].split(", ");
 
   // check salary info
   let salaryMin = [];
   let salaryMax = [];
   let salaryCurrency = [];
-  $(".posting-main-info h4").each(function(i, item) {
+  $("nfj-posting-salaries div h4").each(function(i, item) {
+    console.log($(this).text());
     let salary = $(this)
       .text()
-      .split(" ");
+      .split(" ")
+      .filter(Boolean);
+
+    console.log(salary);
 
     // Unpaid category
     if (salary == "Unpaid") {
@@ -107,12 +102,14 @@ export default async (url, category) => {
 
   let contractType = [];
   let salaryRate = [];
-  $(".posting-main-info p").each(function(i, item) {
+  $("nfj-posting-salaries div p").each(function(i, item) {
     // check contract type
     let salaryInfoText = $(this).text();
     if (salaryInfoText.toUpperCase().includes("B2B")) {
       contractType[i] = "B2B";
     } else if (salaryInfoText.toUpperCase().includes("UOP")) {
+      contractType[i] = "UoP";
+    } else if (salaryInfoText.toUpperCase().includes("employment")) {
       contractType[i] = "UoP";
     } else if (salaryInfoText.toUpperCase().includes("UZ")) {
       contractType[i] = "UZ";
@@ -147,132 +144,145 @@ export default async (url, category) => {
     jobInfo.salary[i]["salaryRate"] = salaryRate[i];
   }
 
-  // All requirements
-  $(".requirement.ng-binding.ng-scope").each(function(i, elem) {
-    jobInfo.requirementsMustHave[i] = $(this).text();
-  });
+  console.log(jobInfo);
 
-  // Nices requirements
-  $("[ng-repeat='tech in formData.requirements.nices']").each(function(
-    i,
-    elem
-  ) {
-    // console.log(item);
-    jobInfo.requirementsNices[i] = $(this).text();
-  });
+  // check basic info
+  // jobInfo.companyName = info[0];
+  // jobInfo.companySize = info[1];
+  // const companyLocation = info[2].split(", ");
+  // jobInfo.companyLocationCity = companyLocation[0];
+  // let LocationCountrySplit = companyLocation[1].split(" ");
+  // jobInfo.companyLocationCountry = LocationCountrySplit[0].trim();
+  // jobInfo.whenToStart = info[3];
+  // jobInfo.typeOfContract = info[4].trim();
+  // jobInfo.seniorityLevel = info[5].split(", ");
 
-  // Check if nices requirements are also in must have requirements. If yes, then delete.
-  for (let i = 0; i < jobInfo.requirementsNices.length; i++) {
-    if (jobInfo.requirementsMustHave.includes(jobInfo.requirementsNices[i])) {
-      let index = jobInfo.requirementsMustHave.indexOf(
-        jobInfo.requirementsNices[i]
-      );
-      jobInfo.requirementsMustHave.splice(index, 1);
-    }
-  }
+  // // All requirements
+  // $(".requirement.ng-binding.ng-scope").each(function(i, elem) {
+  //   jobInfo.requirementsMustHave[i] = $(this).text();
+  // });
 
-  // get all methodolody keys
-  let workMethodologyKey = [];
-  $("[ng-repeat='tool in tools'] .col-sm-6.p-label-row.ng-binding").each(
-    function(i, elem) {
-      let key = $(this)
-        .text()
-        .replace(/\n/g, "");
-      workMethodologyKey[i] = key.replace(/\./g, "");
-    }
-  );
+  // // Nices requirements
+  // $("[ng-repeat='tech in formData.requirements.nices']").each(function(
+  //   i,
+  //   elem
+  // ) {
+  //   // console.log(item);
+  //   jobInfo.requirementsNices[i] = $(this).text();
+  // });
 
-  // get all methodology vals
-  let workMethodologyVal = [];
-  $("[ng-repeat='tool in tools'] .col-sm-6.p-value-row dd").each(function(
-    i,
-    elem
-  ) {
-    workMethodologyVal[i] = $(this)
-      .text()
-      .split(",");
-  });
+  // // Check if nices requirements are also in must have requirements. If yes, then delete.
+  // for (let i = 0; i < jobInfo.requirementsNices.length; i++) {
+  //   if (jobInfo.requirementsMustHave.includes(jobInfo.requirementsNices[i])) {
+  //     let index = jobInfo.requirementsMustHave.indexOf(
+  //       jobInfo.requirementsNices[i]
+  //     );
+  //     jobInfo.requirementsMustHave.splice(index, 1);
+  //   }
+  // }
 
-  // combine keys and vals as an object
-  workMethodologyKey.forEach(
-    (key, i) => (jobInfo.workMethodology[key] = workMethodologyVal[i])
-  );
+  // // get all methodolody keys
+  // let workMethodologyKey = [];
+  // $("[ng-repeat='tool in tools'] .col-sm-6.p-label-row.ng-binding").each(
+  //   function(i, elem) {
+  //     let key = $(this)
+  //       .text()
+  //       .replace(/\n/g, "");
+  //     workMethodologyKey[i] = key.replace(/\./g, "");
+  //   }
+  // );
 
-  // OS - mac
-  if (
-    $(
-      "[ng-if='vm.isActiveSection('benefits.equipment')'] icon#apple.icon-blue.active"
-    ).length
-  ) {
-    jobInfo.os["mac"] = true;
-  } else {
-    jobInfo.os["mac"] = false;
-  }
+  // // get all methodology vals
+  // let workMethodologyVal = [];
+  // $("[ng-repeat='tool in tools'] .col-sm-6.p-value-row dd").each(function(
+  //   i,
+  //   elem
+  // ) {
+  //   workMethodologyVal[i] = $(this)
+  //     .text()
+  //     .split(",");
+  // });
 
-  // OS - windows
-  if (
-    $(
-      "[ng-if='vm.isActiveSection('benefits.equipment')'] icon#windows.icon-blue.active"
-    ).length
-  ) {
-    jobInfo.os["windows"] = true;
-  } else {
-    jobInfo.os["windows"] = false;
-  }
+  // // combine keys and vals as an object
+  // workMethodologyKey.forEach(
+  //   (key, i) => (jobInfo.workMethodology[key] = workMethodologyVal[i])
+  // );
 
-  // OS - linux
-  if (
-    $(
-      "[ng-if='vm.isActiveSection('benefits.equipment')'] icon#linux.icon-blue.active"
-    ).length
-  ) {
-    jobInfo.os["linux"] = true;
-  } else {
-    jobInfo.os["linux"] = false;
-  }
+  // // OS - mac
+  // if (
+  //   $(
+  //     "[ng-if='vm.isActiveSection('benefits.equipment')'] icon#apple.icon-blue.active"
+  //   ).length
+  // ) {
+  //   jobInfo.os["mac"] = true;
+  // } else {
+  //   jobInfo.os["mac"] = false;
+  // }
 
-  // Get Computer
-  jobInfo.computer = $(
-    "[once-if='formData.benefits.equipment.computer !== '''] [tooltip-enable='formData.benefits.equipment.computer.length > 39']"
-  ).text();
+  // // OS - windows
+  // if (
+  //   $(
+  //     "[ng-if='vm.isActiveSection('benefits.equipment')'] icon#windows.icon-blue.active"
+  //   ).length
+  // ) {
+  //   jobInfo.os["windows"] = true;
+  // } else {
+  //   jobInfo.os["windows"] = false;
+  // }
 
-  // Get Monitors
-  jobInfo.monitors = $(
-    "[once-if='formData.benefits.equipment.monitors !== '''] [tooltip-enable='formData.benefits.equipment.monitors.length > 39']"
-  ).text();
+  // // OS - linux
+  // if (
+  //   $(
+  //     "[ng-if='vm.isActiveSection('benefits.equipment')'] icon#linux.icon-blue.active"
+  //   ).length
+  // ) {
+  //   jobInfo.os["linux"] = true;
+  // } else {
+  //   jobInfo.os["linux"] = false;
+  // }
 
-  // Get specs keys
-  let SpecsKeys = [];
-  $("[id='specs-block'] .col-sm-6.p-label-row").each(function(i, item) {
-    SpecsKeys[i] = $(this)
-      .text()
-      .replace(/\./g, "");
-  });
+  // // Get Computer
+  // jobInfo.computer = $(
+  //   "[once-if='formData.benefits.equipment.computer !== '''] [tooltip-enable='formData.benefits.equipment.computer.length > 39']"
+  // ).text();
 
-  // Get specs vals
-  let SpecsVals = [];
-  $("[id='specs-block'] .col-sm-6.p-value-row").each(function(i, item) {
-    SpecsVals[i] = $(this)
-      .text()
-      .trim();
-  });
+  // // Get Monitors
+  // jobInfo.monitors = $(
+  //   "[once-if='formData.benefits.equipment.monitors !== '''] [tooltip-enable='formData.benefits.equipment.monitors.length > 39']"
+  // ).text();
 
-  // Combine specs keys and vals
-  SpecsKeys.forEach((key, i) => (jobInfo.specs[key] = SpecsVals[i]));
+  // // Get specs keys
+  // let SpecsKeys = [];
+  // $("[id='specs-block'] .col-sm-6.p-label-row").each(function(i, item) {
+  //   SpecsKeys[i] = $(this)
+  //     .text()
+  //     .replace(/\./g, "");
+  // });
 
-  // Perks
-  $(
-    ".panel.border-top.this-and-that.ng-isolate-scope.border-top4 dd.ng-binding"
-  ).each(function(i, item) {
-    jobInfo.perks[i] = $(this).text();
-  });
+  // // Get specs vals
+  // let SpecsVals = [];
+  // $("[id='specs-block'] .col-sm-6.p-value-row").each(function(i, item) {
+  //   SpecsVals[i] = $(this)
+  //     .text()
+  //     .trim();
+  // });
 
-  // Benefits
-  $("[ng-if='vm.isActiveSection('benefits.benefits')'] dd.ng-binding").each(
-    function(i, item) {
-      jobInfo.benefits[i] = $(this).text();
-    }
-  );
+  // // Combine specs keys and vals
+  // SpecsKeys.forEach((key, i) => (jobInfo.specs[key] = SpecsVals[i]));
+
+  // // Perks
+  // $(
+  //   ".panel.border-top.this-and-that.ng-isolate-scope.border-top4 dd.ng-binding"
+  // ).each(function(i, item) {
+  //   jobInfo.perks[i] = $(this).text();
+  // });
+
+  // // Benefits
+  // $("[ng-if='vm.isActiveSection('benefits.benefits')'] dd.ng-binding").each(
+  //   function(i, item) {
+  //     jobInfo.benefits[i] = $(this).text();
+  //   }
+  // );
 
   await browser.close();
 
