@@ -1,0 +1,540 @@
+ java
+ sql
+ git
+ spring
+ hibernate
+ rest
+ kotlin
+ jpa
+ gradle
+ english
+ team player
+ communication skills
+ critical thinking
+ problem solving
+ proactivity 
+ node
+ javascript
+ typescript
+ node.js
+ promises
+ async/await
+ design patterns
+ jest 
+ node.js
+ nosql
+ micro-services 
+ java
+ spring
+ hibernate
+ maven
+ java ee
+ aws
+ relational databases (sql, oracle db)
+ build systems (maven)
+ version control and bug tracking systems
+ understanding of sdlc and agile methodologies very strong general programming skills
+ python and linux
+ javascript, html5, css3
+ git and branching
+ sql/databases
+ happy with teamwork sql 
+ .net
+ rest
+ mvc
+ microsoft
+ ms sql 
+ git
+ c/c++
+ stl
+ boost
+ uml
+ english 
+ linux
+ docker
+ c
+ ansible
+ low level c
+ device drivers
+ kernel
+ polish
+ communication skills
+ ip networking 
+ java
+ hibernate
+ java ee
+ sql
+ wildfly
+ english 
+ linux
+ docker
+ aws
+ c
+ c++
+ grafana
+ kubernetes
+ microservices
+ polish
+ team player
+ communication skills 
+ .net
+ ms sql
+ c#
+ windows server 
+ .net
+ ms sql
+ c#
+ windows server 
+ ruby
+ team player
+ communication skills 
+ python
+ django
+ linux
+ english 
+ java
+ git
+ java ee
+ at least 2 years exp in coding postgresql
+ linux
+ sql 
+ postgresql
+ linux
+ sql 
+ php
+ git
+ wordpress
+ tdd
+ unix
+ english
+ team player
+ critical thinking
+ problem solving
+ proactivity 
+ java
+ spring
+ maven
+ jpa
+ english 
+ linux
+ c
+ python
+ embedded linux
+ english 
+ linux
+ c
+ python
+ embedded linux
+ english 
+ linux
+ c
+ linux kernel
+ gnu
+ english
+ polish
+ team player
+ problem solving 
+ mvvm
+ objective-c
+ ios
+ swift 4.2
+ mvc
+ mvp c
+ embedded 
+ java
+ android
+ team player
+ communication skills
+ critical thinking
+ problem solving
+ proactivity 
+ swift
+ objective-c
+ ios
+ team player
+ communication skills
+ critical thinking
+ problem solving
+ proactivity 
+ java
+ git
+ android
+ android sdk
+ gradle / maven
+ english
+ team player
+ leadership skills
+ problem solving
+ proactivity
+ mentoring 
+ swift
+ cocoapods
+ ios
+ english
+ communication skills
+ problem solving 
+ swift
+ cocoapods
+ ios
+ english
+ communication skills
+ problem solving 
+ swift
+ cocoapods
+ ios
+ english
+ communication skills
+ problem solving 
+ swift
+ cocoapods
+ ios
+ english
+ communication skills
+ problem solving 
+ swift
+ git
+ xcode
+ ios
+ uikit
+ english 
+ java
+ git
+ gradle
+ android sdk
+ android
+ maven 
+ swift
+ git
+ xcode
+ ios
+ scrum
+ english
+ team player 
+ java
+ kotlin
+ git
+ rxjava
+ dagger
+ retrofit
+ android
+ english
+ team player
+ communication skills 
+ javascript
+ css
+ html
+ sass
+ vue.js
+ vuex
+ javascript 
+ es6+
+ english
+ problem solving 
+ javascript
+ vscode 
+ javascript
+ css
+ html
+ sass
+ vue.js
+ vuex
+ javascript 
+ es6+
+ english
+ problem solving 
+ javascript
+ git
+ angular
+ react
+ extjs
+ english
+ team player 
+ javascript
+ git
+ rest
+ react
+ css
+ html
+ rwd
+ es6
+ english
+ team player
+ communication skills
+ problem solving
+ proactivity 
+ react
+ javascript
+ css
+ html
+ rest
+ typescript
+ node.js
+ jenkins
+ english 
+ react
+ javascript
+ css
+ html
+ rest
+ typescript
+ node.js
+ jenkins
+ english
+ team player
+ leadership skills
+ problem solving
+ proactivity 
+ angular
+ javascript
+ css
+ html
+ typescript
+ git
+ rest
+ webpack
+ rxjs
+ jquery
+ less
+ english
+ communication skills
+ leadership skills
+ critical thinking
+ problem solving
+ proactivity 
+ angular
+ javascript
+ css
+ html
+ typescript
+ git
+ rest
+ webpack
+ rxjs
+ jquery
+ less
+ english
+ communication skills
+ leadership skills
+ critical thinking
+ problem solving
+ proactivity 
+ angular
+ javascript
+ css
+ html
+ typescript
+ git
+ rest
+ webpack
+ rxjs
+ jquery
+ less
+ english
+ communication skills
+ leadership skills
+ critical thinking
+ problem solving
+ proactivity 
+ javascript
+ typescript
+ angular
+ css
+ html
+ less
+ polish
+ communication skills 
+ javascript
+ git
+ css
+ html
+ .net
+ sql
+ c#
+ higher technical education
+ asp .net 
+ mvc
+ iis
+ english
+ team player
+ communication skills
+ critical thinking
+ problem solving
+ proactivity
+ ability to travel when needed
+ creativity 
+ javascript
+ git
+ css
+ html
+ .net
+ sql
+ c#
+ higher technical education
+ asp .net 
+ mvc
+ iis
+ english
+ team player
+ communication skills
+ critical thinking
+ problem solving
+ proactivity
+ ability to travel when needed
+ creativity 
+ javascript
+ css
+ html
+ react
+ git
+ redux
+ typescript
+ communication skills 
+ javascript
+ english 
+ php
+ git
+ javascript
+ css
+ html
+ english
+ communication skills
+ leadership skills
+ problem solving 
+ javascript
+ git
+ typescript
+ ecmascript
+ rest
+ react
+ css
+ html
+ sass
+ node
+ ruby on rails
+ linux
+ postgresql
+ english
+ communication skills
+ critical thinking
+ problem solving
+ proactivity 
+ javascript
+ git
+ typescript
+ react
+ html
+ css3
+ js (es6)
+ rwd
+ react.js
+ english
+ polish
+ team player
+ communication skills
+ problem solving
+ proactivity 
+ react
+ javascript
+ english
+ team player
+ communication skills
+ critical thinking
+ problem solving
+ proactivity 
+ selenium
+ java
+ jira
+ junit
+ english
+ team player
+ communication skills
+ critical thinking
+ problem solving
+ proactivity 
+ rest
+ sql
+ software testing
+ postman
+ soapui
+ selenium
+ communication skills 
+ java
+ docker
+ selenium
+ microservices
+ test automation 
+ selenium
+ java
+ sql
+ jira
+ english
+ polish
+ team player
+ communication skills
+ critical thinking
+ problem solving
+ proactivity 
+ java
+ jira
+ selenium
+ testng 
+ english
+ polish
+ communication skills
+ critical thinking 
+ sql
+ linux
+ windows server
+ voip/sip/rtp 
+ java
+ spring
+ junit
+ testng
+ mockito
+ restassured / postman
+ selenium 
+ javascript
+ rest
+ protractor
+ cucumber
+ communication skills
+ problem solving 
+ java
+ git
+ jenkins
+ team player
+ communication skills
+ critical thinking
+ problem solving
+ proactivity 
+ python
+ linux
+ rest
+ software testing
+ english
+ team player
+ proactivity java
+ spring
+ junit
+ polish
+ git
+ docker
+ oracle db
+ microservices
+ tdd
+ spock
+ ddd
+ kubernetes
+ jira java
+ spring
+ junit
+ polish
+ git
+ docker
+ oracle db
+ microservices
+ tdd
+ spock
+ ddd
+ kubernetes
+ jira
