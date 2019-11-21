@@ -19,32 +19,20 @@ const convertSalaryToNumber = salary => {
   return val;
 };
 
-let jobInfo = {
-  _id: "",
-  date: null,
-  category: "",
-  position: "",
-  salary: [],
-  typeOfContract: "",
-  seniorityLevel: [],
-  whenToStart: "",
-  companyName: "",
-  companySize: "",
-  companyLocationCity: "",
-  companyLocationCountry: "",
-  requirementsMustHave: [],
-  requirementsNices: [],
-  workMethodology: {},
-  os: {},
-  computer: "",
-  monitors: "",
-  specs: {},
-  perks: [],
-  benefits: []
-};
+
 
 // Returns parsed job offer website data as json object
 export default async (url, category) => {
+  let jobInfo = {
+    _id: "",
+    date: null,
+    category: "",
+    position: "",
+    salary: [],
+    seniorityLevel: [],
+    requirements: []
+  };
+
   jobInfo._id = url;
   jobInfo.date = new Date();
   jobInfo.category = category;
@@ -53,20 +41,18 @@ export default async (url, category) => {
   const browser = await puppeteer.launch();
   const page = await browser.newPage();
   await page.goto(url, { waitUntil: "networkidle0" });
-  // await page.waitFor(4000);
   await page.setViewport({ width: 1680, height: 960 });
-  let content = await page.content();
+  await page.content();
   let bodyHTML = await page.evaluate(() => document.body.innerHTML);
 
   const $ = cheerio.load(bodyHTML);
 
   // job title
   jobInfo.position = $(".posting-details-description h1").text();
-  console.log(jobInfo.position);
 
   // seniority
   $(".col.star-section.text-center.active p").each(function(i, elem) {
-    console.log($(this).text());
+    jobInfo.seniorityLevel.push($(this).text().toLowerCase());
   });
 
   // check salary info
@@ -74,13 +60,10 @@ export default async (url, category) => {
   let salaryMax = [];
   let salaryCurrency = [];
   $("nfj-posting-salaries div h4").each(function(i, item) {
-    console.log($(this).text());
     let salary = $(this)
       .text()
       .split(" ")
       .filter(Boolean);
-
-    console.log(salary);
 
     // Unpaid category
     if (salary == "Unpaid") {
@@ -92,11 +75,11 @@ export default async (url, category) => {
     else if (salary.indexOf("-") >= 0) {
       salaryMin[i] = salary[0];
       salaryMax[i] = salary[2];
-      salaryCurrency[i] = salary[3];
+      salaryCurrency[i] = salary[3].toLowerCase();
     } else {
       salaryMin[i] = salary[0];
       salaryMax[i] = salary[0];
-      salaryCurrency[i] = salary[1];
+      salaryCurrency[i] = salary[1].toLowerCase();
     }
   });
 
@@ -106,15 +89,15 @@ export default async (url, category) => {
     // check contract type
     let salaryInfoText = $(this).text();
     if (salaryInfoText.toUpperCase().includes("B2B")) {
-      contractType[i] = "B2B";
+      contractType[i] = "b2b";
     } else if (salaryInfoText.toUpperCase().includes("UOP")) {
-      contractType[i] = "UoP";
-    } else if (salaryInfoText.toUpperCase().includes("employment")) {
-      contractType[i] = "UoP";
+      contractType[i] = "uop";
+    } else if (salaryInfoText.toUpperCase().includes("EMPLOYMENT")) {
+      contractType[i] = "uop";
     } else if (salaryInfoText.toUpperCase().includes("UZ")) {
-      contractType[i] = "UZ";
+      contractType[i] = "uz";
     } else if (salaryInfoText.toUpperCase().includes("UOD")) {
-      contractType[i] = "UoD";
+      contractType[i] = "uod";
     } else {
       contractType[i] = "";
     }
@@ -144,7 +127,20 @@ export default async (url, category) => {
     jobInfo.salary[i]["salaryRate"] = salaryRate[i];
   }
 
+  
+  // requirements
+  $(".d-block .btn.btn-sm.btn-outline-success.text-truncate").each(function(i, elem) {
+    jobInfo.requirements.push($(this).text().toLowerCase().replace('\n', ''));
+  });
+  
   console.log(jobInfo);
+
+  fs.appendFile('requirements.txt', jobInfo.requirements.join('\n'), function (err) {
+    if (err) throw err;
+    console.log('Saved!');
+  });
+
+
 
   // check basic info
   // jobInfo.companyName = info[0];
