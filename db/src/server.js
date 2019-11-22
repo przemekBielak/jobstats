@@ -46,6 +46,7 @@ async function sleep(time) {
     const browser = await puppeteer.launch();
     const page = await browser.newPage();
     await page.goto(url + category[iter]);
+    await page.setViewport({ width: 1680, height: 960 });
     await page.waitFor(3000);
     const $ = cheerio.load(await page.content());
 

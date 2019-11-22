@@ -5,6 +5,7 @@
 const cheerio = require("cheerio");
 const puppeteer = require("puppeteer");
 const fs = require("fs");
+import helpers from "./helpers";
 
 const convertSalaryToNumber = salary => {
   let val = 0;
@@ -19,8 +20,6 @@ const convertSalaryToNumber = salary => {
   return val;
 };
 
-
-
 // Returns parsed job offer website data as json object
 export default async (url, category) => {
   let jobInfo = {
@@ -31,7 +30,12 @@ export default async (url, category) => {
     salary: [],
     seniorityLevel: [],
     city: [],
-    requirements: []
+    requirements: [],
+    languages: [],
+    db: [],
+    mobile: [],
+    webFrameworks: [],
+    otherFrameworks: []
   };
 
   jobInfo._id = url;
@@ -53,7 +57,11 @@ export default async (url, category) => {
 
   // seniority
   $(".col.star-section.text-center.active p").each(function(i, elem) {
-    jobInfo.seniorityLevel.push($(this).text().toLowerCase());
+    jobInfo.seniorityLevel.push(
+      $(this)
+        .text()
+        .toLowerCase()
+    );
   });
 
   // check salary info
@@ -130,29 +138,45 @@ export default async (url, category) => {
     jobInfo.salary[i]["salaryRate"] = salaryRate[i];
   }
 
-  
   // requirements
-  $(".d-block .btn.btn-sm.btn-outline-success.text-truncate").each(function(i, elem) {
-    jobInfo.requirements.push($(this).text().toLowerCase().replace('\n', ''));
+  $(".d-block .btn.btn-sm.btn-outline-success.text-truncate").each(function(
+    i,
+    elem
+  ) {
+    jobInfo.requirements.push(
+      $(this)
+        .text()
+        .toLowerCase()
+        .replace("\n", "")
+        .trim()
+    );
   });
-  
+  jobInfo.requirements.sort();
+
+  jobInfo.languages = helpers.updateLanguages(jobInfo.requirements);
+  jobInfo.db = helpers.updateDb(jobInfo.requirements);
+  jobInfo.mobile = helpers.updateMobile(jobInfo.requirements);
+  jobInfo.webFrameworks = helpers.updateWebFrameworks(jobInfo.requirements);
+  jobInfo.otherFrameworks = helpers.updateOtherFrameworks(jobInfo.requirements);
+
+
   $(".d-flex.align-items-center.w-100 .text-truncate").each(function(i, elem) {
-    const companyLocation = $(this).text().toLowerCase().trim().split(", ")[0];
+    const companyLocation = $(this)
+      .text()
+      .toLowerCase()
+      .trim()
+      .split(", ")[0];
     jobInfo.city.push(companyLocation);
   });
 
   console.log(jobInfo);
 
-  fs.appendFile('requirements.txt', jobInfo.requirements.join('\n'), function (err) {
+  fs.appendFile("requirements.txt", jobInfo.requirements.join("\n"), function(
+    err
+  ) {
     if (err) throw err;
-    console.log('Saved!');
+    console.log("Saved!");
   });
-
-
-  
-
-
-
 
   await browser.close();
 
