@@ -30,7 +30,7 @@ export default async (url, category) => {
     salary: [],
     seniorityLevel: [],
     city: [],
-    requirements: [],
+    // requirements: [],
     languages: [],
     db: [],
     mobile: [],
@@ -127,6 +127,19 @@ export default async (url, category) => {
     }
   });
 
+  let companyLocation = [];
+  $(".d-flex.align-items-center.w-100 .text-truncate").each(function(i, elem) {
+    companyLocation.push(
+      $(this)
+        .text()
+        .toLowerCase()
+        .trim()
+        .split(", ")[0]
+    );
+  });
+
+  jobInfo.city = helpers.updateCity(companyLocation);
+
   jobInfo.salary = [];
   // save all salary related data in one array of objects
   for (let i = 0; i < salaryMin.length; i++) {
@@ -139,11 +152,12 @@ export default async (url, category) => {
   }
 
   // requirements
+  let requirements = [];
   $(".d-block .btn.btn-sm.btn-outline-success.text-truncate").each(function(
     i,
     elem
   ) {
-    jobInfo.requirements.push(
+    requirements.push(
       $(this)
         .text()
         .toLowerCase()
@@ -151,32 +165,16 @@ export default async (url, category) => {
         .trim()
     );
   });
-  jobInfo.requirements.sort();
+  requirements.sort();
 
-  jobInfo.languages = helpers.updateLanguages(jobInfo.requirements);
-  jobInfo.db = helpers.updateDb(jobInfo.requirements);
-  jobInfo.mobile = helpers.updateMobile(jobInfo.requirements);
-  jobInfo.webFrameworks = helpers.updateWebFrameworks(jobInfo.requirements);
-  jobInfo.otherFrameworks = helpers.updateOtherFrameworks(jobInfo.requirements);
-
-
-  $(".d-flex.align-items-center.w-100 .text-truncate").each(function(i, elem) {
-    const companyLocation = $(this)
-      .text()
-      .toLowerCase()
-      .trim()
-      .split(", ")[0];
-    jobInfo.city.push(companyLocation);
-  });
+  jobInfo.languages = helpers.updateLanguages(requirements);
+  jobInfo.db = helpers.updateDb(requirements);
+  jobInfo.mobile = helpers.updateMobile(requirements);
+  jobInfo.webFrameworks = helpers.updateWebFrameworks(requirements);
+  jobInfo.otherFrameworks = helpers.updateOtherFrameworks(requirements);
 
   console.log(jobInfo);
-
-  fs.appendFile("requirements.txt", jobInfo.requirements.join("\n"), function(
-    err
-  ) {
-    if (err) throw err;
-    console.log("Saved!");
-  });
+  console.log(requirements);
 
   await browser.close();
 

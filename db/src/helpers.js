@@ -100,7 +100,7 @@ const updateDb = requirements => {
   }
 
   if (requirements.filter(value => oracleName.includes(value)).length > 0) {
-    filteredNames.push("oracledb");
+    filteredNames.push("oracle db");
   }
 
   return filteredNames;
@@ -171,7 +171,8 @@ const updateOtherFrameworks = requirements => {
     "heroku",
     "flutter",
     "magento",
-    "numpy"
+    "numpy",
+    "scikit-learn"
   ];
 
   const nodeNames = ["node", "nodejs", "node.js"];
@@ -246,10 +247,64 @@ const updateOtherFrameworks = requirements => {
   return filteredNames;
 };
 
+const updateCity = city => {
+  const names = [
+    "remote",
+    "szczecin",
+    "gdynia",
+    "katowice",
+    "bydgoszcz",
+    "gliwice",
+    "sopot",
+    "lublin"
+  ];
+  const warszawaNames = ["warsaw", "warszawa"];
+  const krakowNames = ["kraków", "krakow", "cracow"];
+  const wroclawNames = ["wrocław", "wroclaw", "wroclove"];
+  const poznanNames = ["poznan", "poznań"];
+  const gdanskNames = ["gdańsk", "gdansk"];
+  const trojmiastoNames = ["trójmiasto", "trojmiasto"];
+  const lodzNames = ["łódź", "lodz"];
+  const slaskNames = ["śląsk", "slask"];
+  const bialystokNames = ["białystok", "bialystok"];
+
+  let filteredNames = city.filter(value => names.includes(value));
+  if (city.filter(value => warszawaNames.includes(value)).length > 0) {
+    filteredNames.push("warszawa");
+  }
+  if (city.filter(value => krakowNames.includes(value)).length > 0) {
+    filteredNames.push("kraków");
+  }
+  if (city.filter(value => wroclawNames.includes(value)).length > 0) {
+    filteredNames.push("wrocław");
+  }
+  if (city.filter(value => poznanNames.includes(value)).length > 0) {
+    filteredNames.push("poznań");
+  }
+  if (city.filter(value => gdanskNames.includes(value)).length > 0) {
+    filteredNames.push("gdańsk");
+  }
+  if (city.filter(value => trojmiastoNames.includes(value)).length > 0) {
+    filteredNames.push("trójmiasto");
+  }
+  if (city.filter(value => lodzNames.includes(value)).length > 0) {
+    filteredNames.push("łódź");
+  }
+  if (city.filter(value => slaskNames.includes(value)).length > 0) {
+    filteredNames.push("śląsk");
+  }
+  if (city.filter(value => bialystokNames.includes(value)).length > 0) {
+    filteredNames.push("białystok");
+  }
+
+  return filteredNames;
+};
+
 module.exports = {
   updateLanguages,
   updateDb,
   updateMobile,
   updateWebFrameworks,
-  updateOtherFrameworks
+  updateOtherFrameworks,
+  updateCity
 };
