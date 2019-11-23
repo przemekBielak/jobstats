@@ -11,7 +11,6 @@ const updateLanguages = requirements => {
     "ruby",
     "php",
     "objective-c",
-    "wordpress",
     "swift",
     "assembly",
     "r",
@@ -71,7 +70,8 @@ const updateDb = requirements => {
     "firebase",
     "dynamodb",
     "cassandra",
-    "couchbase"
+    "couchbase",
+    "graphql"
   ];
   const mongoName = ["mongodb", "mongo", "mongo db"];
   const postgreName = ["postgresql", "postgres", "postgre", "psql"];
@@ -79,8 +79,7 @@ const updateDb = requirements => {
     "windows server",
     "microsoft sql server",
     "sql server",
-    "mssql",
-    "graphql"
+    "mssql"
   ];
   const oracleName = ["oracle db", "oracle"];
 
@@ -172,7 +171,8 @@ const updateOtherFrameworks = requirements => {
     "flutter",
     "magento",
     "numpy",
-    "scikit-learn"
+    "scikit-learn",
+    "wordpress"
   ];
 
   const nodeNames = ["node", "nodejs", "node.js"];

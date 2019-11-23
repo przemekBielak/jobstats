@@ -1,12 +1,15 @@
 const cheerio = require("cheerio");
 const puppeteer = require("puppeteer");
-// const MongoClient = require("mongodb").MongoClient;
+const Pool = require("pg").Pool;
 import jobParser from "./content";
 
-// const mongoUrl = "mongodb://localhost:27017/";
-// const mongoOptions = { useNewUrlParser: true };
-// const dbname = "jobs";
-// const dbcollection = "jobs";
+const pool = new Pool({
+  user: "me",
+  host: "localhost",
+  database: "test",
+  password: "Jfrmro1717",
+  port: 5432
+});
 
 const url = "https://nofluffjobs.com/";
 const category = [
@@ -27,7 +30,6 @@ const category = [
 
 let jobLinks = [];
 
-
 async function sleep(time) {
   return await new Promise((resolve, reject) => {
     if (isNaN(time)) {
@@ -38,9 +40,23 @@ async function sleep(time) {
 }
 
 (async () => {
-  // const dbclient = await MongoClient.connect(mongoUrl, mongoOptions);
-  // const db = dbclient.db(dbname);
-  // console.log("Connected to database");
+  pool.query("SELECT * FROM users WHERE id = 1 ", (error, results) => {
+    if (error) {
+      throw error;
+    }
+    console.log(results.rows);
+  });
+
+  pool.query(
+    'INSERT INTO users (name, email) VALUES ($1, $2)',
+    ['test', 'email'],
+    (error, results) => {
+      if (error) {
+        throw error;
+      }
+      console.log(results);
+    }
+  );
 
   for (let iter = 0; iter < category.length; iter++) {
     const browser = await puppeteer.launch();
@@ -69,46 +85,46 @@ async function sleep(time) {
         //   .collection(dbcollection)
         //   .countDocuments({ _id: jobLinks[i] });
         // if (!exists) {
-          // save parsed data to db
-          const newDoc = await jobParser(jobLinks[i], category[iter]);
-          // db.collection(dbcollection).insertOne(newDoc);
-          // console.log("Saved " + jobLinks[i] + " to db");
+        // save parsed data to db
+        const newDoc = await jobParser(jobLinks[i], category[iter]);
+        // db.collection(dbcollection).insertOne(newDoc);
+        // console.log("Saved " + jobLinks[i] + " to db");
 
-          // add new must have requirements to requirementsMustHaveAll list in db
-          // const mustDoc = await db
-          //   .collection(dbcollection)
-          //   .findOne({ _id: "requirementsMustHaveAll" });
-          // newDoc.requirementsMustHave.forEach(x => {
-          //   if (!mustDoc.requirementsMustHaveAll.includes(x)) {
-          //     mustDoc.requirementsMustHaveAll.push(x);
-          //   }
-          // });
-          // await db.collection(dbcollection).updateOne(
-          //   { _id: "requirementsMustHaveAll" },
-          //   {
-          //     $set: {
-          //       requirementsMustHaveAll: mustDoc.requirementsMustHaveAll
-          //     }
-          //   }
-          // );
+        // add new must have requirements to requirementsMustHaveAll list in db
+        // const mustDoc = await db
+        //   .collection(dbcollection)
+        //   .findOne({ _id: "requirementsMustHaveAll" });
+        // newDoc.requirementsMustHave.forEach(x => {
+        //   if (!mustDoc.requirementsMustHaveAll.includes(x)) {
+        //     mustDoc.requirementsMustHaveAll.push(x);
+        //   }
+        // });
+        // await db.collection(dbcollection).updateOne(
+        //   { _id: "requirementsMustHaveAll" },
+        //   {
+        //     $set: {
+        //       requirementsMustHaveAll: mustDoc.requirementsMustHaveAll
+        //     }
+        //   }
+        // );
 
-          // add new cities to citiesAll list in db
-          // const citiesDoc = await db
-          //   .collection(dbcollection)
-          //   .findOne({ _id: "citiesAll" });
-          // if (!citiesDoc.citiesAll.includes(newDoc.companyLocationCity)) {
-          //   citiesDoc.citiesAll.push(newDoc.companyLocationCity);
-          // }
-          // await db
-          //   .collection(dbcollection)
-          //   .updateOne(
-          //     { _id: "citiesAll" },
-          //     { $set: { citiesAll: citiesDoc.citiesAll } }
-          //   );
+        // add new cities to citiesAll list in db
+        // const citiesDoc = await db
+        //   .collection(dbcollection)
+        //   .findOne({ _id: "citiesAll" });
+        // if (!citiesDoc.citiesAll.includes(newDoc.companyLocationCity)) {
+        //   citiesDoc.citiesAll.push(newDoc.companyLocationCity);
+        // }
+        // await db
+        //   .collection(dbcollection)
+        //   .updateOne(
+        //     { _id: "citiesAll" },
+        //     { $set: { citiesAll: citiesDoc.citiesAll } }
+        //   );
 
-          // // wait before next parsing
-          // console.log(`Waiting for ${timeCounter / 1000} seconds`);
-          await sleep(timeCounter);
+        // // wait before next parsing
+        // console.log(`Waiting for ${timeCounter / 1000} seconds`);
+        await sleep(timeCounter);
         // } else {
         //   console.log(jobLinks[i] + " already exists in db");
         // }

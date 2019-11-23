@@ -144,11 +144,29 @@ export default async (url, category) => {
   // save all salary related data in one array of objects
   for (let i = 0; i < salaryMin.length; i++) {
     jobInfo.salary[i] = {};
-    jobInfo.salary[i]["salaryMin"] = convertSalaryToNumber(salaryMin[i]);
-    jobInfo.salary[i]["salaryMax"] = convertSalaryToNumber(salaryMax[i]);
+
+    console.log(salaryRate[i])
+
+    if (salaryRate[i] == "month") {
+      jobInfo.salary[i]["salaryMin"] = convertSalaryToNumber(salaryMin[i]);
+      jobInfo.salary[i]["salaryMax"] = convertSalaryToNumber(salaryMax[i]);
+    } else if (salaryRate[i] == "day") {
+      jobInfo.salary[i]["salaryMin"] = convertSalaryToNumber(salaryMin[i]) * 20;
+      jobInfo.salary[i]["salaryMax"] = convertSalaryToNumber(salaryMax[i]) * 20;
+    } else if (salaryRate[i] == "hour") {
+      jobInfo.salary[i]["salaryMin"] =
+        convertSalaryToNumber(salaryMin[i]) * 160;
+      jobInfo.salary[i]["salaryMax"] =
+        convertSalaryToNumber(salaryMax[i]) * 160;
+    } else if (salaryRate[i] == "year") {
+      jobInfo.salary[i]["salaryMin"] =
+        convertSalaryToNumber(salaryMin[i]) / 12;
+      jobInfo.salary[i]["salaryMax"] =
+        convertSalaryToNumber(salaryMax[i]) / 12;
+    } else {
+    }
     jobInfo.salary[i]["salaryCurrency"] = salaryCurrency[i];
     jobInfo.salary[i]["contractType"] = contractType[i];
-    jobInfo.salary[i]["salaryRate"] = salaryRate[i];
   }
 
   // requirements
